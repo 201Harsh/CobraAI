@@ -4,8 +4,7 @@ import Hero from "../Components/Hero";
 
 const Welcome = () => {
   return (
-    <div className="h-screen w-screen bg-gray-900 md:overflow-hidden overflow-x-hidden">
-      <Header />
+    <div className="h-screen w-screen bg-gray-900 overflow-x-hidden">
       <Hero />
     </div>
   );
