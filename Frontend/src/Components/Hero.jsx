@@ -104,7 +104,7 @@ const Hero = () => {
                   </motion.div>
                 </Link>
 
-                <Link to="/login" className="w-full sm:w-auto">
+                <Link to="/examples" className="w-full sm:w-auto">
                   <motion.div
                     className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center gap-2 hover:gap-3 transition-all duration-300 w-full sm:w-auto"
                     whileHover={{ scale: 1.05 }}

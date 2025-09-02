@@ -5,6 +5,7 @@ import Login from '../Pages/Login'
 import Register from '../Pages/Register'
 import Contact from '../Pages/Contact'
 import About from '../Pages/About'
+import Examples from '../Pages/Examples'
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path='/login' element={<Login/>} />
         <Route path='/contact' element={<Contact/>} />
         <Route path='/about' element={<About/>} />
+        <Route path='/examples' element={<Examples/>} />
       </Routes>
     </BrowserRouter>
   )
