@@ -189,8 +189,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Address</h3>
-                    <p className="text-blue-200">123 AI Street, Tech City</p>
-                    <p className="text-blue-200">Code State, 10001</p>
+                    <p className="text-blue-200">Alpine Appartment, Near Laxmi Kutter Tallital,</p>
+                    <p className="text-blue-200">Nainital , Uttarakhand, 263001</p>
                   </div>
                 </motion.div>
 
@@ -205,7 +205,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Phone</h3>
-                    <p className="text-blue-200">+1 (555) 123-4567</p>
+                    <p className="text-blue-200">Current Not Available</p>
                   </div>
                 </motion.div>
 
@@ -220,7 +220,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Email</h3>
-                    <p className="text-blue-200">hello@trinetra.com</p>
+                    <p className="text-blue-200">gamerpandeyharsh@gmail.com</p>
                   </div>
                 </motion.div>
               </div>

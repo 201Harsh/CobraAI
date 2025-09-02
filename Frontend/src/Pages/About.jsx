@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   FaCode,
-  FaUsers,
   FaRocket,
   FaLightbulb,
   FaShieldAlt,
   FaHeart,
+  FaArrowRight,
   FaGithub,
   FaLinkedin,
   FaTwitter,
-  FaArrowRight
+  FaInstagram,
 } from "react-icons/fa";
 
 const About = () => {
@@ -21,9 +21,9 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -33,59 +33,16 @@ const About = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 120
-      }
-    }
+        stiffness: 120,
+      },
+    },
   };
 
-  const teamMembers = [
-    {
-      name: "Alex Johnson",
-      role: "Lead Developer",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-      social: {
-        github: "#",
-        linkedin: "#",
-        twitter: "#"
-      }
-    },
-    {
-      name: "Maria Rodriguez",
-      role: "AI Specialist",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-      social: {
-        github: "#",
-        linkedin: "#",
-        twitter: "#"
-      }
-    },
-    {
-      name: "David Chen",
-      role: "UX Designer",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-      social: {
-        github: "#",
-        linkedin: "#",
-        twitter: "#"
-      }
-    },
-    {
-      name: "Sarah Williams",
-      role: "Product Manager",
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
-      social: {
-        github: "#",
-        linkedin: "#",
-        twitter: "#"
-      }
-    }
-  ];
-
   const stats = [
-    { number: "10K+", label: "Active Users" },
-    { number: "50K+", label: "Code Generations" },
+    { number: "50+", label: "Active Users" },
+    { number: "5K+", label: "Code Generations" },
     { number: "95%", label: "Satisfaction Rate" },
-    { number: "24/7", label: "Support Available" }
+    { number: "24/7", label: "AI Assistance" },
   ];
 
   return (
@@ -99,10 +56,15 @@ const About = () => {
           transition={{ duration: 0.7 }}
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            About <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">Trinetra</span>
+            About{" "}
+            <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+              Trinetra
+            </span>
           </h1>
           <p className="text-xl text-gray-300 mb-8">
-            Empowering developers with AI-powered code generation and learning
+            A personal vision turned into reality — building an{" "}
+            <span className="text-pink-400">AI-powered coding tutor</span> that
+            adapts to every developer’s journey.
           </p>
         </motion.div>
       </section>
@@ -117,24 +79,35 @@ const About = () => {
             transition={{ duration: 0.7 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Our <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">Mission</span>
+              My{" "}
+              <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+                Mission
+              </span>
             </h2>
             <p className="text-gray-300 mb-4">
-              At Trinetra, we believe that learning to code should be accessible, intuitive, and empowering for everyone. 
-              Our mission is to bridge the gap between aspiring developers and professional-grade coding skills through 
-              the power of artificial intelligence.
+              CodeAstra (Trinetra) isn’t just a coding assistant — it’s a{" "}
+              <span className="text-pink-400">personalized AI tutor</span>. It
+              learns about you, analyzes your level — beginner, intermediate, or
+              advanced — and then adapts its teaching style to match your
+              journey.
             </p>
             <p className="text-gray-300 mb-6">
-              We're building the next generation of programming education tools that adapt to your learning style, 
-              provide real-time feedback, and help you write better code faster.
+              I started this project as a solo developer because I wanted a tool
+              that could{" "}
+              <span className="text-blue-400">
+                explain code like a mentor, generate clean solutions, and make
+                learning interactive
+              </span>
+              . What began as a small experiment soon turned into CodeAstra — a
+              platform to help anyone grow as a developer with AI by their side.
             </p>
             <Link to="/register">
               <button className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center">
-                Join Us Today <FaArrowRight className="ml-2" />
+                Start Learning with Trinetra <FaArrowRight className="ml-2" />
               </button>
             </Link>
           </motion.div>
-          
+
           <motion.div
             className="flex justify-center"
             initial={{ opacity: 0, x: 50 }}
@@ -151,10 +124,11 @@ const About = () => {
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                 </div>
                 <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm">
-                  <div className="text-blue-400">// Our vision for the future</div>
+                  <div className="text-blue-400">// Vision</div>
                   <div className="text-green-400 mt-2">function</div>
                   <div className="text-yellow-300 ml-4">
-                    <span className="text-purple-400">return</span> "Democratizing coding education";
+                    <span className="text-purple-400">return</span> "An AI tutor
+                    that adapts to every developer";
                   </div>
                 </div>
               </div>
@@ -196,41 +170,44 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Our <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">Values</span>
+          Core{" "}
+          <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+            Values
+          </span>
         </motion.h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           {[
             {
               icon: <FaCode className="text-4xl mb-4 text-red-500" />,
-              title: "Excellence in Code",
-              description: "We strive for clean, efficient, and maintainable code in everything we build and teach."
-            },
-            {
-              icon: <FaUsers className="text-4xl mb-4 text-pink-500" />,
-              title: "Community Focus",
-              description: "We believe in the power of community and collaborative learning to accelerate growth."
+              title: "Adaptive Learning",
+              description:
+                "Every user’s journey is unique — Trinetra analyzes skill level and tailors guidance accordingly.",
             },
             {
               icon: <FaLightbulb className="text-4xl mb-4 text-yellow-500" />,
-              title: "Continuous Innovation",
-              description: "We're constantly exploring new ways to improve the learning experience with cutting-edge AI."
+              title: "Innovation First",
+              description:
+                "Exploring new AI methods to make coding education smarter and more intuitive.",
             },
             {
               icon: <FaRocket className="text-4xl mb-4 text-purple-500" />,
-              title: "Rapid Iteration",
-              description: "We move quickly, test often, and adapt based on real user feedback and needs."
+              title: "Empower Developers",
+              description:
+                "Helping programmers build faster, understand deeper, and level up continuously.",
             },
             {
               icon: <FaShieldAlt className="text-4xl mb-4 text-green-500" />,
               title: "Privacy & Security",
-              description: "We prioritize the security of your data and the privacy of your learning journey."
+              description:
+                "Your learning data stays safe, with privacy as a priority from day one.",
             },
             {
               icon: <FaHeart className="text-4xl mb-4 text-red-400" />,
               title: "Passion for Teaching",
-              description: "We genuinely love helping others learn and grow their programming skills."
-            }
+              description:
+                "Built with the belief that coding education should be accessible and inspiring.",
+            },
           ].map((value, index) => (
             <motion.div
               key={index}
@@ -238,7 +215,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.02 }}
               whileHover={{ y: -5 }}
             >
               {value.icon}
@@ -249,63 +226,145 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="container mx-auto px-4 py-16">
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Meet Our <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">Team</span>
-        </motion.h2>
-        
-        <motion.p
-          className="text-xl text-gray-300 text-center mb-12 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Passionate developers and educators working to revolutionize coding education
-        </motion.p>
+      {/* Who's Behind CodeAstra Section */}
+      <section
+        id="developer"
+        className="py-16"
+      >
+        <div className="container mx-auto px-6 lg:px-12">
+          {/* Section Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Who’s Behind{" "}
+              <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+                CodeAstra
+              </span>
+            </h2>
+            <p className="text-blue-200 max-w-2xl mx-auto text-lg">
+              Meet the mind and the machine behind Trinetra’s CodeAstra project.
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Developer Card */}
             <motion.div
-              key={index}
-              className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
             >
-              <div className="p-6">
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-red-500 mb-4">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                <p className="text-pink-400 mb-4">{member.role}</p>
-                <div className="flex justify-center space-x-4">
-                  <a href={member.social.github} className="text-gray-400 hover:text-white transition-colors">
-                    <FaGithub className="text-xl" />
-                  </a>
-                  <a href={member.social.linkedin} className="text-gray-400 hover:text-white transition-colors">
-                    <FaLinkedin className="text-xl" />
-                  </a>
-                  <a href={member.social.twitter} className="text-gray-400 hover:text-white transition-colors">
-                    <FaTwitter className="text-xl" />
-                  </a>
-                </div>
+              <img
+                src="https://avatars.githubusercontent.com/u/160850571?v=4" // replace with your image
+                alt="Developer"
+                className="w-28 h-28 rounded-full mx-auto border-2 border-red-500 mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Harsh</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                Full Stack Developer & Visionary
+              </p>
+              <p className="text-blue-200 text-sm mb-6">
+                Creator of Trinetra and CodeAstra. Passionate about building AI
+                tools that adapt to users’ skill levels and empower programmers.
+              </p>
+              <div className="flex justify-center space-x-5">
+                <a
+                  href="https://github.com/201Harsh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaGithub className="text-2xl" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/201harsh/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaLinkedin className="text-2xl" />
+                </a>
+                <a
+                  href="https://www.instagram.com/201harshs/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaInstagram className="text-2xl" />
+                </a>
               </div>
             </motion.div>
-          ))}
+
+            {/* AI Engine Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/4712/4712105.png"
+                alt="AI Engine"
+                className="w-24 h-24 mx-auto mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Trinetra AI</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                The Adaptive Engine
+              </p>
+              <ul className="text-blue-200 text-sm space-y-2 text-left mx-auto max-w-xs">
+                <li>
+                  ⚡ Analyzes your skill level (Beginner / Intermediate /
+                  Advanced)
+                </li>
+                <li>🎯 Adjusts teaching pace and complexity</li>
+                <li>📖 Explains code with tailored clarity</li>
+                <li>🚀 Evolves as you grow</li>
+              </ul>
+            </motion.div>
+
+            {/* Tech Stack Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"
+                alt="Tech Stack"
+                className="w-24 h-24 mx-auto mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Tech Stack</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                Tools & Frameworks
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  "React",
+                  "Node.js",
+                  "Python",
+                  "MongoDB",
+                  "Tailwind CSS",
+                  "React Native",
+                ].map((tech, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-800/40 text-blue-200 px-3 py-1 rounded-full text-xs"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -322,7 +381,8 @@ const About = () => {
             Ready to Start Your Coding Journey?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of developers using Trinetra to learn, code, and grow with AI.
+            Join developers learning with Trinetra — your AI-powered coding
+            tutor that grows with you.
           </p>
           <Link to="/register">
             <button className="px-8 py-4 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 shadow-lg">
