@@ -64,9 +64,7 @@ const Header = () => {
               animate={{ rotate: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             />
-            <h1 className="ml-2 text-xl md:text-2xl font-bold">
-              Trinetra CodeAstra
-            </h1>
+            <h1 className="ml-2 text-xl md:text-2xl font-bold">CodeAstra</h1>
           </motion.div>
 
           {/* Desktop Navigation */}
