@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.welcome-pg::-webkit-scrollbar {
+    display: none;
+}
