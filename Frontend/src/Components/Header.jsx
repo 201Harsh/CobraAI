@@ -48,7 +48,7 @@ const Header = () => {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 120, damping: 15 }}
     >
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-6 py-2">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
           <motion.div
