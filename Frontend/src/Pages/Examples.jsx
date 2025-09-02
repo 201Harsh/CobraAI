@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaComments, FaCopy, FaPlay, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Examples = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -324,7 +325,7 @@ console.log('Products by category:', productsByCategory);`,
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 text-white py-12 px-4">
+    <div className="min-h-screen bg-gray-900 text-white py-12 px-4">
       <div className="container mx-auto">
         <motion.div 
           className="text-center mb-12"
@@ -452,9 +453,9 @@ console.log('Products by category:', productsByCategory);`,
           <p className="text-lg text-blue-200 mb-6">
             Trinetra can help you create custom code solutions for your specific needs.
           </p>
-          <button className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300">
+          <Link to="/register" className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300">
             Try Trinetra Now
-          </button>
+          </Link>
         </motion.div>
       </div>
     </div>
