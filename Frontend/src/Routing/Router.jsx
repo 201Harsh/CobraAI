@@ -7,6 +7,7 @@ import Contact from "../Pages/Contact";
 import About from "../Pages/About";
 import Examples from "../Pages/Examples";
 import Pricing from "../Pages/Pricing";
+import OtpVerification from "../Pages/OtpVerification";
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path="/" element={<Welcome />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/verify" element={<OtpVerification />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/examples" element={<Examples />} />
