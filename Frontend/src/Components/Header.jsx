@@ -53,7 +53,7 @@ const Header = () => {
 
   return (
     <motion.header
-      className="w-full text-white bg-gray-900/10 backdrop-blur-md shadow-lg border-b border-gray-600 fixed top-0 z-50"
+      className="w-full text-white bg-gray-900/35 backdrop-blur-md shadow-lg border-b border-gray-600 fixed top-0 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 120, damping: 15 }}
