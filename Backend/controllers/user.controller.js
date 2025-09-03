@@ -166,3 +166,16 @@ module.exports.getMe = async (req, res) => {
     });
   }
 };
+
+module.exports.logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.status(200).json({
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};

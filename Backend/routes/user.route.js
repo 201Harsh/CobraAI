@@ -50,4 +50,6 @@ router.post(
 
 router.get("/me",  UserMiddleware.authUser ,userController.getMe )
 
+router.post('/logout', UserMiddleware.authUser ,userController.logoutUser)
+
 module.exports = router;
