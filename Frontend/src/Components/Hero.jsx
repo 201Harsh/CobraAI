@@ -45,7 +45,7 @@ const Hero = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center">
+      <section className="container mx-auto px-4 py-24 md:py-24 flex flex-col md:flex-row items-center">
         <motion.div
           className="md:w-1/2 mb-10 md:mb-0"
           variants={containerVariants}
