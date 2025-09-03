@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TempUserSchema = new mongoose.Schema({
+const tempuserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -14,7 +14,12 @@ const TempUserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  otp: {
+    type: String,
+    required: true,
+  },
 });
 
-const TempUser = mongoose.model("TempUser", TempUserSchema);
-module.exports = TempUser;
+const tempuser = mongoose.model("tempuser", tempuserSchema);
+
+module.exports = tempuser;
