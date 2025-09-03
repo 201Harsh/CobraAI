@@ -73,19 +73,62 @@ module.exports.VerifyUser = async (req, res) => {
     const tempuser = await TempUserSchema.findOne({ email });
 
     if (!tempuser) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        error: "User not found",
+      });
     }
 
     const user = await UserServices.VerifyOtp({
       email,
       otp,
-    })
+    });
+
+    const token = await user.jwtToken();
 
     res.status(200).json({
       message: "User verified successfully",
       user,
+      token,
     });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
 
+module.exports.loginUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { email, password } = req.body;
+
+    const User = await UserModel.findOne({ email });
+
+    if (!User) {
+      return res.status(404).json({
+        error: "Invalid credentials",
+      });
+    }
+
+    const IsMatched = await User.comparePassword(password);
+
+    if (!IsMatched) {
+      return res.status(401).json({
+        error: "Invalid credentials",
+      });
+    }
+
+    const token = await User.jwtToken();
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+    });
   } catch (error) {
     res.status(500).json({
       error: error.message,
