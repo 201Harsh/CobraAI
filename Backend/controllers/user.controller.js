@@ -27,19 +27,15 @@ module.exports.registerTempuser = async (req, res) => {
       "yandex.com",
     ];
 
-    const ValidateEmail = (email) => {
-      const domain = email.split("@")[1].toLowerCase();
-
-      const IsAllowed = allowedDomains.includes(domain);
-
-      if (!IsAllowed) {
+    const validateEmail = (email) => {
+      const domain = email.split("@")[1]?.toLowerCase();
+      if (!allowedDomains.includes(domain)) {
         throw new Error("Use a Valid Email Address");
       }
+      return true;
     };
 
-    if (!ValidateEmail(email)) {
-      return
-    }
+    validateEmail(email);
 
     const otp = Math.floor(1000 + Math.random() * 9000);
 
@@ -63,6 +59,33 @@ module.exports.registerTempuser = async (req, res) => {
       message: "User created successfully and otp sent to email",
       tempuser,
     });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+module.exports.VerifyUser = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const tempuser = await TempUserSchema.findOne({ email });
+
+    if (!tempuser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = await UserServices.VerifyOtp({
+      email,
+      otp,
+    })
+
+    res.status(200).json({
+      message: "User verified successfully",
+      user,
+    });
+
   } catch (error) {
     res.status(500).json({
       error: error.message,

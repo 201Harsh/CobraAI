@@ -26,4 +26,7 @@ router.post(
   userController.registerTempuser
 );
 
+router.post("/verify", userController.VerifyUser);
+
+
 module.exports = router;

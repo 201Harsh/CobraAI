@@ -18,6 +18,10 @@ const tempuserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  otpExpiry: {
+    type: Date,
+    required: true,
+  },
 });
 
 const tempuser = mongoose.model("tempuser", tempuserSchema);
