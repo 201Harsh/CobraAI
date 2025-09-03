@@ -85,6 +85,10 @@ module.exports.VerifyUser = async (req, res) => {
 
     const token = await user.jwtToken();
 
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+
     res.status(200).json({
       message: "User verified successfully",
       user,
@@ -125,9 +129,36 @@ module.exports.loginUser = async (req, res) => {
 
     const token = await User.jwtToken();
 
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+
     res.status(200).json({
       message: "User logged in successfully",
       token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+module.exports.getMe = async (req, res) => {
+  try {
+    const UserId = req.user._id;
+
+    const User = await UserModel.findById(UserId);
+
+    if (!User) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "User found successfully",
+      User,
     });
   } catch (error) {
     res.status(500).json({
