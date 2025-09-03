@@ -93,6 +93,7 @@ const Header = () => {
                 { path: "/examples", name: "Examples" },
                 { path: "/about", name: "About" },
                 { path: "/contact", name: "Contact" },
+                { path: "/pricing", name: "Pricing" },
               ].map((item) => (
                 <motion.li
                   key={item.path}
@@ -181,7 +182,7 @@ const Header = () => {
                   { path: "/examples", name: "Examples", icon: "💡" },
                   { path: "/about", name: "About", icon: "ℹ️" },
                   { path: "/contact", name: "Contact", icon: "📞" },
-                  { path: "/", name: "Pricing", icon: "💰" },
+                  { path: "/pricing", name: "Pricing", icon: "💰" },
                 ].map((item, idx) => (
                   <motion.li
                     key={idx}
@@ -227,7 +228,7 @@ const Header = () => {
 
                 {/* Social Media Links */}
                 <motion.div
-                  className="flex justify-center space-x-4 mt-6 pt-4 border-t border-gray-800"
+                  className="flex justify-center space-x-4 mb-6 pt-4 border-t border-gray-800"
                   variants={itemVariants}
                 >
                   <motion.a
