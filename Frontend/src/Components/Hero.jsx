@@ -74,12 +74,12 @@ const Hero = () => {
             variants={itemVariants}
           >
             <Link to="/register">
-              <button className="px-8 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center">
+              <button className="cursor-pointer px-8 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center">
                 Start Coding Now <FaArrowRight className="ml-2" />
               </button>
             </Link>
             <Link to="/examples">
-              <button className="px-8 py-3 border border-pink-600 rounded-lg text-lg font-semibold hover:bg-pink-600/20 transition-all duration-300">
+              <button className="cursor-pointer px-8 py-3 border border-pink-600 rounded-lg text-lg font-semibold hover:bg-pink-600/20 transition-all duration-300">
                 See Examples
               </button>
             </Link>
