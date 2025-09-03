@@ -354,12 +354,11 @@ const Register = () => {
                       className="ml-2 block text-sm text-gray-300"
                     >
                       I agree to the{" "}
-                      <a
-                        href="#"
-                        className="font-medium text-red-400 hover:text-red-300"
+                      <span
+                        className="font-medium text-red-400 hover:text-red-300 cursor-pointer"
                       >
                         Terms and Conditions
-                      </a>
+                      </span>
                     </label>
                   </div>
                 </motion.div>
