@@ -95,10 +95,13 @@ const Hero = () => {
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl blur-lg opacity-30"></div>
             <div className="relative bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl">
-              <div className="flex space-x-2 mb-4">
+              <div className="flex items-center space-x-2 mb-4">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-pink-600">
+                  CodeAstra Editor
+                </div>
               </div>
               <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm">
                 <div className="text-blue-400">function</div>

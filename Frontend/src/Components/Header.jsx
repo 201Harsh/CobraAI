@@ -175,15 +175,16 @@ const Header = () => {
               animate="open"
               exit="closed"
             >
-              <motion.ul className="flex flex-col py-4">
+              <motion.ul className="flex flex-col py-4 h-screen justify-evenly">
                 {[
                   { path: "/", name: "Home", icon: "🏠" },
                   { path: "/examples", name: "Examples", icon: "💡" },
                   { path: "/about", name: "About", icon: "ℹ️" },
                   { path: "/contact", name: "Contact", icon: "📞" },
-                ].map((item) => (
+                  { path: "/", name: "Pricing", icon: "💰" },
+                ].map((item, idx) => (
                   <motion.li
-                    key={item.path}
+                    key={idx}
                     variants={itemVariants}
                     className="border-b border-gray-800 last:border-b-0"
                   >
