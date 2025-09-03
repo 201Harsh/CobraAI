@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "Simple and Fun",
   },
+  gender:{
+    type:String,
+    default:""
+  }
 });
 
 UserSchema.methods.jwtToken = function () {
