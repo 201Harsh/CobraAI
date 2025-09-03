@@ -168,12 +168,11 @@ const Login = () => {
                   </div>
 
                   <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-medium text-red-400 hover:text-red-300"
+                    <span
+                      className="cursor-pointer font-medium text-red-400 hover:text-red-300"
                     >
                       Forgot password?
-                    </a>
+                    </span>
                   </div>
                 </div>
 
@@ -197,11 +196,11 @@ const Login = () => {
                           ease: "linear"
                         }}
                       />
-                      <span className="relative z-10">Signing In...</span>
+                      <span className="relative z-10">LoggIn...</span>
                     </>
                   ) : (
                     <>
-                      Sign In <FaArrowRight className="ml-2" />
+                      LogIn <FaArrowRight className="ml-2" />
                     </>
                   )}
                 </motion.button>
