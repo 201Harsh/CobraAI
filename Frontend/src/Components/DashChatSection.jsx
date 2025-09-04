@@ -21,6 +21,7 @@ const DashChatSection = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom when messages change
@@ -35,7 +36,7 @@ const DashChatSection = () => {
   // Handle sending a message
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (inputMessage.trim() === "") return;
+    if (inputMessage.trim() === "" || isWaitingForResponse) return;
 
     // Add user message
     const newUserMessage = {
@@ -48,12 +49,14 @@ const DashChatSection = () => {
 
     setMessages((prev) => [...prev, newUserMessage]);
     setInputMessage("");
+    setIsWaitingForResponse(true);
     setIsTyping(true);
 
     // Simulate bot response after a delay
     setTimeout(() => {
       generateBotResponse(inputMessage);
       setIsTyping(false);
+      setIsWaitingForResponse(false);
     }, 1500);
   };
 
@@ -147,7 +150,7 @@ export default Welcome;
       </div>
 
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
+      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850">
         <div className="max-w-3xl mx-auto space-y-6">
           <AnimatePresence>
             {messages.map((message) => (
@@ -257,25 +260,55 @@ export default Welcome;
           onSubmit={handleSendMessage}
           className="flex items-center space-x-3"
         >
-          <div className="flex-1">
+          <div className="flex-1 relative">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              placeholder="Type your message or code question..."
+              placeholder={
+                isWaitingForResponse 
+                  ? "Waiting for response..." 
+                  : "Type your message or code question..."
+              }
               className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 backdrop-blur-sm"
+              disabled={isWaitingForResponse}
             />
+            {isWaitingForResponse && (
+              <div className="absolute inset-0 bg-gray-800/70 rounded-lg flex items-center justify-center">
+                <div className="flex space-x-1">
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <motion.button
             type="submit"
             className="p-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            disabled={inputMessage.trim() === ""}
+            whileHover={isWaitingForResponse ? {} : { scale: 1.05 }}
+            whileTap={isWaitingForResponse ? {} : { scale: 0.95 }}
+            disabled={inputMessage.trim() === "" || isWaitingForResponse}
           >
             <FaPaperPlane />
           </motion.button>
         </form>
+        
+        {/* Status indicator */}
+        {isWaitingForResponse && (
+          <div className="mt-2 text-xs text-gray-400 text-center">
+            Please wait for the response before sending another message
+          </div>
+        )}
       </div>
     </div>
   );
