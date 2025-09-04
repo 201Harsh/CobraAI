@@ -150,7 +150,7 @@ export default Welcome;
       </div>
 
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850">
+      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
         <div className="max-w-3xl mx-auto space-y-6">
           <AnimatePresence>
             {messages.map((message) => (
