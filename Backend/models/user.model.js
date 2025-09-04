@@ -42,6 +42,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  joiningDate:{
+    type: Date,
+    default: Date.now
+  }
 });
 
 UserSchema.methods.jwtToken = function () {

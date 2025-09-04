@@ -77,10 +77,11 @@ const OtpVerification = () => {
         });
         localStorage.setItem("email", res.data.user.email);
         localStorage.setItem("name", res.data.user.name);
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", res.data.token);
         Navigate("/dashboard");
       }
     } catch (error) {
+      console.log(error)
       toast.error(error.response.data.error, {
         position: "top-center",
         autoClose: 5000,
