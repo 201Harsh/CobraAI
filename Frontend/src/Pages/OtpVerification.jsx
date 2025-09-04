@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowLeft, FaArrowRight, FaRedo } from "react-icons/fa";
 import AxiosInstance from "../Config/Axios";
+import { toast, Bounce } from "react-toastify";
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -57,7 +58,7 @@ const OtpVerification = () => {
     const enteredOtp = otp.join("");
 
     try {
-      const res = AxiosInstance.post("/users/verify", {
+      const res = await AxiosInstance.post("/users/verify", {
         email: UserEmail,
         otp: enteredOtp,
       });
