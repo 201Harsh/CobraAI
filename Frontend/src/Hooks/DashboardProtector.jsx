@@ -17,13 +17,14 @@ const DashboardProtector = ({ children }) => {
 
     const CheckUser = async () => {
       try {
-        const res = AxiosInstance.get("/users/me");
+        const res = await AxiosInstance.get("/users/me");
 
         if (res.status === 200) {
           localStorage.setItem("email", res.data.User.email);
           localStorage.setItem("name", res.data.User.name);
         }
       } catch (error) {
+        console.log(error)
         localStorage.clear();
         Navigate("/");
         toast.error(error.response.data.error, {
@@ -40,7 +41,7 @@ const DashboardProtector = ({ children }) => {
       } finally {
         setTimeout(() => {
           setIsLoading(false);
-        }, 250000);
+        }, 25000);
       }
     };
 
