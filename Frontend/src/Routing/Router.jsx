@@ -8,6 +8,7 @@ import About from "../Pages/About";
 import Examples from "../Pages/Examples";
 import Pricing from "../Pages/Pricing";
 import OtpVerification from "../Pages/OtpVerification";
+import Dashboard from "../Pages/Dashboard";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path="/about" element={<About />} />
         <Route path="/examples" element={<Examples />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

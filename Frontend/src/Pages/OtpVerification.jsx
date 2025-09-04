@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowLeft, FaArrowRight, FaRedo } from "react-icons/fa";
+import AxiosInstance from "../Config/Axios";
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [countdown, setCountdown] = useState(30);
+  const [countdown, setCountdown] = useState(59);
   const [canResend, setCanResend] = useState(false);
+  const [UserEmail, setUserEmail] = useState("");
 
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
+  const Navigate = useNavigate();
 
   // Handle OTP input change
   const handleChange = (index, value) => {
@@ -50,20 +54,50 @@ const OtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Handle OTP verification logic here
     const enteredOtp = otp.join("");
-    console.log("Verifying OTP:", enteredOtp);
 
-    setIsSubmitting(false);
+    try {
+      const res = AxiosInstance.post("/users/verify", {
+        email: UserEmail,
+        otp: enteredOtp,
+      });
+
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        localStorage.setItem("email", res.data.user.email);
+        localStorage.setItem("name", res.data.user.name);
+        Navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error(error.response.data.error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle resend OTP
   const handleResendOtp = () => {
-    setCountdown(30);
+    setCountdown(59);
     setCanResend(false);
 
     // Simulate resend OTP API call
@@ -103,6 +137,13 @@ const OtpVerification = () => {
     },
   };
 
+  useEffect(() => {
+    const email = localStorage.getItem("email") || "CodeAstra Email";
+    if (email) {
+      setUserEmail(email);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 text-white flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
@@ -112,12 +153,16 @@ const OtpVerification = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="bg-gradient-to-r from-red-600 to-pink-600 py-5 px-6">
+          <div className="bg-gradient-to-r from-red-950 to-pink-900 py-5 px-6">
             <h2 className="text-center text-2xl font-extrabold text-white">
               Verify Your Account
             </h2>
             <p className="mt-1 text-center text-sm text-pink-100">
               Enter the 4-digit code sent to your email
+              <span className="font-bold bg-gradient-to-tr from-lime-400 bg-clip-text to-emerald-400 text-transparent ml-1">
+                {" "}
+                {UserEmail}
+              </span>
             </p>
           </div>
 
