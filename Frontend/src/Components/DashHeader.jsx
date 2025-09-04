@@ -51,7 +51,7 @@ const DashHeader = () => {
   };
 
   return (
-    <header className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 sticky top-0 z-50">
+    <header className="bg-gray-900 backdrop-blur-md border-b border-gray-700 sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 py-3">
         {/* Left side - Menu button and logo */}
         <div className="flex items-center">

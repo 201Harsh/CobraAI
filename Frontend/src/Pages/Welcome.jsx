@@ -3,7 +3,7 @@ import Hero from "../Components/Hero";
 
 const Welcome = () => {
   return (
-    <div className="h-screen w-screen bg-gray-900 overflow-x-hidden welcome-pg">
+    <div className="h-screen w-full bg-gray-900 overflow-x-hidden welcome-pg">
       <Hero />
     </div>
   );
