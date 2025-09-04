@@ -24,7 +24,7 @@ const DashboardProtector = ({ children }) => {
           localStorage.setItem("name", res.data.User.name);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         localStorage.clear();
         Navigate("/");
         toast.error(error.response.data.error, {
@@ -41,7 +41,7 @@ const DashboardProtector = ({ children }) => {
       } finally {
         setTimeout(() => {
           setIsLoading(false);
-        }, 25000);
+        }, 2000);
       }
     };
 
@@ -56,7 +56,7 @@ const DashboardProtector = ({ children }) => {
     );
   }
 
-  return { children };
+  return <>{children}</>;
 };
 
 export default DashboardProtector;
