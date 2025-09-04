@@ -22,7 +22,17 @@ const DashChatSection = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  const [username, setusername] = useState("")
   const messagesEndRef = useRef(null);
+
+
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    if (name) {
+      setusername(name);
+    }
+  }, [])
+  
 
   // Auto-scroll to bottom when messages change
   const scrollToBottom = () => {
@@ -176,9 +186,16 @@ export default Welcome;
                     }`}
                   >
                     {message.sender === "user" ? (
-                      <FaUser className="text-white text-sm" />
+                      // <FaUser className="text-white text-sm" />
+                       <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold">
+                        {username.charAt(0)}
+                      </div>
                     ) : (
-                      <FaRobot className="text-white text-sm" />
+                      <img
+                        src="https://avatars.githubusercontent.com/u/160850571?v=4"
+                        alt=""
+                        className="w-8 h-8 rounded-full"
+                      />
                     )}
                   </div>
                   <div
@@ -229,7 +246,11 @@ export default Welcome;
             >
               <div className="flex max-w-xs md:max-w-md">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 mr-3">
-                  <FaRobot className="text-white text-sm" />
+                  <img
+                    src="https://avatars.githubusercontent.com/u/160850571?v=4"
+                    alt=""
+                    className="w-8 h-8 rounded-full"
+                  />
                 </div>
                 <div className="bg-gray-700/80 backdrop-blur-sm text-white rounded-2xl px-4 py-3">
                   <div className="flex space-x-1">
@@ -266,8 +287,8 @@ export default Welcome;
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder={
-                isWaitingForResponse 
-                  ? "Waiting for response..." 
+                isWaitingForResponse
+                  ? "Waiting for response..."
                   : "Type your message or code question..."
               }
               className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 backdrop-blur-sm"
@@ -302,7 +323,7 @@ export default Welcome;
             <FaPaperPlane />
           </motion.button>
         </form>
-        
+
         {/* Status indicator */}
         {isWaitingForResponse && (
           <div className="mt-2 text-xs text-gray-400 text-center">
