@@ -24,6 +24,8 @@ const tempuserSchema = new mongoose.Schema({
   },
 });
 
+tempuserSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 300 });
+
 const tempuser = mongoose.model("tempuser", tempuserSchema);
 
 module.exports = tempuser;
