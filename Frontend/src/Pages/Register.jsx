@@ -345,12 +345,12 @@ const Register = () => {
                               : ""
                           }`}
                         >
-                          {formData.password.length >= 8 ? (
+                          {formData.password.length >= 6 ? (
                             <FaCheck className="mr-1" />
                           ) : (
                             <FaTimes className="mr-1" />
                           )}
-                          At least 8 characters
+                          At least 6 characters
                         </p>
                         <p
                           className={`flex items-center ${
