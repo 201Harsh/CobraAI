@@ -342,24 +342,6 @@ console.log("The sum is:", result);
           theme="codeastra-dark"
         />
       </div>
-
-      {/* Output Section - Mobile Optimized */}
-      <div className="bg-gray-800/80 backdrop-blur-md border-t border-gray-700">
-        <div className="flex items-center justify-between py-1 px-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 rounded-full bg-red-500"></div>
-            <span className="text-white font-medium text-sm">Output</span>
-          </div>
-        </div>
-        <div className="bg-gray-850 p-2 font-mono text-xs text-gray-200 max-h-20 overflow-y-auto">
-          <pre className="whitespace-pre-wrap break-words">{output}</pre>
-          {!output && (
-            <div className="text-gray-500 italic text-xs">
-              // Output will appear here after running your code
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   );
 };
