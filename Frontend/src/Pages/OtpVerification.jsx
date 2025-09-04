@@ -77,6 +77,7 @@ const OtpVerification = () => {
         });
         localStorage.setItem("email", res.data.user.email);
         localStorage.setItem("name", res.data.user.name);
+        localStorage.setItem("token", response.data.token);
         Navigate("/dashboard");
       }
     } catch (error) {

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEye, FaEyeSlash, FaArrowRight } from "react-icons/fa";
+import AxiosInstance from "../Config/Axios";
+import { Bounce, toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,8 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const Navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -23,39 +27,84 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Handle login logic here
-    console.log("Login data:", formData);
-    setFormData({
-      email: "",
-      password: "",
-    });
-    
-    setIsSubmitting(false);
+
+    try {
+      const response = await AxiosInstance.post("/users/login", formData);
+
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        localStorage.setItem("email", response.data.User.email);
+        localStorage.setItem("name", response.data.User.name);
+        localStorage.setItem("token", response.data.token);
+        Navigate("/dashboard");
+      }
+    } catch (error) {
+      const errors = error.response?.data?.errors;
+
+      toast.error(
+        error.response?.data?.error ||
+          errors.forEach((elem) => {
+            toast.error(elem.msg, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Bounce,
+            });
+          }),
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        }
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 text-white flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row w-full max-w-6xl items-center justify-between">
         {/* Left side - Illustration/Text */}
-        <motion.div 
+        <motion.div
           className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8 text-center md:text-left"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Welcome Back to <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">Trinetra</span>
+            Welcome Back to{" "}
+            <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+              Trinetra
+            </span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-xl text-gray-300 mb-8 max-w-md mx-auto md:mx-0"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -63,7 +112,7 @@ const Login = () => {
           >
             Continue your journey with AI-powered code generation and learning.
           </motion.p>
-          <motion.div 
+          <motion.div
             className="hidden md:flex justify-center md:justify-start"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -80,7 +129,7 @@ const Login = () => {
         </motion.div>
 
         {/* Right side - Form */}
-        <motion.div 
+        <motion.div
           className="w-full md:w-1/2 max-w-md"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -168,9 +217,7 @@ const Login = () => {
                   </div>
 
                   <div className="text-sm">
-                    <span
-                      className="cursor-pointer font-medium text-red-400 hover:text-red-300"
-                    >
+                    <span className="cursor-pointer font-medium text-red-400 hover:text-red-300">
                       Forgot password?
                     </span>
                   </div>
@@ -193,7 +240,7 @@ const Login = () => {
                           repeat: Infinity,
                           repeatType: "loop",
                           duration: 1,
-                          ease: "linear"
+                          ease: "linear",
                         }}
                       />
                       <span className="relative z-10">LoggIn...</span>
