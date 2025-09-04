@@ -9,12 +9,14 @@ import Examples from "../Pages/Examples";
 import Pricing from "../Pages/Pricing";
 import OtpVerification from "../Pages/OtpVerification";
 import Dashboard from "../Pages/Dashboard";
+import AutoRedirecter from "../Hooks/AutoRedirecter";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        {/* <Route path="/welcome" element={<Welcome />} /> */}
+        <Route path="/" element={<AutoRedirecter />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verify" element={<OtpVerification />} />
