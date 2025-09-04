@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    minlength: 6,
   },
   ProfilePic: {
     type: Boolean,
@@ -37,10 +38,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "Simple and Fun",
   },
-  gender:{
-    type:String,
-    default:""
-  }
+  gender: {
+    type: String,
+    default: "",
+  },
 });
 
 UserSchema.methods.jwtToken = function () {
