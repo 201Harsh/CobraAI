@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { RxDoubleArrowLeft } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const DashHeader = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -111,10 +112,12 @@ const DashHeader = () => {
                   </div>
 
                   <div className="p-2">
-                    <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors text-sm">
-                      <FaUserCircle className="text-gray-400" />
-                      <span>Profile</span>
-                    </button>
+                    <Link to="/profile">
+                      <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors text-sm">
+                        <FaUserCircle className="text-gray-400" />
+                        <span>Profile</span>
+                      </button>
+                    </Link>
 
                     <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors text-sm">
                       <FaCog className="text-gray-400" />

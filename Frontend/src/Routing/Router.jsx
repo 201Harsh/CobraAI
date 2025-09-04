@@ -11,6 +11,7 @@ import OtpVerification from "../Pages/OtpVerification";
 import Dashboard from "../Pages/Dashboard";
 import AutoRedirecter from "../Hooks/AutoRedirecter";
 import DashboardProtector from "../Hooks/DashboardProtector";
+import Profile from "../Pages/Profile";
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
             </DashboardProtector>
           }
         />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
