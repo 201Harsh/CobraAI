@@ -63,7 +63,7 @@ const OtpVerification = () => {
         otp: enteredOtp,
       });
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         toast.success(res.data.message, {
           position: "top-center",
           autoClose: 5000,
@@ -78,7 +78,7 @@ const OtpVerification = () => {
         localStorage.setItem("email", res.data.user.email);
         localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("token", res.data.token);
-        Navigate("/dashboard");
+        Navigate("/updateInfo");
       }
     } catch (error) {
       console.log(error)
