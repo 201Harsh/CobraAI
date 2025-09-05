@@ -64,13 +64,14 @@ const UpdateUserInfo = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    
     e.preventDefault();
-    console.log("User Information:", userData);
+
     setSubmitted(true);
 
     try {
-      const res = AxiosInstance.post("/users/UpdateUserinfo", {
+      const res = await AxiosInstance.post("/users/UpdateUserinfo", {
         Level: userData.level,
         gender: userData.gender,
         LearningStyle: userData.learningStyle,
@@ -135,7 +136,7 @@ const UpdateUserInfo = () => {
         }
       );
     } finally {
-      setIsSubmitting(false);
+      setSubmitted(false);
     }
   };
 
