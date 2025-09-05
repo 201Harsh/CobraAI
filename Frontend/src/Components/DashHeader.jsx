@@ -8,7 +8,9 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { RxDoubleArrowLeft } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AxiosInstance from "../Config/Axios";
+import { toast, Bounce } from "react-toastify";
 
 const DashHeader = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -46,9 +48,42 @@ const DashHeader = () => {
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const handleSignOut = () => {
-    console.log("User signed out");
-    setIsProfileOpen(false);
+  const Navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      const res = await AxiosInstance.post("/users/logout");
+
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        localStorage.clear();
+        Navigate("/");
+      }
+    } catch (error) {
+      toast.error(error.response.data.error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } finally {
+      setIsProfileOpen(false);
+    }
   };
 
   return (
@@ -131,7 +166,7 @@ const DashHeader = () => {
                       className="w-full flex items-center space-x-3 px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-md transition-colors text-sm"
                     >
                       <FaSignOutAlt />
-                      <span>Sign Out</span>
+                      <span>Log Out</span>
                     </button>
                   </div>
                 </motion.div>
