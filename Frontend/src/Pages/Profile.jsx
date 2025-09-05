@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import AxiosInstance from "../Config/Axios";
 import { Bounce, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -27,6 +28,8 @@ const Profile = () => {
     codeGenerations: 156,
     learningStreak: 18,
   });
+
+  const Navigate = useNavigate()
 
   useEffect(() => {
     const FetchUserInfo = async () => {
@@ -49,6 +52,7 @@ const Profile = () => {
           theme: "dark",
           transition: Bounce,
         });
+        Navigate("/");
       }
     };
 
