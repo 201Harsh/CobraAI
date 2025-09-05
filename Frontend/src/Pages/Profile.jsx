@@ -38,7 +38,6 @@ const Profile = () => {
 
         if (res.status === 200) {
           setUserData(res.data.User);
-          console.log(res.data);
         }
       } catch (error) {
         toast.error(error.response.data.error, {
