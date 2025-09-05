@@ -193,7 +193,7 @@ const UpdateUserInfo = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Level Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3 flex items-center">
+              <label className="text-sm font-medium text-gray-300 mb-3 flex items-center">
                 <FaUser className="mr-2 text-red-400" />
                 What's your current skill level?
               </label>
@@ -219,7 +219,7 @@ const UpdateUserInfo = () => {
 
             {/* Programming Language Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3 flex items-center">
+              <label className="text-sm font-medium text-gray-300 mb-3 flex items-center">
                 <FaCode className="mr-2 text-red-400" />
                 Choose your primary programming language
               </label>
@@ -247,7 +247,7 @@ const UpdateUserInfo = () => {
 
             {/* Gender Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3 flex items-center">
+              <label className="text-sm font-medium text-gray-300 mb-3 flex items-center">
                 <FaVenusMars className="mr-2 text-red-400" />
                 Gender
               </label>
@@ -273,7 +273,7 @@ const UpdateUserInfo = () => {
 
             {/* Learning Style Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3 flex items-center">
+              <label className="text-sm font-medium text-gray-300 mb-3 flex items-center">
                 <FaBrain className="mr-2 text-red-400" />
                 Preferred learning style
               </label>
