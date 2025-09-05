@@ -24,7 +24,6 @@ const DashboardProtector = ({ children }) => {
           localStorage.setItem("name", res.data.User.name);
         }
       } catch (error) {
-        console.log(error);
         localStorage.clear();
         Navigate("/");
         toast.error(error.response.data.error, {
