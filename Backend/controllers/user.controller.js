@@ -180,3 +180,43 @@ module.exports.logoutUser = async (req, res) => {
     });
   }
 };
+
+module.exports.updateUserInfo = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const UserId = req.user._id;
+
+    const IfUser = await UserModel.findById(UserId);
+
+    if (!IfUser) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    const { Level, Language, LearningStyle, gender } = req.body;
+
+    const UpdateUser = await UserServices.UpdatingUserInfo({
+      id: UserId,
+      Level,
+      Language,
+      LearningStyle,
+      gender,
+    });
+
+    res.status(200).json({
+      message: "Info updated successfully",
+      UpdateUser,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};

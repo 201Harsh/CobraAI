@@ -67,3 +67,28 @@ module.exports.VerifyOtp = async ({ email, otp }) => {
 
   return user;
 };
+
+module.exports.UpdatingUserInfo = async ({
+  id,
+  Level,
+  Language,
+  LearningStyle,
+  gender,
+}) => {
+  if (!Level || !Language || !LearningStyle || !gender) {
+    throw new Error("All fields are required");
+  }
+
+  const updateduser = await userModel.findByIdAndUpdate(id, {
+    Level,
+    Language,
+    LearningStyle,
+    gender,
+  });
+
+  if (!updateduser) {
+    throw new Error("User not found");
+  }
+
+  return updateduser;
+};

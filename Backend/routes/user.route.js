@@ -48,8 +48,20 @@ router.post(
   userController.loginUser
 );
 
-router.get("/me",  UserMiddleware.authUser ,userController.getMe )
+router.get("/me", UserMiddleware.authUser, userController.getMe);
 
-router.post('/logout', UserMiddleware.authUser ,userController.logoutUser)
+router.post("/logout", UserMiddleware.authUser, userController.logoutUser);
+
+router.post(
+  "/UpdateUserinfo",
+  [
+    body("Level").notEmpty().withMessage("Level is required"),
+    body("Language").notEmpty().withMessage("Language is required"),
+    body("LearningStyle").notEmpty().withMessage("LearningStyle is required"),
+    body("gender").notEmpty().withMessage("gender is required"),
+  ],
+  UserMiddleware.authUser,
+  userController.updateUserInfo
+);
 
 module.exports = router;
