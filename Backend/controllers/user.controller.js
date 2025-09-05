@@ -89,7 +89,7 @@ module.exports.VerifyUser = async (req, res) => {
       httpOnly: true,
     });
 
-    res.status(200).json({
+    res.status(201).json({
       message: "User verified successfully",
       user,
       token,
