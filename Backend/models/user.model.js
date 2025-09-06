@@ -49,7 +49,9 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.methods.jwtToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
+  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET , {
+    expiresIn: "30d",
+  } ) ;
 };
 
 UserSchema.methods.comparePassword = function (password) {
