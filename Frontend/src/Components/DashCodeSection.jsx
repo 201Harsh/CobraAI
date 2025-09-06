@@ -9,28 +9,24 @@ import {
   FaExpand,
   FaCompress,
   FaRedo,
-  FaBars
+  FaBars,
 } from "react-icons/fa";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
-  const [code, setCode] = useState(`// Welcome to CodeAstra AI Tutor
-// Start coding and see the magic happen!
-
-function calculateSum(a, b) {
-  return a + b;
-}
-
-// Example: Calculate the sum of two numbers
-const result = calculateSum(5, 7);
-console.log("The sum is:", result);
-
-// Try modifying this code and click Run to see the output
-`);
+  const [code, setCode] = useState(``);
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
+  const [ProgramingLang, setProgramingLang] = useState("");
   const editorRef = useRef(null);
+
+  useEffect(() => {
+    const language = localStorage.getItem("Language");
+    if (language) {
+      setProgramingLang(language);
+    }
+  }, []);
 
   // Responsive editor options
   const editorOptions = {
@@ -52,7 +48,7 @@ console.log("The sum is:", result);
     scrollbar: {
       vertical: "auto",
       horizontal: "auto",
-      useShadows: false
+      useShadows: false,
     },
     folding: false,
     overviewRulerBorder: false,
@@ -62,32 +58,32 @@ console.log("The sum is:", result);
   // Handle editor initialization
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
-    
+
     // Configure Monaco editor theme
-    monaco.editor.defineTheme('codeastra-dark', {
-      base: 'vs-dark',
+    monaco.editor.defineTheme("codeastra-dark", {
+      base: "vs-dark",
       inherit: true,
       rules: [
-        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
-        { token: 'keyword', foreground: 'C586C0' },
-        { token: 'number', foreground: 'B5CEA8' },
-        { token: 'string', foreground: 'CE9178' },
-        { token: 'type', foreground: '4EC9B0' },
-        { token: 'function', foreground: 'DCDCAA' },
+        { token: "comment", foreground: "6A9955", fontStyle: "italic" },
+        { token: "keyword", foreground: "C586C0" },
+        { token: "number", foreground: "B5CEA8" },
+        { token: "string", foreground: "CE9178" },
+        { token: "type", foreground: "4EC9B0" },
+        { token: "function", foreground: "DCDCAA" },
       ],
       colors: {
-        'editor.background': '#1F2937',
-        'editor.foreground': '#D1D5DB',
-        'editor.lineHighlightBackground': '#374151',
-        'editorLineNumber.foreground': '#6B7280',
-        'editor.selectionBackground': '#4B556380',
-        'editor.inactiveSelectionBackground': '#4B556340',
-        'editor.wordWrapBackground': '#1F2937',
-      }
+        "editor.background": "#1F2937",
+        "editor.foreground": "#D1D5DB",
+        "editor.lineHighlightBackground": "#374151",
+        "editorLineNumber.foreground": "#6B7280",
+        "editor.selectionBackground": "#4B556380",
+        "editor.inactiveSelectionBackground": "#4B556340",
+        "editor.wordWrapBackground": "#1F2937",
+      },
     });
-    
-    monaco.editor.setTheme('codeastra-dark');
-    
+
+    monaco.editor.setTheme("codeastra-dark");
+
     // Adjust editor layout for mobile
     if (isMobileView) {
       setTimeout(() => {
@@ -100,10 +96,10 @@ console.log("The sum is:", result);
   const handleRunCode = async () => {
     setIsLoading(true);
     setOutput("Running code...");
-    
+
     // Simulate code execution with a delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     try {
       const simulatedOutput = `> node script.js
 The sum is: 12
@@ -123,7 +119,7 @@ Execution completed in 0.45 seconds.`;
       await navigator.clipboard.writeText(code);
       setShowToolbar(false);
     } catch (err) {
-      console.error('Failed to copy code: ', err);
+      toast.error("Failed to copy code");
     }
   };
 
@@ -141,11 +137,7 @@ Execution completed in 0.45 seconds.`;
 
   // Reset code to default
   const handleResetCode = () => {
-    setCode(`// Welcome to CodeAstra AI Tutor
-// Start coding and see the magic happen!
-// Try modifying this code and click Run to see the output
-
-`);
+    setCode(``);
     setOutput("");
     setShowToolbar(false);
   };
@@ -159,17 +151,21 @@ Execution completed in 0.45 seconds.`;
   // Close toolbar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showToolbar && !event.target.closest('.toolbar-container')) {
+      if (showToolbar && !event.target.closest(".toolbar-container")) {
         setShowToolbar(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showToolbar]);
 
   return (
-    <div className={`h-full w-full flex flex-col bg-gray-900 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div
+      className={`h-full w-full flex flex-col bg-gray-900 ${
+        isFullscreen ? "fixed inset-0 z-50" : ""
+      }`}
+    >
       {/* Header Toolbar - Mobile Optimized */}
       <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 py-2 px-3 flex items-center justify-between">
         <div className="flex items-center space-x-2">
@@ -185,9 +181,11 @@ Execution completed in 0.45 seconds.`;
             </motion.button>
           )}
           <FaCode className="text-red-500 text-sm" />
-          <span className="text-white font-medium text-sm">JS</span>
+          <span className="text-white font-medium text-sm">
+            {ProgramingLang}
+          </span>
         </div>
-        
+
         <div className="flex items-center space-x-1">
           {/* Mobile toolbar toggle */}
           {isMobileView && (
@@ -201,7 +199,7 @@ Execution completed in 0.45 seconds.`;
               >
                 <FaEllipsisV className="text-sm" />
               </motion.button>
-              
+
               {/* Mobile toolbar dropdown */}
               {showToolbar && (
                 <motion.div
@@ -220,7 +218,7 @@ Execution completed in 0.45 seconds.`;
                       <FaCopy className="text-xs mb-1" />
                       <span>Copy</span>
                     </motion.button>
-                    
+
                     <motion.button
                       onClick={handleDownloadCode}
                       className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors flex flex-col items-center text-xs"
@@ -231,7 +229,7 @@ Execution completed in 0.45 seconds.`;
                       <FaDownload className="text-xs mb-1" />
                       <span>Download</span>
                     </motion.button>
-                    
+
                     <motion.button
                       onClick={handleResetCode}
                       className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors flex flex-col items-center text-xs"
@@ -242,15 +240,21 @@ Execution completed in 0.45 seconds.`;
                       <FaRedo className="text-xs mb-1" />
                       <span>Reset</span>
                     </motion.button>
-                    
+
                     <motion.button
                       onClick={handleFullscreenToggle}
                       className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors flex flex-col items-center text-xs"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                      title={
+                        isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                      }
                     >
-                      {isFullscreen ? <FaCompress className="text-xs mb-1" /> : <FaExpand className="text-xs mb-1" />}
+                      {isFullscreen ? (
+                        <FaCompress className="text-xs mb-1" />
+                      ) : (
+                        <FaExpand className="text-xs mb-1" />
+                      )}
                       <span>{isFullscreen ? "Exit" : "Full"}</span>
                     </motion.button>
                   </div>
@@ -258,7 +262,7 @@ Execution completed in 0.45 seconds.`;
               )}
             </div>
           )}
-          
+
           {/* Desktop toolbar buttons */}
           {!isMobileView && (
             <>
@@ -271,7 +275,7 @@ Execution completed in 0.45 seconds.`;
               >
                 <FaCopy className="text-sm" />
               </motion.button>
-              
+
               <motion.button
                 onClick={handleDownloadCode}
                 className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
@@ -281,7 +285,7 @@ Execution completed in 0.45 seconds.`;
               >
                 <FaDownload className="text-sm" />
               </motion.button>
-              
+
               <motion.button
                 onClick={handleResetCode}
                 className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
@@ -291,7 +295,7 @@ Execution completed in 0.45 seconds.`;
               >
                 <FaRedo className="text-sm" />
               </motion.button>
-              
+
               <motion.button
                 onClick={handleFullscreenToggle}
                 className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
@@ -299,25 +303,31 @@ Execution completed in 0.45 seconds.`;
                 whileTap={{ scale: 0.95 }}
                 title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
               >
-                {isFullscreen ? <FaCompress className="text-sm" /> : <FaExpand className="text-sm" />}
+                {isFullscreen ? (
+                  <FaCompress className="text-sm" />
+                ) : (
+                  <FaExpand className="text-sm" />
+                )}
               </motion.button>
             </>
           )}
-          
+
           {/* Run Button */}
           <motion.button
             onClick={handleRunCode}
             disabled={isLoading}
             className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
-              isLoading 
-                ? "bg-gray-700 text-gray-400 cursor-not-allowed" 
+              isLoading
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                 : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
             }`}
             whileHover={isLoading ? {} : { scale: 1.05 }}
             whileTap={isLoading ? {} : { scale: 0.95 }}
           >
             <FaPlay className="text-xs" />
-            <span className="hidden sm:inline">{isLoading ? "Running..." : "Run"}</span>
+            <span className="hidden sm:inline">
+              {isLoading ? "Running..." : "Run"}
+            </span>
           </motion.button>
         </div>
       </div>
@@ -326,7 +336,7 @@ Execution completed in 0.45 seconds.`;
       <div className="flex-1 overflow-hidden">
         <Editor
           height="100%"
-          defaultLanguage="javascript"
+          defaultLanguage={ProgramingLang.toLowerCase()}
           value={code}
           onChange={(value) => setCode(value || "")}
           onMount={handleEditorDidMount}
