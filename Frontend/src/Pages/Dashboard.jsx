@@ -11,29 +11,12 @@ const Dashboard = () => {
   // Handle window resize for responsive behavior
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      
-      // Reset to chat view when switching to mobile
-      if (mobile && activeView === "both") {
-        setActiveView("chat");
-      }
-      
-      // Show both views when switching to desktop
-      if (!mobile && activeView !== "both") {
-        setActiveView("both");
-      }
+      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
-    
-    // Set initial view based on screen size
-    if (window.innerWidth >= 768) {
-      setActiveView("both");
-    }
-
     return () => window.removeEventListener("resize", handleResize);
-  }, [activeView]);
+  }, []);
 
   const handleMenuToggle = () => {
     console.log("Menu toggle clicked");
@@ -44,12 +27,13 @@ const Dashboard = () => {
     <div className="h-screen w-full bg-gray-900 flex flex-col overflow-hidden">
       <DashHeader onMenuToggle={handleMenuToggle} />
       
-      {/* Mobile Toggle Button */}
-      {isMobile && (
-        <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 flex items-center justify-between px-4 py-3">
+      {/* Toggle Buttons - Always Visible */}
+      <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 flex items-center justify-between px-4 py-3">
+        <div className="flex items-center space-x-2 w-full">
+          <span className="text-gray-300 text-sm hidden md:block">View:</span>
           <button
             onClick={() => setActiveView("chat")}
-            className={`flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 flex-1 mr-2 ${
+            className={`flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 flex-1 ${
               activeView === "chat" 
                 ? "bg-gradient-to-r from-red-600 to-pink-600 text-white" 
                 : "bg-gray-700/50 text-gray-300 hover:bg-gray-700"
@@ -60,7 +44,7 @@ const Dashboard = () => {
           </button>
           <button
             onClick={() => setActiveView("code")}
-            className={`flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 flex-1 ml-2 ${
+            className={`flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 flex-1 ${
               activeView === "code" 
                 ? "bg-gradient-to-r from-red-600 to-pink-600 text-white" 
                 : "bg-gray-700/50 text-gray-300 hover:bg-gray-700"
@@ -70,22 +54,22 @@ const Dashboard = () => {
             <span>Code</span>
           </button>
         </div>
-      )}
+      </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Chat Section - Visible based on state */}
+        {/* Chat Section - Full width when active */}
         <div className={`
-          ${isMobile ? (activeView === "chat" ? "flex" : "hidden") : "flex"} 
-          w-full md:w-1/2 h-full transition-all duration-300
+          ${activeView === "chat" ? "flex w-full" : "hidden"} 
+          h-full transition-all duration-300
         `}>
           <DashChatSection />
         </div>
 
-        {/* Code Section - Visible based on state */}
+        {/* Code Section - Full width when active */}
         <div className={`
-          ${isMobile ? (activeView === "code" ? "flex" : "hidden") : "flex"} 
-          w-full md:w-1/2 h-full transition-all duration-300
+          ${activeView === "code" ? "flex w-full" : "hidden"} 
+          h-full transition-all duration-300
         `}>
           <DashCodeSection />
         </div>

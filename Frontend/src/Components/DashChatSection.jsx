@@ -7,7 +7,11 @@ import {
   FaRobot,
   FaEllipsisV,
   FaTimes,
+  FaCopy,
+  FaCheck
 } from "react-icons/fa";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import AxiosInstance from "../Config/Axios";
 import { toast, Bounce } from "react-toastify";
 
@@ -25,6 +29,7 @@ const DashChatSection = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [username, setusername] = useState("");
+  const [copiedMessageId, setCopiedMessageId] = useState(null);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -42,6 +47,66 @@ const DashChatSection = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Handle code copy
+  const handleCopyCode = async (code, messageId) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 1200);
+    } catch (err) {
+      toast.error("Failed to copy code to clipboard", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+  };
+
+  // Extract code blocks from message
+  const extractCodeBlocks = (text) => {
+    const codeBlockRegex = /```(\w+)?\s*([\s\S]*?)```/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      // Add text before code block
+      if (match.index > lastIndex) {
+        parts.push({
+          type: 'text',
+          content: text.slice(lastIndex, match.index)
+        });
+      }
+
+      // Add code block
+      const language = match[1] || 'javascript';
+      const code = match[2].trim();
+      parts.push({
+        type: 'code',
+        language,
+        code
+      });
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.push({
+        type: 'text',
+        content: text.slice(lastIndex)
+      });
+    }
+
+    return parts;
+  };
 
   // Handle sending a message
   const handleSendMessage = async (e) => {
@@ -77,7 +142,6 @@ const DashChatSection = () => {
           type: botResponse.includes("```") ? "code" : "text",
         };
         setMessages((prev) => [...prev, newBotMessage]);
-        console.log(newBotMessage);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message, {
@@ -107,112 +171,132 @@ const DashChatSection = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-gray-900 border-l border-gray-700">
-      {/* Header Section */}
-      <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 py-4 px-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-white">Learning JavaScript</h1>
-          <p className="text-sm text-gray-400">AI Programming Tutor</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <button className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors">
-            <FaEllipsisV />
-          </button>
-          <button className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors md:hidden">
-            <FaTimes />
-          </button>
-        </div>
-      </div>
-
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
-        <div className="max-w-3xl mx-auto space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850">
+        <div className="max-w-full space-y-6">
           <AnimatePresence>
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className={`flex ${
-                  message.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`flex max-w-xs md:max-w-md ${
-                    message.sender === "user" ? "flex-row-reverse" : ""
-                  }`}
+            {messages.map((message) => {
+              const messageParts = extractCodeBlocks(message.text);
+              
+              return (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  <div
-                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                  <div className={`flex max-w-full ${message.sender === "user" ? "flex-row-reverse" : ""}`}>
+                    {/* Avatar */}
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
                       message.sender === "user"
                         ? "bg-gradient-to-r from-red-500 to-pink-600 ml-3"
                         : "bg-gradient-to-r from-blue-500 to-purple-600 mr-3"
-                    }`}
-                  >
-                    {message.sender === "user" ? (
-                      // <FaUser className="text-white text-sm" />
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold">
-                        {username.charAt(0)}
-                      </div>
-                    ) : (
-                      <img
-                        src="https://avatars.githubusercontent.com/u/160850571?v=4"
-                        alt=""
-                        className="w-8 h-8 rounded-full"
-                      />
-                    )}
-                  </div>
-                  <div
-                    className={`rounded-2xl px-4 py-3 ${
+                    }`}>
+                      {message.sender === "user" ? (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold text-sm">
+                          {username.charAt(0)}
+                        </div>
+                      ) : (
+                        <img
+                          src="https://avatars.githubusercontent.com/u/160850571?v=4"
+                          alt="AI Tutor"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      )}
+                    </div>
+
+                    {/* Message Content */}
+                    <div className={`rounded-2xl px-4 py-3 max-w-full ${
                       message.sender === "user"
                         ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
                         : "bg-gray-700/80 backdrop-blur-sm text-white"
-                    }`}
-                  >
-                    {message.type === "code" ? (
-                      <div className="font-mono text-sm whitespace-pre-wrap">
-                        {message.text.split("```").map((part, index) =>
-                          index % 2 === 1 ? (
-                            <div
-                              key={index}
-                              className="bg-gray-800 rounded-lg p-3 my-2 overflow-x-auto"
-                            >
-                              <code>{part}</code>
-                            </div>
-                          ) : (
-                            <span key={index}>{part}</span>
-                          )
-                        )}
+                    }`}>
+                      <div className="max-w-full">
+                        {messageParts.map((part, index) => {
+                          if (part.type === 'code') {
+                            return (
+                              <div key={index} className="my-3">
+                                {/* Code Header */}
+                                <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-600">
+                                  <span className="text-xs text-gray-300 font-mono">
+                                    {part.language}
+                                  </span>
+                                  <motion.button
+                                    onClick={() => handleCopyCode(part.code, message.id)}
+                                    className="p-1 text-gray-400 hover:text-white transition-colors"
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                  >
+                                    {copiedMessageId === message.id ? (
+                                      <FaCheck className="text-green-400" />
+                                    ) : (
+                                      <FaCopy className="text-sm" />
+                                    )}
+                                  </motion.button>
+                                </div>
+
+                                {/* Code Content */}
+                                <div className="relative">
+                                  <SyntaxHighlighter
+                                    language={part.language}
+                                    style={vscDarkPlus}
+                                    customStyle={{
+                                      margin: 0,
+                                      padding: '1rem',
+                                      borderBottomLeftRadius: '0.5rem',
+                                      borderBottomRightRadius: '0.5rem',
+                                      background: '#1f2937',
+                                      fontSize: '0.875rem'
+                                    }}
+                                    codeTagProps={{
+                                      style: {
+                                        fontFamily: 'Fira Code, Monaco, Consolas, monospace'
+                                      }
+                                    }}
+                                  >
+                                    {part.code}
+                                  </SyntaxHighlighter>
+                                </div>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <p key={index} className="text-sm whitespace-pre-wrap mb-2 last:mb-0">
+                                {part.content}
+                              </p>
+                            );
+                          }
+                        })}
                       </div>
-                    ) : (
-                      <p className="text-sm">{message.text}</p>
-                    )}
-                    <p
-                      className={`text-xs mt-1 ${
+
+                      {/* Timestamp */}
+                      <p className={`text-xs mt-2 ${
                         message.sender === "user"
                           ? "text-pink-200"
                           : "text-gray-400"
-                      }`}
-                    >
-                      {formatTime(message.timestamp)}
-                    </p>
+                      }`}>
+                        {formatTime(message.timestamp)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
 
+          {/* Typing Indicator */}
           {isTyping && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="flex max-w-xs md:max-w-md">
+              <div className="flex max-w-full">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 mr-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/160850571?v=4"
-                    alt=""
+                    alt="AI Tutor"
                     className="w-8 h-8 rounded-full"
                   />
                 </div>
