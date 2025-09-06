@@ -19,12 +19,43 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
   const [ProgramingLang, setProgramingLang] = useState("");
+  const [monacoLang, setMonacoLang] = useState("python");
   const editorRef = useRef(null);
+
+  const monacoLanguageMap = {
+    html: "html",
+    css: "css",
+    javascript: "javascript",
+    reactjs: "javascript", // Use "javascript" mode, code written in JSX can be handled
+    "react-native": "javascript", // Same as reactjs
+    "nodejs and expressjs": "javascript", // Same as javascript
+    mongodb: "json", // Show MongoDB queries as JSON
+    python: "python",
+    sql: "sql",
+    "ai/ml basics": "python", // Treat as Python for example code
+  };
+  const languageDisplayMap = {
+    html: "🌐 HTML",
+    css: "🎨 CSS",
+    javascript: "⚡ JavaScript",
+    reactjs: "⚛️ React JS",
+    "react-native": "📱 React Native",
+    "nodejs and expressjs": "🚀 Node & Express JS",
+    mongodb: "🍃 MongoDB",
+    python: "🐍 Python",
+    sql: "🗄️ SQL",
+    "ai/ml basics": "🤖 AI / ML Basics",
+  };
 
   useEffect(() => {
     const language = localStorage.getItem("Language");
-    if (language) {
-      setProgramingLang(language);
+
+    if (language && monacoLanguageMap[language]) {
+      setProgramingLang(languageDisplayMap[language]); // For display purposes
+      setMonacoLang(monacoLanguageMap[language]); // For Monaco Editor mode
+    } else {
+      setProgramingLang("🐍 Python"); // Fallback display name
+      setMonacoLang("python"); // Fallback Monaco mode
     }
   }, []);
 
@@ -336,7 +367,7 @@ Execution completed in 0.45 seconds.`;
       <div className="flex-1 overflow-hidden">
         <Editor
           height="100%"
-          defaultLanguage={ProgramingLang.toLowerCase()}
+          defaultLanguage={monacoLang.toLowerCase()}
           value={code}
           onChange={(value) => setCode(value || "")}
           onMount={handleEditorDidMount}
