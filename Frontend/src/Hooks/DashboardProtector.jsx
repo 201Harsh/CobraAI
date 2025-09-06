@@ -22,6 +22,7 @@ const DashboardProtector = ({ children }) => {
         if (res.status === 200) {
           localStorage.setItem("email", res.data.User.email);
           localStorage.setItem("name", res.data.User.name);
+          localStorage.setItem("Language", res.data.User.Language);
         }
       } catch (error) {
         localStorage.clear();
