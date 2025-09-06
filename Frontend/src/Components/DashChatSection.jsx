@@ -8,10 +8,10 @@ import {
   FaEllipsisV,
   FaTimes,
   FaCopy,
-  FaCheck
+  FaCheck,
 } from "react-icons/fa";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import AxiosInstance from "../Config/Axios";
 import { toast, Bounce } from "react-toastify";
 
@@ -80,18 +80,18 @@ const DashChatSection = () => {
       // Add text before code block
       if (match.index > lastIndex) {
         parts.push({
-          type: 'text',
-          content: text.slice(lastIndex, match.index)
+          type: "text",
+          content: text.slice(lastIndex, match.index),
         });
       }
 
       // Add code block
-      const language = match[1] || 'javascript';
+      const language = match[1] || "javascript";
       const code = match[2].trim();
       parts.push({
-        type: 'code',
+        type: "code",
         language,
-        code
+        code,
       });
 
       lastIndex = match.index + match[0].length;
@@ -100,8 +100,8 @@ const DashChatSection = () => {
     // Add remaining text
     if (lastIndex < text.length) {
       parts.push({
-        type: 'text',
-        content: text.slice(lastIndex)
+        type: "text",
+        content: text.slice(lastIndex),
       });
     }
 
@@ -172,27 +172,35 @@ const DashChatSection = () => {
   return (
     <div className="h-full w-full flex flex-col bg-gray-900 border-l border-gray-700">
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850">
+      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
         <div className="max-w-full space-y-6">
           <AnimatePresence>
             {messages.map((message) => {
               const messageParts = extractCodeBlocks(message.text);
-              
+
               return (
                 <motion.div
                   key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex ${
+                    message.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
                 >
-                  <div className={`flex max-w-full ${message.sender === "user" ? "flex-row-reverse" : ""}`}>
+                  <div
+                    className={`flex max-w-full ${
+                      message.sender === "user" ? "flex-row-reverse" : ""
+                    }`}
+                  >
                     {/* Avatar */}
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                      message.sender === "user"
-                        ? "bg-gradient-to-r from-red-500 to-pink-600 ml-3"
-                        : "bg-gradient-to-r from-blue-500 to-purple-600 mr-3"
-                    }`}>
+                    <div
+                      className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                        message.sender === "user"
+                          ? "bg-gradient-to-r from-red-500 to-pink-600 ml-3"
+                          : "bg-gradient-to-r from-blue-500 to-purple-600 mr-3"
+                      }`}
+                    >
                       {message.sender === "user" ? (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold text-sm">
                           {username.charAt(0)}
@@ -207,62 +215,78 @@ const DashChatSection = () => {
                     </div>
 
                     {/* Message Content */}
-                    <div className={`rounded-2xl px-4 py-3 max-w-full ${
-                      message.sender === "user"
-                        ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
-                        : "bg-gray-700/80 backdrop-blur-sm text-white"
-                    }`}>
+                    <div
+                      className={`rounded-2xl px-4 py-3 max-w-sm md:max-w-5xl xl:max-w-7xl ${
+                        message.sender === "user"
+                          ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
+                          : "bg-gray-700/80 backdrop-blur-sm text-white"
+                      }`}
+                    >
                       <div className="max-w-full">
                         {messageParts.map((part, index) => {
-                          if (part.type === 'code') {
+                          if (part.type === "code") {
                             return (
                               <div key={index} className="my-3">
-                                {/* Code Header */}
-                                <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-600">
-                                  <span className="text-xs text-gray-300 font-mono">
-                                    {part.language}
-                                  </span>
-                                  <motion.button
-                                    onClick={() => handleCopyCode(part.code, message.id)}
-                                    className="p-1 text-gray-400 hover:text-white transition-colors"
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                  >
-                                    {copiedMessageId === message.id ? (
-                                      <FaCheck className="text-green-400" />
-                                    ) : (
-                                      <FaCopy className="text-sm" />
-                                    )}
-                                  </motion.button>
-                                </div>
-
-                                {/* Code Content */}
-                                <div className="relative">
-                                  <SyntaxHighlighter
-                                    language={part.language}
-                                    style={vscDarkPlus}
-                                    customStyle={{
-                                      margin: 0,
-                                      padding: '1rem',
-                                      borderBottomLeftRadius: '0.5rem',
-                                      borderBottomRightRadius: '0.5rem',
-                                      background: '#1f2937',
-                                      fontSize: '0.875rem'
-                                    }}
-                                    codeTagProps={{
-                                      style: {
-                                        fontFamily: 'Fira Code, Monaco, Consolas, monospace'
+                                <div className=" relative max-w-4xl">
+                                  {/* Code Header */}
+                                  <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-600">
+                                    <span className="text-xs text-gray-300 font-mono">
+                                      {part.language}
+                                    </span>
+                                    <motion.button
+                                      onClick={() =>
+                                        handleCopyCode(part.code, message.id)
                                       }
-                                    }}
-                                  >
-                                    {part.code}
-                                  </SyntaxHighlighter>
+                                      className="p-1 text-gray-400 hover:text-white transition-colors"
+                                      whileHover={{ scale: 1.1 }}
+                                      whileTap={{ scale: 0.9 }}
+                                    >
+                                      {copiedMessageId === message.id ? (
+                                        <FaCheck className="text-green-400" />
+                                      ) : (
+                                        <FaCopy className="text-sm" />
+                                      )}
+                                    </motion.button>
+                                  </div>
+
+                                  {/* Code Content */}
+                                  <div className="relative">
+                                    <SyntaxHighlighter
+                                      language={part.language}
+                                      style={vscDarkPlus}
+                                      customStyle={{
+                                        margin: 0,
+                                        padding: "1rem",
+                                        borderBottomLeftRadius: "0.5rem",
+                                        borderBottomRightRadius: "0.5rem",
+                                        background: "#1f2937",
+                                        fontSize: "0.875rem",
+                                        maxWidth: "100%",
+                                        whiteSpace: "pre-wrap",
+                                        wordBreak: "break-word",
+                                        overflowX: "hidden",
+                                      }}
+                                      codeTagProps={{
+                                        style: {
+                                          fontFamily:
+                                            "Fira Code, Monaco, Consolas, monospace",
+                                        },
+                                      }}
+                                      wrapLongLines={true} 
+                                      showLineNumbers={false}
+                                    >
+                                      {part.code}
+                                    </SyntaxHighlighter>
+                                  </div>
                                 </div>
                               </div>
                             );
                           } else {
                             return (
-                              <p key={index} className="text-sm whitespace-pre-wrap mb-2 last:mb-0">
+                              <p
+                                key={index}
+                                className="text-sm whitespace-pre-wrap mb-2 last:mb-0"
+                              >
                                 {part.content}
                               </p>
                             );
@@ -271,11 +295,13 @@ const DashChatSection = () => {
                       </div>
 
                       {/* Timestamp */}
-                      <p className={`text-xs mt-2 ${
-                        message.sender === "user"
-                          ? "text-pink-200"
-                          : "text-gray-400"
-                      }`}>
+                      <p
+                        className={`text-xs mt-2 ${
+                          message.sender === "user"
+                            ? "text-pink-200"
+                            : "text-gray-400"
+                        }`}
+                      >
                         {formatTime(message.timestamp)}
                       </p>
                     </div>
