@@ -25,25 +25,29 @@ const UpdateUserInfo = () => {
   const Navigate = useNavigate();
 
   const levels = [
-    { value: "beginner", label: "Beginner" },
-    { value: "intermediate", label: "Intermediate" },
-    { value: "advanced", label: "Advanced" },
-    { value: "expert", label: "Expert" },
+    { value: "beginner", label: "🌱 Beginner" },
+    { value: "intermediate", label: "🚀 Intermediate" },
+    { value: "advanced", label: "⚡ Advanced" },
+    { value: "expert", label: "🏆 Expert" },
   ];
 
   const programmingLanguages = [
-    { value: "html", label: "HTML" },
-    { value: "css", label: "CSS" },
-    { value: "javascript", label: "JavaScript" },
-    { value: "mern-stack", label: "MERN Stack" },
-    { value: "python", label: "Python" },
-    { value: "sql", label: "SQL" },
-    { value: "ai/ml basics", label: "AI/ML Basics" },
+    { value: "html", label: "🌐 HTML" },
+    { value: "css", label: "🎨 CSS" },
+    { value: "javascript", label: "🟨 JavaScript" },
+    { value: "reactjs", label: "⚛️ React JS" },
+    { value: "react-native", label: "📱 React Native" },
+    { value: "nodejs and expressjs", label: "🚀 Node.js & Express.js" },
+    { value: "mongodb", label: "🍃 MongoDB" },
+    { value: "mysql", label: "🐬 MySQL" },
+    { value: "python", label: "🐍 Python" },
+    { value: "ai/ml basics", label: "🤖 AI / ML Basics" },
   ];
 
   const genders = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
+    { value: "male", label: "👨 Male" },
+    { value: "female", label: "👩 Female" },
+    { value: "non_binary", label: "🌈 LGBTQ+" },
   ];
 
   const learningStyles = [
@@ -65,7 +69,6 @@ const UpdateUserInfo = () => {
   };
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
 
     setSubmitted(true);
