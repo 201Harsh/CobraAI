@@ -8,6 +8,8 @@ import {
   FaEllipsisV,
   FaTimes,
 } from "react-icons/fa";
+import AxiosInstance from "../Config/Axios";
+import { toast, Bounce } from "react-toastify";
 
 const DashChatSection = () => {
   const [messages, setMessages] = useState([
@@ -22,17 +24,15 @@ const DashChatSection = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const [username, setusername] = useState("")
+  const [username, setusername] = useState("");
   const messagesEndRef = useRef(null);
-
 
   useEffect(() => {
     const name = localStorage.getItem("name");
     if (name) {
       setusername(name);
     }
-  }, [])
-  
+  }, []);
 
   // Auto-scroll to bottom when messages change
   const scrollToBottom = () => {
@@ -44,7 +44,7 @@ const DashChatSection = () => {
   }, [messages]);
 
   // Handle sending a message
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (inputMessage.trim() === "" || isWaitingForResponse) return;
 
@@ -62,75 +62,39 @@ const DashChatSection = () => {
     setIsWaitingForResponse(true);
     setIsTyping(true);
 
-    // Simulate bot response after a delay
-    setTimeout(() => {
-      generateBotResponse(inputMessage);
+    try {
+      const response = await AxiosInstance.post("/ai/chat", {
+        prompt: inputMessage,
+      });
+
+      if (response.status === 200) {
+        const botResponse = response.data.response;
+        const newBotMessage = {
+          id: Date.now() + 1,
+          text: botResponse,
+          sender: "bot",
+          timestamp: new Date(),
+          type: botResponse.includes("```") ? "code" : "text",
+        };
+        setMessages((prev) => [...prev, newBotMessage]);
+        console.log(newBotMessage);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } finally {
       setIsTyping(false);
       setIsWaitingForResponse(false);
-    }, 1500);
-  };
-
-  // Generate a bot response based on user message
-  const generateBotResponse = (userMessage) => {
-    const lowerMessage = userMessage.toLowerCase();
-    let botResponse = "";
-
-    if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
-      botResponse = "Hello there! Ready to dive into some coding today?";
-    } else if (lowerMessage.includes("function")) {
-      botResponse = `Here's an example of a JavaScript function:\n\n\`\`\`javascript
-function greet(name) {
-  return "Hello, " + name + "!";
-}
-
-console.log(greet("Developer")); // Output: Hello, Developer!
-\`\`\``;
-    } else if (
-      lowerMessage.includes("loop") ||
-      lowerMessage.includes("for") ||
-      lowerMessage.includes("while")
-    ) {
-      botResponse = `Here are examples of loops in JavaScript:\n\n\`\`\`javascript
-// For loop
-for (let i = 0; i < 5; i++) {
-  console.log("Iteration:", i);
-}
-
-// While loop
-let count = 0;
-while (count < 3) {
-  console.log("Count:", count);
-  count++;
-}
-\`\`\``;
-    } else if (
-      lowerMessage.includes("react") ||
-      lowerMessage.includes("component")
-    ) {
-      botResponse = `Here's a simple React component example:\n\n\`\`\`jsx
-import React from 'react';
-
-function Welcome(props) {
-  return <h1>Hello, {props.name}!</h1>;
-}
-
-export default Welcome;
-\`\`\``;
-    } else {
-      // Default response for other messages
-      botResponse =
-        "I'd be happy to help with that! Could you provide more details about what you're trying to learn or build?";
     }
-
-    const newBotMessage = {
-      id: Date.now() + 1,
-      text: botResponse,
-      sender: "bot",
-      timestamp: new Date(),
-      type: botResponse.includes("```") ? "code" : "text",
-    };
-
-    setMessages((prev) => [...prev, newBotMessage]);
   };
 
   // Format timestamp
@@ -187,7 +151,7 @@ export default Welcome;
                   >
                     {message.sender === "user" ? (
                       // <FaUser className="text-white text-sm" />
-                       <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold">
                         {username.charAt(0)}
                       </div>
                     ) : (
