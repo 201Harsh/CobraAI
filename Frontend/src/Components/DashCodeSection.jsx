@@ -143,16 +143,8 @@ Execution completed in 0.45 seconds.`;
   const handleResetCode = () => {
     setCode(`// Welcome to CodeAstra AI Tutor
 // Start coding and see the magic happen!
-
-function calculateSum(a, b) {
-  return a + b;
-}
-
-// Example: Calculate the sum of two numbers
-const result = calculateSum(5, 7);
-console.log("The sum is:", result);
-
 // Try modifying this code and click Run to see the output
+
 `);
     setOutput("");
     setShowToolbar(false);
