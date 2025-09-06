@@ -3,7 +3,8 @@ const express = require("express");
 const ConnectTODB = require("./config/db");
 ConnectTODB();
 
-const router = require("./routes/user.route");
+const UserRouter = require("./routes/user.route");
+const AIRouter = require("./routes/ai.route");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -18,6 +19,7 @@ app.use(
   })
 );
 
-app.use("/users", router);
+app.use("/users", UserRouter);
+app.use("/ai", AIRouter);
 
 module.exports = app;
