@@ -123,6 +123,34 @@ const DashChatSection = () => {
     return parts;
   };
 
+  // Handle User Chat History Save
+  const SaveChatHistory = async (UserChat, AIResponse) => {
+    try {
+      const res = await AxiosInstance.post("/chat/savechat", {
+        UserChat,
+        AIResponse,
+      });
+
+      if (res.status === 200) {
+        console.log("Chat history saved successfully");
+        console.log(res.data.chat);
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error?.response?.data?.message || error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+  };
+
   // Handle sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -157,6 +185,10 @@ const DashChatSection = () => {
           type: botResponse.includes("```") ? "code" : "text",
         };
         setMessages((prev) => [...prev, newBotMessage]);
+
+        // Calling Save Chat History Function
+
+        SaveChatHistory(inputMessage, botResponse);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message, {
