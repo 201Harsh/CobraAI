@@ -2,7 +2,7 @@ const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({ apiKey: process.env.CODEASTRA_AI_API_KEY });
 
-async function main({ prompt, User }) {
+async function main({ prompt, User , fullPrompt }) {
   try {
     const systemInstructions = `
 ***Trinetra AI***
