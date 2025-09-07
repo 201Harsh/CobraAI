@@ -23,41 +23,38 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const editorRef = useRef(null);
 
   const monacoLanguageMap = {
-    html: "html",
-    css: "css",
-    javascript: "javascript",
-    reactjs: "javascript", // Use "javascript" mode, code written in JSX can be handled
-    "react-native": "javascript", // Same as reactjs
-    "nodejs and expressjs": "javascript", // Same as javascript
-    mongodb: "json", // Show MongoDB queries as JSON
+    "html-css-js": "html", // Monaco editor handles all three as HTML mode
+    reactjs: "javascript",
+    "react-native": "javascript",
+    "node-express": "javascript",
+    mongodb: "json",
+    mysql: "sql",
     python: "python",
-    sql: "sql",
-    "ai/ml basics": "python", // Treat as Python for example code
+    "ai-ml-basics": "python",
   };
+
   const languageDisplayMap = {
-    html: "🌐 HTML",
-    css: "🎨 CSS",
-    javascript: "⚡ JavaScript",
+    "html-css-js": "🌐 HTML, CSS & JS",
     reactjs: "⚛️ React JS",
     "react-native": "📱 React Native",
-    "nodejs and expressjs": "🚀 Node & Express JS",
+    "node-express": "🚀 Node & Express",
     mongodb: "🍃 MongoDB",
+    mysql: "🐬 MySQL",
     python: "🐍 Python",
-    sql: "🗄️ SQL",
-    "ai/ml basics": "🤖 AI / ML Basics",
+    "ai-ml-basics": "🤖 AI / ML Basics",
   };
 
   useEffect(() => {
-    const language = localStorage.getItem("Language");
+  const language = localStorage.getItem("Language");
 
-    if (language && monacoLanguageMap[language]) {
-      setProgramingLang(languageDisplayMap[language]); // For display purposes
-      setMonacoLang(monacoLanguageMap[language]); // For Monaco Editor mode
-    } else {
-      setProgramingLang("🐍 Python"); // Fallback display name
-      setMonacoLang("python"); // Fallback Monaco mode
-    }
-  }, []);
+  if (language && monacoLanguageMap[language]) {
+    setProgramingLang(languageDisplayMap[language]); // Display label
+    setMonacoLang(monacoLanguageMap[language]);     // Editor mode
+  } else {
+    setProgramingLang("🐍 Python"); // Fallback display
+    setMonacoLang("python");
+  }
+}, []);
 
   // Responsive editor options
   const editorOptions = {
