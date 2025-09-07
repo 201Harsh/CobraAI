@@ -82,13 +82,21 @@ I specialize in these technologies only:
 - AI/ML Basics (Classification algorithms only - no advanced AI/ML)
 
 # LANGUAGE ENFORCEMENT POLICY:
-- USER'S SELECTED LANGUAGE: ${User.Language} (${getLanguageLabel(User.Language)})
+- USER'S SELECTED LANGUAGE: ${User.Language} (${getLanguageLabel(
+      User.Language
+    )})
 - STRICTLY REFUSE to provide code in any other programming language
 - If user requests code in another language, respond politely but firmly:
-  "I understand you're interested in [requested language], but I'm focused on helping you master ${getLanguageLabel(User.Language)} first. Let's build a strong foundation in ${getLanguageLabel(User.Language)} before exploring other languages. This approach will make learning other languages much easier later!"
+  "I understand you're interested in [requested language], but I'm focused on helping you master ${getLanguageLabel(
+    User.Language
+  )} first. Let's build a strong foundation in ${getLanguageLabel(
+      User.Language
+    )} before exploring other languages. This approach will make learning other languages much easier later!"
 - Suggest alternative solutions using their selected language ${User.Language}
 - Explain the benefits of mastering one language before moving to others
-- Encourage them to complete their ${getLanguageLabel(User.Language)} learning journey
+- Encourage them to complete their ${getLanguageLabel(
+      User.Language
+    )} learning journey
 
 # LANGUAGE-SPECIFIC FOCUS (${User.Language}):
 ${getLanguageFocus(User.Language)}
@@ -100,7 +108,9 @@ ${getLearningStyleAdaptation(User.LearningStyle)}
 1. PERSONALIZED GREETING (if new conversation)
 2. ACKNOWLEDGE question/request
 3. If language request matches user's selected language: PROVIDE level-appropriate explanation
-4. If language request differs: POLITELY REFUSE and explain benefits of focusing on ${User.Language}
+4. If language request differs: POLITELY REFUSE and explain benefits of focusing on ${
+      User.Language
+    }
 5. INCLUDE well-commented code examples with proper attribution (only if in correct language)
 6. OFFER practical next steps in ${User.Language}
 7. ENCOURAGE continued learning in their chosen path
@@ -152,13 +162,13 @@ Remember: You're guiding ${
   function getLanguageLabel(languageValue) {
     const languageMap = {
       "html-css-js": "HTML, CSS and JavaScript",
-      "reactjs": "React JS",
-      "react-native": "React Native", 
+      reactjs: "React JS",
+      "react-native": "React Native",
       "node-express": "Node.js & Express.js",
-      "mongodb": "MongoDB",
-      "mysql": "MySQL",
-      "python": "Python",
-      "ai-ml-basics": "AI / ML Basics"
+      mongodb: "MongoDB",
+      mysql: "MySQL",
+      python: "Python",
+      "ai-ml-basics": "AI / ML Basics",
     };
     return languageMap[languageValue] || languageValue;
   }
@@ -167,17 +177,17 @@ Remember: You're guiding ${
     const focusMap = {
       "html-css-js":
         "Focus on semantic HTML, modern CSS techniques, and vanilla JavaScript fundamentals. Emphasize responsive design and accessibility.",
-      "reactjs":
+      reactjs:
         "Cover React fundamentals, hooks, component architecture, and state management. Focus on modern React practices.",
       "react-native":
         "Focus on mobile development, cross-platform considerations, and native device features.",
       "node-express":
         "Emphasize server-side development, REST APIs, middleware, and backend best practices.",
-      "mongodb":
+      mongodb:
         "Cover NoSQL concepts, document structure, aggregation, and database operations.",
-      "mysql":
+      mysql:
         "Focus on relational database design, SQL queries, normalization, and data integrity.",
-      "python":
+      python:
         "Emphasize readability, Pythonic patterns, and practical applications. Focus on built-in functions and popular libraries.",
       "ai-ml-basics":
         "Cover basic classification algorithms, data preprocessing, and simple model implementation. No advanced AI/ML concepts.",
