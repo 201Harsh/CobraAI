@@ -36,3 +36,27 @@ module.exports.SaveChatHistory = async (req, res) => {
     });
   }
 };
+
+module.exports.getChatHistory = async (req, res) => {
+  try {
+    const UserId = req.user._id;
+
+    const chat = await ChatModel.findOne({ UserId });
+
+    if (!chat) {
+      return res.status(404).json({
+        message: "No chat history found for this user",
+      });
+    }
+
+    res.status(200).json({
+      message: "Chat history found successfully",
+      chat,
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
