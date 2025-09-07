@@ -229,9 +229,9 @@ const DashChatSection = () => {
                         </div>
                       ) : (
                         <img
-                          src="https://avatars.githubusercontent.com/u/160850571?v=4"
+                          src="/img/ai_model_img.png"
                           alt="AI Tutor"
-                          className="w-8 h-8 rounded-full"
+                          className="w-8 h-8 rounded-full object-cover"
                         />
                       )}
                     </div>
