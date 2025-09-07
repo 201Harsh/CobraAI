@@ -9,6 +9,7 @@ import {
   FaTimes,
   FaCopy,
   FaCheck,
+  FaArrowDown,
 } from "react-icons/fa";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -19,7 +20,7 @@ const DashChatSection = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "",
+      text: ``,
       sender: "bot",
       timestamp: new Date(Date.now() - 1000 * 60 * 2),
       type: "text",
@@ -30,24 +31,24 @@ const DashChatSection = () => {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [username, setusername] = useState("");
   const [copiedMessageId, setCopiedMessageId] = useState(null);
-  const [ProgramingLang, setProgramingLang] = useState("");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const name = localStorage.getItem("name");
-    const Language = localStorage.getItem("Language");
-    if (Language) {
-      setProgramingLang(Language);
+    const lang = localStorage.getItem("Language");
+
+    if (lang) {
       setMessages([
         {
           id: 1,
-          text: `Hello! I'm CodeAstra, your AI programming tutor. Lets Start Lerning ${Language} Today.`,
+          text: `Hello! I'm CodeAstra, your AI programming tutor. Lets Start Lerning ${lang} Today.`,
           sender: "bot",
           timestamp: new Date(Date.now() - 1000 * 60 * 2),
           type: "text",
         },
       ]);
     }
+
     if (name) {
       setusername(name);
     }
@@ -185,6 +186,13 @@ const DashChatSection = () => {
 
   return (
     <div className="h-full w-full flex flex-col bg-gray-900 border-l border-gray-700">
+      <div
+        onClick={scrollToBottom}
+        className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600 absolute bottom-24 right-5
+       z-50"
+      >
+        <FaArrowDown className="text-red-600" />
+      </div>
       {/* Chat Messages Section */}
       <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
         <div className="max-w-full space-y-6">
