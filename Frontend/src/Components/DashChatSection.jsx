@@ -19,7 +19,7 @@ const DashChatSection = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm CodeAstra, your AI programming tutor. How can I help you learn today?",
+      text: "",
       sender: "bot",
       timestamp: new Date(Date.now() - 1000 * 60 * 2),
       type: "text",
@@ -30,10 +30,24 @@ const DashChatSection = () => {
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [username, setusername] = useState("");
   const [copiedMessageId, setCopiedMessageId] = useState(null);
+  const [ProgramingLang, setProgramingLang] = useState("");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const name = localStorage.getItem("name");
+    const Language = localStorage.getItem("Language");
+    if (Language) {
+      setProgramingLang(Language);
+      setMessages([
+        {
+          id: 1,
+          text: `Hello! I'm CodeAstra, your AI programming tutor. Lets Start Lerning ${Language} Today.`,
+          sender: "bot",
+          timestamp: new Date(Date.now() - 1000 * 60 * 2),
+          type: "text",
+        },
+      ]);
+    }
     if (name) {
       setusername(name);
     }
@@ -272,7 +286,7 @@ const DashChatSection = () => {
                                             "Fira Code, Monaco, Consolas, monospace",
                                         },
                                       }}
-                                      wrapLongLines={true} 
+                                      wrapLongLines={true}
                                       showLineNumbers={false}
                                     >
                                       {part.code}
