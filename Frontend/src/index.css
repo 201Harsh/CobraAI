@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
 .welcome-pg::-webkit-scrollbar {
-    display: none;
+  display: none;
+}
+
+.text-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.text-area::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.text-area::-webkit-scrollbar-thumb {
+  background: #4B5563;
+  border-radius: 3px;
+}
+
+.text-area::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
 }

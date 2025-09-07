@@ -70,6 +70,7 @@ const DashChatSection = () => {
       setCopiedMessageId(messageId);
       setTimeout(() => setCopiedMessageId(null), 1200);
     } catch (err) {
+      console.log(err);
       toast.error("Failed to copy code to clipboard", {
         position: "top-right",
         autoClose: 5000,
@@ -150,8 +151,7 @@ const DashChatSection = () => {
 
         setMessages(formattedMessages);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -165,13 +165,7 @@ const DashChatSection = () => {
         UserChat,
         AIResponse,
       });
-
-      if (res.status === 200) {
-        console.log("Chat history saved successfully");
-        console.log(res.data.chat);
-      }
     } catch (error) {
-      console.log(error);
       toast.error(error?.response?.data?.message || error.message, {
         position: "top-right",
         autoClose: 5000,
@@ -240,6 +234,12 @@ const DashChatSection = () => {
     } finally {
       setIsTyping(false);
       setIsWaitingForResponse(false);
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(e);
     }
   };
 
@@ -318,7 +318,7 @@ const DashChatSection = () => {
                               <div key={index} className="my-3">
                                 <div className=" relative max-w-4xl">
                                   {/* Code Header */}
-                                  <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-600">
+                                  <div className="flex items-center justify-between bg-gray-950 px-4 py-2 rounded-t-lg border-b border-gray-600">
                                     <span className="text-xs text-gray-300 font-mono">
                                       {part.language}
                                     </span>
@@ -348,7 +348,7 @@ const DashChatSection = () => {
                                         padding: "1rem",
                                         borderBottomLeftRadius: "0.5rem",
                                         borderBottomRightRadius: "0.5rem",
-                                        background: "#1f2937",
+                                        background: "#030712",
                                         fontSize: "0.875rem",
                                         maxWidth: "100%",
                                         whiteSpace: "pre-wrap",
@@ -445,16 +445,16 @@ const DashChatSection = () => {
           className="flex items-center space-x-3"
         >
           <div className="flex-1 relative">
-            <input
-              type="text"
+            <textarea
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder={
                 isWaitingForResponse
                   ? "Waiting for response..."
-                  : "Type your message or code question..."
+                  : "Message CodeAstra for Help..."
               }
-              className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 backdrop-blur-sm"
+              className="w-full resize-none flex text-area flex-col gap-2 px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 backdrop-blur-sm"
               disabled={isWaitingForResponse}
             />
             {isWaitingForResponse && (
