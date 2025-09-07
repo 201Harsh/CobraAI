@@ -117,11 +117,11 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
         return `<!DOCTYPE html>
 <html>
 <head>
-    <title>Document</title>
+    <title>Trinetra CodeAstra</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello World</h1>
+    <h1>Welcome to CodeAstra!</h1>
     <script src="script.js"></script>
 </body>
 </html>`;
@@ -137,13 +137,13 @@ h1 {
     color: #333;
 }`;
       case "javascript":
-        return `console.log('Hello, World!');
+        return `console.log('CodeAstra! By Harsh!');
 
 function greet() {
     return 'Welcome to CodeAstra!';
 }`;
       case "python":
-        return "# Write your Python code here\nprint('Hello, World!')";
+        return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
       case "json":
         return `{
   "key": "value",
