@@ -32,9 +32,7 @@ const UpdateUserInfo = () => {
   ];
 
   const programmingLanguages = [
-    { value: "html", label: "🌐 HTML" },
-    { value: "css", label: "🎨 CSS" },
-    { value: "javascript", label: "🟨 JavaScript" },
+    { value: "html, css and javascript", label: "🌐  HTML, CSS and JavaScript" },
     { value: "reactjs", label: "⚛️ React JS" },
     { value: "react-native", label: "📱 React Native" },
     { value: "nodejs and expressjs", label: "🚀 Node.js & Express.js" },
