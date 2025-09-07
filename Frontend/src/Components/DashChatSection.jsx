@@ -255,10 +255,11 @@ const DashChatSection = () => {
     <div className="h-full w-full flex flex-col bg-gray-900 border-l border-gray-700">
       <div
         onClick={scrollToBottom}
-        className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600 absolute bottom-24 right-5
+        className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600/30 backdrop-blur-xl border-1
+       border-gray-600 absolute bottom-32 right-3
        z-50"
       >
-        <FaArrowDown className="text-red-600" />
+        <FaArrowDown className="text-pink-300" />
       </div>
       {/* Chat Messages Section */}
       <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
