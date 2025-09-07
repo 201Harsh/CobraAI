@@ -123,6 +123,41 @@ const DashChatSection = () => {
     return parts;
   };
 
+  // Handle Load Chat History
+  const LoadChatHistory = async () => {
+    try {
+      const res = await AxiosInstance.get("/chat/getchat");
+
+      if (res.status === 200 && res.data.chat) {
+        const formattedMessages = res.data.chat.ChatHistory.flatMap(
+          (item, index) => [
+            {
+              id: Date.now() + index * 2,
+              text: item.user,
+              sender: "user",
+              timestamp: new Date(), // You can customize timestamp if saved in DB
+              type: "text",
+            },
+            {
+              id: Date.now() + index * 2 + 1,
+              text: item.ai,
+              sender: "bot",
+              timestamp: new Date(),
+              type: item.ai.includes("```") ? "code" : "text",
+            },
+          ]
+        );
+
+        setMessages(formattedMessages);
+      }
+    } catch (error) {
+    }
+  };
+
+  useEffect(() => {
+    LoadChatHistory();
+  }, []);
+
   // Handle User Chat History Save
   const SaveChatHistory = async (UserChat, AIResponse) => {
     try {
@@ -136,7 +171,7 @@ const DashChatSection = () => {
         console.log(res.data.chat);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error(error?.response?.data?.message || error.message, {
         position: "top-right",
         autoClose: 5000,
