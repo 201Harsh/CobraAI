@@ -452,7 +452,7 @@ const DashChatSection = () => {
       </div>
 
       {/* Message Input Section */}
-      <div className="p-4">
+      <div className="px-5 py-4 pb-4">
         <form
           onSubmit={handleSendMessage}
           className="flex items-center space-x-3"
