@@ -320,7 +320,7 @@ const DashChatSection = () => {
                     <div
                       className={`rounded-2xl px-4 py-3 max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl ${
                         message.sender === "user"
-                          ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
+                          ? "bg-gradient-to-br from-red-800 to-pink-700 text-white"
                           : "bg-gray-700/80 backdrop-blur-sm text-white"
                       }`}
                     >
@@ -400,7 +400,7 @@ const DashChatSection = () => {
                       <p
                         className={`text-xs mt-2 ${
                           message.sender === "user"
-                            ? "text-pink-200"
+                            ? "text-pink-50"
                             : "text-gray-400"
                         }`}
                       >
