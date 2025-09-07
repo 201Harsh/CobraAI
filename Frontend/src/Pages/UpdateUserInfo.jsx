@@ -32,14 +32,14 @@ const UpdateUserInfo = () => {
   ];
 
   const programmingLanguages = [
-    { value: "html, css and javascript", label: "🌐  HTML, CSS and JavaScript" },
+    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript" },
     { value: "reactjs", label: "⚛️ React JS" },
     { value: "react-native", label: "📱 React Native" },
-    { value: "nodejs and expressjs", label: "🚀 Node.js & Express.js" },
+    { value: "node-express", label: "🚀 Node.js & Express.js" },
     { value: "mongodb", label: "🍃 MongoDB" },
     { value: "mysql", label: "🐬 MySQL" },
     { value: "python", label: "🐍 Python" },
-    { value: "ai/ml basics", label: "🤖 AI / ML Basics" },
+    { value: "ai-ml-basics", label: "🤖 AI / ML Basics" },
   ];
 
   const genders = [
