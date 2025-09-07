@@ -36,8 +36,23 @@ module.exports.chatWithAI = async (req, res) => {
 
     const fullPrompt = `${historyText}\nUser: ${prompt}\nAI:`;
 
+    const AIResponse = await CodeAstraAI({ 
+      prompt, 
+      User, 
+      fullPrompt,
+      historyText // Pass the history text separately
+    });
 
-    const AIResponse = await CodeAstraAI({ prompt, User, fullPrompt });
+    // Save the new message to chat history
+    if (chat) {
+      chat.ChatHistory.push({ user: prompt, ai: AIResponse });
+      await chat.save();
+    } else {
+      await ChatModel.create({
+        UserId,
+        ChatHistory: [{ user: prompt, ai: AIResponse }]
+      });
+    }
 
     res.status(200).json({
       response: AIResponse,
