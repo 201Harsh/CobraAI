@@ -32,6 +32,18 @@ const DashChatSection = () => {
   const [username, setusername] = useState("");
   const [copiedMessageId, setCopiedMessageId] = useState(null);
   const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    setInputMessage(e.target.value);
+
+    // Auto-resize
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
+    }
+  };
 
   useEffect(() => {
     const name = localStorage.getItem("name");
@@ -440,7 +452,7 @@ const DashChatSection = () => {
       </div>
 
       {/* Message Input Section */}
-      <div className="bg-gray-800/80 backdrop-blur-md border-t border-gray-700 p-4">
+      <div className="p-4">
         <form
           onSubmit={handleSendMessage}
           className="flex items-center space-x-3"
@@ -448,14 +460,18 @@ const DashChatSection = () => {
           <div className="flex-1 relative">
             <textarea
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              ref={textareaRef}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               placeholder={
                 isWaitingForResponse
                   ? "Waiting for response..."
                   : "Message CodeAstra for Help..."
               }
-              className="w-full resize-none flex text-area flex-col gap-2 px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 backdrop-blur-sm"
+              className="w-full resize-none overflow-y-auto flex text-area flex-col gap-2 px-4 py-3 
+             bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 
+             text-white focus:outline-none focus:ring-2 focus:ring-red-500 
+             focus:border-transparent transition duration-200 backdrop-blur-sm"
               disabled={isWaitingForResponse}
             />
             {isWaitingForResponse && (
