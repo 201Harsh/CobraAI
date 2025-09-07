@@ -10,20 +10,23 @@ import {
   FaCompress,
   FaRedo,
   FaBars,
+  FaTimes,
+  FaPlus,
 } from "react-icons/fa";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
-  const [code, setCode] = useState(``);
+  const [tabs, setTabs] = useState([]);
+  const [activeTab, setActiveTab] = useState(0);
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
   const [ProgramingLang, setProgramingLang] = useState("");
-  const [monacoLang, setMonacoLang] = useState("python");
+  const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef(null);
 
   const monacoLanguageMap = {
-    "html-css-js": "html", // Monaco editor handles all three as HTML mode
+    "html-css-js": "html",
     reactjs: "javascript",
     "react-native": "javascript",
     "node-express": "javascript",
@@ -44,43 +47,113 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     "ai-ml-basics": "🤖 AI / ML Basics",
   };
 
+  const tabLanguageMap = {
+    "html-css-js": ["html", "css", "javascript"],
+    reactjs: ["javascript"],
+    "react-native": ["javascript"],
+    "node-express": ["javascript"],
+    mongodb: ["json"],
+    mysql: ["sql"],
+    python: ["python"],
+    "ai-ml-basics": ["python"],
+  };
+
+  const fileExtensions = {
+    html: "html",
+    css: "css",
+    javascript: "js",
+    json: "json",
+    sql: "sql",
+    python: "py",
+  };
+
+  const tabDisplayNames = {
+    html: "index.html",
+    css: "style.css",
+    javascript: "script.js",
+    json: "data.json",
+    sql: "query.sql",
+    python: "main.py",
+  };
+
+  // Initialize tabs based on selected language
   useEffect(() => {
-  const language = localStorage.getItem("Language");
+    const language = localStorage.getItem("Language");
+    
+    if (language && monacoLanguageMap[language]) {
+      setProgramingLang(languageDisplayMap[language]);
+      
+      // Create tabs based on language
+      const languagesForTabs = tabLanguageMap[language];
+      const newTabs = languagesForTabs.map((lang, index) => ({
+        id: index,
+        language: lang,
+        name: tabDisplayNames[lang] || `${lang}.${fileExtensions[lang] || lang}`,
+        code: getDefaultCode(lang),
+        isDefault: true, // Mark default tabs that can't be closed
+      }));
+      
+      setTabs(newTabs);
+      setActiveTab(0);
+    } else {
+      // Default to Python
+      setProgramingLang("🐍 Python");
+      setTabs([{
+        id: 0,
+        language: "python",
+        name: "main.py",
+        code: "# Write your Python code here\nprint('Hello, World!')",
+        isDefault: true,
+      }]);
+    }
+    
+    setIsInitialized(true);
+  }, []);
 
-  if (language && monacoLanguageMap[language]) {
-    setProgramingLang(languageDisplayMap[language]); // Display label
-    setMonacoLang(monacoLanguageMap[language]);     // Editor mode
-  } else {
-    setProgramingLang("🐍 Python"); // Fallback display
-    setMonacoLang("python");
-  }
-}, []);
+  // Get default code for a language
+  const getDefaultCode = (language) => {
+    switch (language) {
+      case "html":
+        return `<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Hello World</h1>
+    <script src="script.js"></script>
+</body>
+</html>`;
+      case "css":
+        return `body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
 
-  // Responsive editor options
-  const editorOptions = {
-    selectOnLineNumbers: true,
-    roundedSelection: false,
-    readOnly: false,
-    cursorStyle: "line",
-    automaticLayout: true,
-    fontSize: isMobileView ? 12 : 14,
-    lineHeight: isMobileView ? 18 : 21,
-    fontFamily: "Fira Code, Menlo, Monaco, Consolas, monospace",
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    glyphMargin: false,
-    lineNumbers: isMobileView ? "off" : "on",
-    lineNumbersMinChars: isMobileView ? 2 : 3,
-    wordWrap: "on", // Enable line wrapping
-    wrappingIndent: "indent",
-    scrollbar: {
-      vertical: "auto",
-      horizontal: "auto",
-      useShadows: false,
-    },
-    folding: false,
-    overviewRulerBorder: false,
-    renderLineHighlight: isMobileView ? "none" : "all",
+h1 {
+    color: #333;
+}`;
+      case "javascript":
+        return `console.log('Hello, World!');
+
+function greet() {
+    return 'Welcome to CodeAstra!';
+}`;
+      case "python":
+        return "# Write your Python code here\nprint('Hello, World!')";
+      case "json":
+        return `{
+  "key": "value",
+  "array": [1, 2, 3]
+}`;
+      case "sql":
+        return "-- Write your SQL queries here\nSELECT * FROM users;";
+      default:
+        return `// Write your ${language} code here`;
+    }
   };
 
   // Handle editor initialization
@@ -120,8 +193,66 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     }
   };
 
+  // Add a new tab
+  const addNewTab = () => {
+    const language = localStorage.getItem("Language");
+    const defaultLanguage = language && tabLanguageMap[language] 
+      ? tabLanguageMap[language][0] 
+      : "python";
+    
+    const extension = fileExtensions[defaultLanguage] || defaultLanguage;
+    const newTab = {
+      id: tabs.length > 0 ? Math.max(...tabs.map(tab => tab.id)) + 1 : 0,
+      language: defaultLanguage,
+      name: `new-${tabs.length + 1}.${extension}`,
+      code: getDefaultCode(defaultLanguage),
+      isDefault: false, // User-created tabs can be closed
+    };
+    
+    setTabs([...tabs, newTab]);
+    setActiveTab(newTab.id);
+  };
+
+  // Close a tab
+  const closeTab = (tabId, e) => {
+    e.stopPropagation();
+    
+    const tabToClose = tabs.find(tab => tab.id === tabId);
+    
+    // Don't allow closing default tabs (the initial ones)
+    if (tabToClose && tabToClose.isDefault) {
+      return;
+    }
+    
+    const newTabs = tabs.filter(tab => tab.id !== tabId);
+    
+    // Don't allow closing if it's the last tab
+    if (newTabs.length === 0) {
+      return;
+    }
+    
+    setTabs(newTabs);
+    
+    // If the active tab was closed, activate the previous tab or the first one
+    if (activeTab === tabId) {
+      const closedTabIndex = tabs.findIndex(tab => tab.id === tabId);
+      const newActiveIndex = Math.max(0, closedTabIndex - 1);
+      setActiveTab(newTabs[newActiveIndex].id);
+    }
+  };
+
+  // Update code in a tab
+  const updateTabCode = (value) => {
+    const newTabs = tabs.map(tab => 
+      tab.id === activeTab ? { ...tab, code: value || "" } : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Execute code
   const handleRunCode = async () => {
+    if (!tabs[activeTab]) return;
+    
     setIsLoading(true);
     setOutput("Running code...");
 
@@ -129,7 +260,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
-      const simulatedOutput = `> node script.js
+      const simulatedOutput = `> Running ${tabs[activeTab].name}
 The sum is: 12
 
 Execution completed in 0.45 seconds.`;
@@ -144,19 +275,21 @@ Execution completed in 0.45 seconds.`;
   // Copy code to clipboard
   const handleCopyCode = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(tabs[activeTab]?.code || "");
       setShowToolbar(false);
     } catch (err) {
-      toast.error("Failed to copy code");
+      console.error("Failed to copy code");
     }
   };
 
   // Download code as file
   const handleDownloadCode = () => {
+    if (!tabs[activeTab]) return;
+    
     const element = document.createElement("a");
-    const file = new Blob([code], { type: "text/plain" });
+    const file = new Blob([tabs[activeTab].code], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
-    element.download = "codeastra-script.js";
+    element.download = tabs[activeTab].name;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
@@ -165,7 +298,14 @@ Execution completed in 0.45 seconds.`;
 
   // Reset code to default
   const handleResetCode = () => {
-    setCode(``);
+    if (!tabs[activeTab]) return;
+    
+    const newTabs = tabs.map(tab => 
+      tab.id === activeTab 
+        ? { ...tab, code: getDefaultCode(tab.language) } 
+        : tab
+    );
+    setTabs(newTabs);
     setOutput("");
     setShowToolbar(false);
   };
@@ -187,6 +327,49 @@ Execution completed in 0.45 seconds.`;
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showToolbar]);
+
+  // Responsive editor options
+  const editorOptions = {
+    selectOnLineNumbers: true,
+    roundedSelection: false,
+    readOnly: false,
+    cursorStyle: "line",
+    automaticLayout: true,
+    fontSize: isMobileView ? 12 : 14,
+    lineHeight: isMobileView ? 18 : 21,
+    fontFamily: "Fira Code, Menlo, Monaco, Consolas, monospace",
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    glyphMargin: false,
+    lineNumbers: isMobileView ? "off" : "on",
+    lineNumbersMinChars: isMobileView ? 2 : 3,
+    wordWrap: "on",
+    wrappingIndent: "indent",
+    scrollbar: {
+      vertical: "auto",
+      horizontal: "auto",
+      useShadows: false,
+    },
+    folding: false,
+    overviewRulerBorder: false,
+    renderLineHighlight: isMobileView ? "none" : "all",
+  };
+
+  // Get current active tab
+  const getActiveTab = () => {
+    return tabs.find(tab => tab.id === activeTab);
+  };
+
+  // Don't render editor until tabs are initialized
+  if (!isInitialized || tabs.length === 0) {
+    return (
+      <div className="h-full w-full flex flex-col bg-gray-900 justify-center items-center">
+        <div className="text-gray-400">Loading editor...</div>
+      </div>
+    );
+  }
+
+  const activeTabData = getActiveTab();
 
   return (
     <div
@@ -225,7 +408,7 @@ Execution completed in 0.45 seconds.`;
                 whileTap={{ scale: 0.95 }}
                 title="More Options"
               >
-                <FaEllipsisV className="text-sm" />
+                <FaBars className="text-sm" />
               </motion.button>
 
               {/* Mobile toolbar dropdown */}
@@ -360,17 +543,52 @@ Execution completed in 0.45 seconds.`;
         </div>
       </div>
 
+      {/* Tab Bar */}
+      <div className="bg-gray-800 border-b border-gray-700 flex items-center overflow-x-auto">
+        {tabs.map((tab) => (
+          <div
+            key={tab.id}
+            className={`flex items-center px-3 py-2 border-r border-gray-700 cursor-pointer transition-colors ${
+              activeTab === tab.id
+                ? "bg-gray-900 text-white"
+                : "bg-gray-800 text-gray-400 hover:bg-gray-750"
+            }`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            <span className="text-sm truncate max-w-xs">{tab.name}</span>
+            {/* Only show close button for non-default tabs */}
+            {!tab.isDefault && (
+              <button
+                className="ml-2 text-gray-500 hover:text-white"
+                onClick={(e) => closeTab(tab.id, e)}
+              >
+                <FaTimes className="text-xs" />
+              </button>
+            )}
+          </div>
+        ))}
+        <button
+          className="p-2 text-gray-400 hover:text-white hover:bg-gray-750 transition-colors"
+          onClick={addNewTab}
+          title="New Tab"
+        >
+          <FaPlus className="text-sm" />
+        </button>
+      </div>
+
       {/* Code Editor Section */}
       <div className="flex-1 overflow-hidden">
-        <Editor
-          height="100%"
-          defaultLanguage={monacoLang.toLowerCase()}
-          value={code}
-          onChange={(value) => setCode(value || "")}
-          onMount={handleEditorDidMount}
-          options={editorOptions}
-          theme="codeastra-dark"
-        />
+        {activeTabData && (
+          <Editor
+            height="100%"
+            language={activeTabData.language}
+            value={activeTabData.code}
+            onChange={updateTabCode}
+            onMount={handleEditorDidMount}
+            options={editorOptions}
+            theme="codeastra-dark"
+          />
+        )}
       </div>
     </div>
   );
