@@ -5,6 +5,7 @@ ConnectTODB();
 
 const UserRouter = require("./routes/user.route");
 const AIRouter = require("./routes/ai.route");
+const ChatRouter = require("./routes/chat.route");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -21,5 +22,6 @@ app.use(
 
 app.use("/users", UserRouter);
 app.use("/ai", AIRouter);
+app.use("/chat", ChatRouter);
 
 module.exports = app;
