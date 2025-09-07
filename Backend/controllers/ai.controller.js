@@ -1,4 +1,5 @@
 const UserModel = require("../models/user.model");
+const ChatModel = require("../models/chat.model");
 const CodeAstraAI = require("../services/CodeAstraAI");
 
 module.exports.chatWithAI = async (req, res) => {
@@ -20,13 +21,29 @@ module.exports.chatWithAI = async (req, res) => {
       });
     }
 
-    const AIResponse = await CodeAstraAI({ prompt, User });
+    const chat = await ChatModel.findOne({ UserId });
+
+    let historyText = "";
+    if (
+      chat &&
+      Array.isArray(chat.ChatHistory) &&
+      chat.ChatHistory.length > 0
+    ) {
+      historyText = chat.ChatHistory.map(
+        (messagePair) => `User: ${messagePair.user}\nAI: ${messagePair.ai}\n`
+      ).join("\n");
+    }
+
+    const fullPrompt = `${historyText}\nUser: ${prompt}\nAI:`;
+
+
+    const AIResponse = await CodeAstraAI({ prompt, User, fullPrompt });
 
     res.status(200).json({
       response: AIResponse,
     });
-    
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: error.message,
     });

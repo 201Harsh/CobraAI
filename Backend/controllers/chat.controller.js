@@ -4,7 +4,6 @@ module.exports.SaveChatHistory = async (req, res) => {
   try {
     const { UserChat, AIResponse } = req.body;
     const UserId = req.user._id;
-    console.log(UserId);
 
     let chat = await ChatModel.findOne({ UserId });
     const newChatMessage = { user: UserChat, ai: AIResponse };
@@ -42,12 +41,6 @@ module.exports.getChatHistory = async (req, res) => {
     const UserId = req.user._id;
 
     const chat = await ChatModel.findOne({ UserId });
-
-    if (!chat) {
-      return res.status(404).json({
-        message: "No chat history found for this user",
-      });
-    }
 
     res.status(200).json({
       message: "Chat history found successfully",
