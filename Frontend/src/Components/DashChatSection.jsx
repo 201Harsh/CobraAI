@@ -102,7 +102,7 @@ const DashChatSection = () => {
           parts.push(
             <code
               key={key}
-              className="bg-gray-900 text-yellow-500 px-1 rounded"
+              className="bg-gray-950 text-yellow-500 px-1 rounded"
             >
               {part.slice(3, -3)}
             </code>
@@ -111,7 +111,7 @@ const DashChatSection = () => {
           parts.push(
             <code
               key={key}
-              className="bg-gray-900 text-yellow-600 px-1 rounded"
+              className="bg-gray-950 text-yellow-600 px-1 rounded"
             >
               {part.slice(1, -1)}
             </code>
