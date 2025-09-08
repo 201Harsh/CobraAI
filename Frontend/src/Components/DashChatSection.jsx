@@ -34,35 +34,128 @@ const DashChatSection = () => {
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 
-  // Function to format text with special characters and links
-  const formatText = (text) => {
-    // Don't process empty text
-    if (!text) return text;
-    
-    // Process text to make content within special characters bold
-    let formattedText = text.replace(
-      /([*_`'"])(.*?)\1/g, 
-      (match, symbol, content) => {
-        // Don't process if it's part of a code block marker
-        if (match.startsWith('```') || match.endsWith('```')) return match;
-        return `<strong>${content}</strong>`;
-      }
-    );
-    
-    // Process URLs to convert them to proper links
-    formattedText = formattedText.replace(
-      /<a\s+href=["'](.*?)["']>(.*?)<\/a>/g,
-      (match, url, linkText) => {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">${linkText}</a>`;
-      }
-    );
-    
-    return formattedText;
+  // Function to format text content with proper link handling
+  const formatTextContent = (text) => {
+    if (!text) return null;
+
+    return text.split("\n").map((line, lineIndex) => {
+      // Skip empty lines
+      if (line.trim() === "") return null;
+
+      const regex = /(<a\s+[^>]*href="[^"]*"[^>]*>.*?<\/a>|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|".*?")/gu;
+
+      const parts = line
+        .split(regex)
+        .filter(Boolean)
+        .map((part, partIndex) => {
+          const key = `${lineIndex}-${partIndex}`;
+
+          // Handle anchor tag
+          if (part.startsWith("<a ") && part.includes("</a>")) {
+            const match = part.match(
+              /<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/i
+            );
+            if (match) {
+              const [, href, text] = match;
+              // Extract just the username part (remove @ symbol if present)
+              const usernameOnly = text.replace(/^@/, '');
+              return (
+                <span
+                  key={key}
+                  className="text-blue-400 hover:text-blue-300 underline cursor-pointer font-medium"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(href, "_blank", "noopener,noreferrer");
+                  }}
+                >
+                  @{usernameOnly}
+                </span>
+              );
+            }
+          }
+
+          // Bold + italic (***text***)
+          if (part.startsWith("***") && part.endsWith("***")) {
+            return (
+              <span
+                key={key}
+                className="font-bold italic text-sky-500 inline"
+              >
+                {part.slice(3, -3)}
+              </span>
+            );
+          }
+
+          // Bold (**text**)
+          if (part.startsWith("**") && part.endsWith("**")) {
+            return (
+              <span
+                key={key}
+                className="font-bold text-pink-400 inline"
+              >
+                {part.slice(2, -2)}
+              </span>
+            );
+          }
+
+          // Italic (*text*)
+          if (part.startsWith("*") && part.endsWith("*")) {
+            return (
+              <span
+                key={key}
+                className="italic text-red-400 inline"
+              >
+                {part.slice(1, -1)}
+              </span>
+            );
+          }
+
+          // Quoted ("text")
+          if (part.startsWith('"') && part.endsWith('"')) {
+            return (
+              <span
+                key={key}
+                className="text-pink-300 italic inline"
+              >
+                {part}
+              </span>
+            );
+          }
+
+          // Default text
+          return <span key={key}>{part}</span>;
+        });
+
+      return (
+        <p key={lineIndex} className="mb-2 text-sm leading-relaxed">
+          {parts}
+        </p>
+      );
+    });
   };
 
-  // Component to render formatted text with HTML
-  const FormattedText = ({ text }) => {
-    return <span dangerouslySetInnerHTML={{ __html: formatText(text) }} />;
+  // Function to format message with proper structure
+  const formatMessage = (text) => {
+    if (!text) return "";
+
+    const parts = text.split(
+      "***EndVerse AI v2.0 (Powered by EndGaming AI)***"
+    );
+    const mainContent = parts[0].trim();
+    const signature = parts[1]
+      ? "***EndVerse AI v2.0 (Powered by EndGaming AI)***" + parts[1]
+      : null;
+
+    return (
+      <div className="message-content">
+        {formatTextContent(mainContent)}
+        {signature && (
+          <div className="mt-4 pt-4 border-t border-gray-700">
+            {formatTextContent(signature)}
+          </div>
+        )}
+      </div>
+    );
   };
 
   const handleInputChange = (e) => {
@@ -260,7 +353,6 @@ const DashChatSection = () => {
         setMessages((prev) => [...prev, newBotMessage]);
 
         // Calling Save Chat History Function
-
         SaveChatHistory(inputMessage, botResponse);
       }
     } catch (error) {
@@ -417,12 +509,12 @@ const DashChatSection = () => {
                             );
                           } else {
                             return (
-                              <p
+                              <div
                                 key={index}
                                 className="text-sm whitespace-pre-wrap mb-2 last:mb-0"
                               >
-                                <FormattedText text={part.content} />
-                              </p>
+                                {formatTextContent(part.content)}
+                              </div>
                             );
                           }
                         })}
