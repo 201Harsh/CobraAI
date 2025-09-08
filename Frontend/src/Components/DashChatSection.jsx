@@ -447,7 +447,7 @@ const DashChatSection = () => {
 
                     {/* Message Content */}
                     <div
-                      className={`rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 max-w-xs xs:max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-4xl ${
+                      className={`rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 max-w-xs xs:max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl ${
                         message.sender === "user"
                           ? "bg-gradient-to-br from-red-800 to-pink-700 text-white"
                           : "bg-gray-800/80 backdrop-blur-sm text-white"
