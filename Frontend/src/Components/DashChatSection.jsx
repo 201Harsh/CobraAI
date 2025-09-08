@@ -33,6 +33,7 @@ const DashChatSection = () => {
   const [copiedMessageId, setCopiedMessageId] = useState(null);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   // Function to format text content with proper link handling
   const formatTextContent = (text) => {
@@ -46,7 +47,7 @@ const DashChatSection = () => {
         return (
           <h3
             key={lineIndex}
-            className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 mb-2"
+            className="text-lg md:text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 mb-2"
           >
             {headingMatch[1]}
           </h3>
@@ -102,7 +103,7 @@ const DashChatSection = () => {
           parts.push(
             <code
               key={key}
-              className="bg-gray-950 text-yellow-500 px-1 rounded"
+              className="bg-gray-950 text-yellow-500 px-1 rounded text-xs sm:text-sm"
             >
               {part.slice(3, -3)}
             </code>
@@ -111,14 +112,14 @@ const DashChatSection = () => {
           parts.push(
             <code
               key={key}
-              className="bg-gray-950 text-yellow-600 px-1 rounded"
+              className="bg-gray-950 text-yellow-600 px-1 rounded text-xs sm:text-sm"
             >
               {part.slice(1, -1)}
             </code>
           );
         } else if (part.startsWith("**") && part.endsWith("**")) {
           parts.push(
-            <span key={key} className="font-bold text-pink-600 text-base">
+            <span key={key} className="font-bold text-pink-600 text-sm sm:text-base">
               {part.slice(2, -2)}
             </span>
           );
@@ -149,7 +150,7 @@ const DashChatSection = () => {
       }
 
       return (
-        <p key={lineIndex} className="mb-2 text-sm leading-relaxed">
+        <p key={lineIndex} className="mb-2 text-xs sm:text-sm leading-relaxed">
           {parts}
         </p>
       );
@@ -204,7 +205,6 @@ const DashChatSection = () => {
       setCopiedMessageId(messageId);
       setTimeout(() => setCopiedMessageId(null), 1200);
     } catch (err) {
-      console.log(err);
       toast.error("Failed to copy code to clipboard", {
         position: "top-right",
         autoClose: 5000,
@@ -333,13 +333,17 @@ const DashChatSection = () => {
     setIsWaitingForResponse(true);
     setIsTyping(true);
 
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+
     try {
       const response = await AxiosInstance.post("/ai/chat", {
         prompt: inputMessage,
       });
 
       if (response.status === 200) {
-        console.log(response.data.response);
         const botResponse = response.data.response;
         const newBotMessage = {
           id: Date.now() + 1,
@@ -386,18 +390,21 @@ const DashChatSection = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-gray-950">
+    <div className="h-full w-full flex flex-col bg-gray-950 overflow-hidden">
       <div
         onClick={scrollToBottom}
         className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600/30 backdrop-blur-xl border-1
-       border-gray-600 absolute bottom-32 right-3
-       z-50"
+       border-gray-600 absolute bottom-28 right-3 sm:bottom-32 z-50 cursor-pointer"
       >
-        <FaArrowDown className="text-pink-300" />
+        <FaArrowDown className="text-pink-300 text-xs" />
       </div>
+      
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 chat-Section">
-        <div className="max-w-full space-y-6">
+      <div 
+        ref={chatContainerRef}
+        className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 bg-gray-850 chat-Section"
+      >
+        <div className="max-w-full mx-auto space-y-4 sm:space-y-6">
           <AnimatePresence>
             {messages.map((message) => {
               const messageParts = extractCodeBlocks(message.text);
@@ -413,47 +420,47 @@ const DashChatSection = () => {
                   }`}
                 >
                   <div
-                    className={`flex max-w-full ${
+                    className={`flex max-w-[95%] sm:max-w-full ${
                       message.sender === "user" ? "flex-row-reverse" : ""
                     }`}
                   >
                     {/* Avatar */}
                     <div
-                      className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                      className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                         message.sender === "user"
-                          ? "bg-gradient-to-r from-red-500 to-pink-600 ml-3"
-                          : "bg-gradient-to-r from-blue-500 to-purple-600 mr-3"
+                          ? "bg-gradient-to-r from-red-500 to-pink-600 ml-2 sm:ml-3"
+                          : "bg-gradient-to-r from-blue-500 to-purple-600 mr-2 sm:mr-3"
                       }`}
                     >
                       {message.sender === "user" ? (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold text-sm">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white font-semibold text-xs sm:text-sm">
                           {username.charAt(0)}
                         </div>
                       ) : (
                         <img
                           src="/img/ai_model_img.png"
                           alt="AI Tutor"
-                          className="w-8 h-8 rounded-full object-cover"
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
                         />
                       )}
                     </div>
 
                     {/* Message Content */}
                     <div
-                      className={`rounded-2xl px-4 py-3 whitespace-nowrap max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl ${
+                      className={`rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 max-w-xs xs:max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-4xl ${
                         message.sender === "user"
                           ? "bg-gradient-to-br from-red-800 to-pink-700 text-white"
                           : "bg-gray-800/80 backdrop-blur-sm text-white"
                       }`}
                     >
-                      <div className="max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl overflow-hidden">
+                      <div className="overflow-hidden">
                         {messageParts.map((part, index) => {
                           if (part.type === "code") {
                             return (
-                              <div key={index} className="my-3">
-                                <div className=" relative max-w-4xl">
+                              <div key={index} className="my-2 sm:my-3">
+                                <div className="relative max-w-full">
                                   {/* Code Header */}
-                                  <div className="flex items-center justify-between bg-gray-950 px-4 py-2 rounded-t-lg border-b border-gray-600">
+                                  <div className="flex items-center justify-between bg-gray-950 px-3 py-1 sm:px-4 sm:py-2 rounded-t-lg border-b border-gray-600">
                                     <span className="text-xs text-gray-300 font-mono">
                                       {part.language}
                                     </span>
@@ -466,29 +473,29 @@ const DashChatSection = () => {
                                       whileTap={{ scale: 0.9 }}
                                     >
                                       {copiedMessageId === message.id ? (
-                                        <FaCheck className="text-green-400" />
+                                        <FaCheck className="text-green-400 text-xs sm:text-sm" />
                                       ) : (
-                                        <FaCopy className="text-sm" />
+                                        <FaCopy className="text-xs sm:text-sm" />
                                       )}
                                     </motion.button>
                                   </div>
 
                                   {/* Code Content */}
-                                  <div className="relative">
+                                  <div className="relative overflow-x-auto">
                                     <SyntaxHighlighter
                                       language={part.language}
                                       style={vscDarkPlus}
                                       customStyle={{
                                         margin: 0,
-                                        padding: "1rem",
+                                        padding: "0.75rem",
                                         borderBottomLeftRadius: "0.5rem",
                                         borderBottomRightRadius: "0.5rem",
                                         background: "#030712",
-                                        fontSize: "0.875rem",
+                                        fontSize: "0.75rem",
                                         maxWidth: "100%",
                                         whiteSpace: "pre-wrap",
                                         wordBreak: "break-word",
-                                        overflowX: "hidden",
+                                        overflowX: "auto",
                                       }}
                                       codeTagProps={{
                                         style: {
@@ -509,7 +516,7 @@ const DashChatSection = () => {
                             return (
                               <div
                                 key={index}
-                                className="text-sm whitespace-pre-wrap mb-2 last:mb-0"
+                                className="text-xs sm:text-sm whitespace-pre-wrap mb-1 sm:mb-2 last:mb-0"
                               >
                                 {formatTextContent(part.content)}
                               </div>
@@ -520,7 +527,7 @@ const DashChatSection = () => {
 
                       {/* Timestamp */}
                       <p
-                        className={`text-xs mt-2 ${
+                        className={`text-xs mt-1 sm:mt-2 ${
                           message.sender === "user"
                             ? "text-pink-50"
                             : "text-gray-400"
@@ -542,26 +549,26 @@ const DashChatSection = () => {
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="flex max-w-full">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 mr-3">
+              <div className="flex max-w-[95%] sm:max-w-full">
+                <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 mr-2 sm:mr-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/160850571?v=4"
                     alt="AI Tutor"
-                    className="w-8 h-8 rounded-full"
+                    className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
                   />
                 </div>
-                <div className="bg-gray-700/80 backdrop-blur-sm text-white rounded-2xl px-4 py-3">
+                <div className="bg-gray-700/80 backdrop-blur-sm text-white rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3">
                   <div className="flex space-x-1">
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0ms" }}
                     />
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "150ms" }}
                     />
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "300ms" }}
                     />
                   </div>
@@ -574,10 +581,10 @@ const DashChatSection = () => {
       </div>
 
       {/* Message Input Section */}
-      <div className="px-5 py-4 pb-4">
+      <div className="px-3 sm:px-5 py-3 sm:py-4 pb-3 sm:pb-4 bg-gray-900/50">
         <form
           onSubmit={handleSendMessage}
-          className="flex items-center space-x-3"
+          className="flex items-center space-x-2 sm:space-x-3"
         >
           <div className="flex-1 relative">
             <textarea
@@ -590,25 +597,26 @@ const DashChatSection = () => {
                   ? "Waiting for response..."
                   : "Message CodeAstra for Help..."
               }
-              className="w-full resize-none overflow-y-auto flex text-area flex-col gap-2 px-4 py-3 
+              className="w-full resize-none overflow-y-auto flex text-area flex-col gap-2 px-3 py-2 sm:px-4 sm:py-3 
              bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 
              text-white focus:outline-none focus:ring-2 focus:ring-red-500 
-             focus:border-transparent transition duration-200 backdrop-blur-sm"
+             focus:border-transparent transition duration-200 backdrop-blur-sm text-xs sm:text-sm"
               disabled={isWaitingForResponse}
+              rows={1}
             />
             {isWaitingForResponse && (
               <div className="absolute inset-0 bg-gray-800/70 rounded-lg flex items-center justify-center">
                 <div className="flex space-x-1">
                   <div
-                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                     style={{ animationDelay: "0ms" }}
                   />
                   <div
-                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                     style={{ animationDelay: "150ms" }}
                   />
                   <div
-                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"
                     style={{ animationDelay: "300ms" }}
                   />
                 </div>
@@ -617,18 +625,18 @@ const DashChatSection = () => {
           </div>
           <motion.button
             type="submit"
-            className="p-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 sm:p-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             whileHover={isWaitingForResponse ? {} : { scale: 1.05 }}
             whileTap={isWaitingForResponse ? {} : { scale: 0.95 }}
             disabled={inputMessage.trim() === "" || isWaitingForResponse}
           >
-            <FaPaperPlane />
+            <FaPaperPlane className="text-xs sm:text-sm" />
           </motion.button>
         </form>
 
         {/* Status indicator */}
         {isWaitingForResponse && (
-          <div className="mt-2 text-xs text-gray-400 text-center">
+          <div className="mt-1 sm:mt-2 text-xs text-gray-400 text-center">
             Please wait for the response before sending another message
           </div>
         )}
