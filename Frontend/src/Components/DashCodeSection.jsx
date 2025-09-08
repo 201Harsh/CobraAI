@@ -13,7 +13,7 @@ import {
   FaTimes,
   FaPlus,
   FaEye,
-  FaWindowClose
+  FaWindowClose,
 } from "react-icons/fa";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
@@ -84,34 +84,37 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   // Initialize tabs based on selected language
   useEffect(() => {
     const language = localStorage.getItem("Language");
-    
+
     if (language && monacoLanguageMap[language]) {
       setProgramingLang(languageDisplayMap[language]);
-      
+
       // Create tabs based on language
       const languagesForTabs = tabLanguageMap[language];
       const newTabs = languagesForTabs.map((lang, index) => ({
         id: index,
         language: lang,
-        name: tabDisplayNames[lang] || `${lang}.${fileExtensions[lang] || lang}`,
+        name:
+          tabDisplayNames[lang] || `${lang}.${fileExtensions[lang] || lang}`,
         code: getDefaultCode(lang),
         isDefault: true, // Mark default tabs that can't be closed
       }));
-      
+
       setTabs(newTabs);
       setActiveTab(0);
     } else {
       // Default to Python
       setProgramingLang("🐍 Python");
-      setTabs([{
-        id: 0,
-        language: "python",
-        name: "main.py",
-        code: "# Write your Python code here\nprint('Hello, World!')",
-        isDefault: true,
-      }]);
+      setTabs([
+        {
+          id: 0,
+          language: "python",
+          name: "main.py",
+          code: "# Write your Python code here\nprint('Hello, World!')",
+          isDefault: true,
+        },
+      ]);
     }
-    
+
     setIsInitialized(true);
   }, []);
 
@@ -127,6 +130,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 </head>
 <body>
     <h1>Welcome to CodeAstra!</h1>
+    <h4>Code Mentored by <span>Harsh</span></h4>
     <p>Edit this code to see changes in the preview.</p>
     <script src="script.js"></script>
 </body>
@@ -136,30 +140,31 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #111;
 }
 
 h1 {
-    color: #333;
+    color: green;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+h4 {
+    color: white;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+h4 span {
+    font-weight: 600;
+    color: yellow;
 }
 
 p {
-    color: #666;
+    color: lightblue;
 }`;
       case "javascript":
-        return `console.log('CodeAstra! By Harsh!');
-
-function greet() {
-    return 'Welcome to CodeAstra!';
-}
-
-// Display greeting
-document.addEventListener('DOMContentLoaded', function() {
-    const greetingElement = document.createElement('p');
-    greetingElement.textContent = greet();
-    greetingElement.style.color = 'blue';
-    document.body.appendChild(greetingElement);
-});`;
+        return `// console.log('CodeAstra! By Harsh!');`;
       case "python":
         return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
       case "json":
@@ -214,19 +219,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add a new tab
   const addNewTab = () => {
     const language = localStorage.getItem("Language");
-    const defaultLanguage = language && tabLanguageMap[language] 
-      ? tabLanguageMap[language][0] 
-      : "python";
-    
+    const defaultLanguage =
+      language && tabLanguageMap[language]
+        ? tabLanguageMap[language][0]
+        : "python";
+
     const extension = fileExtensions[defaultLanguage] || defaultLanguage;
     const newTab = {
-      id: tabs.length > 0 ? Math.max(...tabs.map(tab => tab.id)) + 1 : 0,
+      id: tabs.length > 0 ? Math.max(...tabs.map((tab) => tab.id)) + 1 : 0,
       language: defaultLanguage,
       name: `new-${tabs.length + 1}.${extension}`,
       code: getDefaultCode(defaultLanguage),
       isDefault: false, // User-created tabs can be closed
     };
-    
+
     setTabs([...tabs, newTab]);
     setActiveTab(newTab.id);
   };
@@ -234,26 +240,26 @@ document.addEventListener('DOMContentLoaded', function() {
   // Close a tab
   const closeTab = (tabId, e) => {
     e.stopPropagation();
-    
-    const tabToClose = tabs.find(tab => tab.id === tabId);
-    
+
+    const tabToClose = tabs.find((tab) => tab.id === tabId);
+
     // Don't allow closing default tabs (the initial ones)
     if (tabToClose && tabToClose.isDefault) {
       return;
     }
-    
-    const newTabs = tabs.filter(tab => tab.id !== tabId);
-    
+
+    const newTabs = tabs.filter((tab) => tab.id !== tabId);
+
     // Don't allow closing if it's the last tab
     if (newTabs.length === 0) {
       return;
     }
-    
+
     setTabs(newTabs);
-    
+
     // If the active tab was closed, activate the previous tab or the first one
     if (activeTab === tabId) {
-      const closedTabIndex = tabs.findIndex(tab => tab.id === tabId);
+      const closedTabIndex = tabs.findIndex((tab) => tab.id === tabId);
       const newActiveIndex = Math.max(0, closedTabIndex - 1);
       setActiveTab(newTabs[newActiveIndex].id);
     }
@@ -261,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Update code in a tab
   const updateTabCode = (value) => {
-    const newTabs = tabs.map(tab => 
+    const newTabs = tabs.map((tab) =>
       tab.id === activeTab ? { ...tab, code: value || "" } : tab
     );
     setTabs(newTabs);
@@ -270,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Execute code
   const handleRunCode = async () => {
     if (!tabs[activeTab]) return;
-    
+
     setIsLoading(true);
     setOutput("Running code...");
 
@@ -299,34 +305,34 @@ Execution completed in 0.45 seconds.`;
   // Update the preview iframe
   const updatePreview = () => {
     if (!previewRef.current) return;
-    
-    const htmlTab = tabs.find(tab => tab.language === "html");
-    const cssTab = tabs.find(tab => tab.language === "css");
-    const jsTab = tabs.find(tab => tab.language === "javascript");
-    
+
+    const htmlTab = tabs.find((tab) => tab.language === "html");
+    const cssTab = tabs.find((tab) => tab.language === "css");
+    const jsTab = tabs.find((tab) => tab.language === "javascript");
+
     let htmlContent = htmlTab?.code || "";
     const cssContent = cssTab?.code || "";
     const jsContent = jsTab?.code || "";
-    
+
     // Inject CSS and JS into the HTML
     if (cssContent) {
       const styleTag = `<style>${cssContent}</style>`;
-      if (htmlContent.includes('</head>')) {
-        htmlContent = htmlContent.replace('</head>', `${styleTag}</head>`);
+      if (htmlContent.includes("</head>")) {
+        htmlContent = htmlContent.replace("</head>", `${styleTag}</head>`);
       } else {
-        htmlContent = htmlContent.replace('<head>', `<head>${styleTag}`);
+        htmlContent = htmlContent.replace("<head>", `<head>${styleTag}`);
       }
     }
-    
+
     if (jsContent) {
       const scriptTag = `<script>${jsContent}</script>`;
-      if (htmlContent.includes('</body>')) {
-        htmlContent = htmlContent.replace('</body>', `${scriptTag}</body>`);
+      if (htmlContent.includes("</body>")) {
+        htmlContent = htmlContent.replace("</body>", `${scriptTag}</body>`);
       } else {
         htmlContent += scriptTag;
       }
     }
-    
+
     const iframe = previewRef.current;
     const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
     iframeDoc.open();
@@ -338,7 +344,7 @@ Execution completed in 0.45 seconds.`;
   const togglePreview = () => {
     const newShowPreview = !showPreview;
     setShowPreview(newShowPreview);
-    
+
     if (newShowPreview) {
       // Small delay to ensure the iframe is rendered
       setTimeout(() => {
@@ -365,7 +371,7 @@ Execution completed in 0.45 seconds.`;
   // Download code as file
   const handleDownloadCode = () => {
     if (!tabs[activeTab]) return;
-    
+
     const element = document.createElement("a");
     const file = new Blob([tabs[activeTab].code], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
@@ -379,10 +385,10 @@ Execution completed in 0.45 seconds.`;
   // Reset code to default
   const handleResetCode = () => {
     if (!tabs[activeTab]) return;
-    
-    const newTabs = tabs.map(tab => 
-      tab.id === activeTab 
-        ? { ...tab, code: getDefaultCode(tab.language) } 
+
+    const newTabs = tabs.map((tab) =>
+      tab.id === activeTab
+        ? { ...tab, code: getDefaultCode(tab.language) }
         : tab
     );
     setTabs(newTabs);
@@ -445,7 +451,7 @@ Execution completed in 0.45 seconds.`;
 
   // Get current active tab
   const getActiveTab = () => {
-    return tabs.find(tab => tab.id === activeTab);
+    return tabs.find((tab) => tab.id === activeTab);
   };
 
   // Don't render editor until tabs are initialized
@@ -493,8 +499,8 @@ Execution completed in 0.45 seconds.`;
             <motion.button
               onClick={togglePreview}
               className={`p-1 rounded-lg transition-colors ${
-                showPreview 
-                  ? "bg-red-600 text-white" 
+                showPreview
+                  ? "bg-red-600 text-white"
                   : "text-gray-400 hover:text-white hover:bg-gray-700/50"
               }`}
               whileHover={{ scale: 1.05 }}
@@ -686,7 +692,11 @@ Execution completed in 0.45 seconds.`;
       {/* Main Content Area - Editor and Preview */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Code Editor Section */}
-        <div className={`${showPreview && isWebLanguage ? "md:w-1/2" : "w-full"} h-full overflow-hidden`}>
+        <div
+          className={`${
+            showPreview && isWebLanguage ? "md:w-1/2" : "w-full"
+          } h-full overflow-hidden`}
+        >
           {activeTabData && (
             <Editor
               height="100%"
@@ -702,7 +712,11 @@ Execution completed in 0.45 seconds.`;
 
         {/* Preview Section for HTML/CSS/JS */}
         {showPreview && isWebLanguage && (
-          <div className={`${isPreviewFullscreen ? "fixed inset-0 z-50" : "md:w-1/2"} h-full border-t md:border-t-0 md:border-l border-gray-700 bg-white`}>
+          <div
+            className={`${
+              isPreviewFullscreen ? "fixed inset-0 z-50" : "md:w-1/2"
+            } h-full border-t md:border-t-0 md:border-l border-gray-700 bg-white`}
+          >
             <div className="flex justify-between items-center bg-gray-800 text-white p-2">
               <span className="text-sm">Preview</span>
               <div className="flex space-x-2">
@@ -711,7 +725,9 @@ Execution completed in 0.45 seconds.`;
                   className="p-1 rounded text-gray-400 hover:text-white hover:bg-gray-700/50"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  title={isPreviewFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                  title={
+                    isPreviewFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                  }
                 >
                   {isPreviewFullscreen ? (
                     <FaCompress className="text-sm" />
