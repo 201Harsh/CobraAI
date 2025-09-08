@@ -39,92 +39,114 @@ const DashChatSection = () => {
     if (!text) return null;
 
     return text.split("\n").map((line, lineIndex) => {
-      // Skip empty lines
       if (line.trim() === "") return null;
 
-      const regex = /(<a\s+[^>]*href="[^"]*"[^>]*>.*?<\/a>|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|".*?")/gu;
+      const headingMatch = line.match(/^###\s+(.*)/);
+      if (headingMatch) {
+        return (
+          <h3
+            key={lineIndex}
+            className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 mb-2"
+          >
+            {headingMatch[1]}
+          </h3>
+        );
+      }
 
-      const parts = line
-        .split(regex)
-        .filter(Boolean)
-        .map((part, partIndex) => {
-          const key = `${lineIndex}-${partIndex}`;
+      const regex =
+        /(<a\s+[^>]*href="[^"]*"[^>]*>.*?<\/a>|```.*?```|`.*?`|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|".*?")/gu;
 
-          // Handle anchor tag
-          if (part.startsWith("<a ") && part.includes("</a>")) {
-            const match = part.match(
-              /<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/i
-            );
-            if (match) {
-              const [, href, text] = match;
-              // Extract just the username part (remove @ symbol if present)
-              const usernameOnly = text.replace(/^@/, '');
-              return (
-                <span
-                  key={key}
-                  className="text-blue-400 hover:text-blue-300 underline cursor-pointer font-medium"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open(href, "_blank", "noopener,noreferrer");
-                  }}
-                >
-                  @{usernameOnly}
-                </span>
-              );
-            }
-          }
+      const parts = [];
+      let lastIndex = 0;
+      let match;
 
-          // Bold + italic (***text***)
-          if (part.startsWith("***") && part.endsWith("***")) {
-            return (
+      while ((match = regex.exec(line)) !== null) {
+        const partBefore = line.slice(lastIndex, match.index);
+        if (partBefore) {
+          parts.push(
+            <span key={`${lineIndex}-${lastIndex}`}>{partBefore}</span>
+          );
+        }
+
+        const part = match[0];
+
+        const key = `${lineIndex}-${match.index}`;
+
+        if (part.startsWith("<a ") && part.includes("</a>")) {
+          const anchorMatch = part.match(
+            /<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/i
+          );
+          if (anchorMatch) {
+            const [, href, text] = anchorMatch;
+            const usernameOnly = text.replace(/^@/, "");
+            parts.push(
               <span
                 key={key}
-                className="font-bold italic text-sky-500 inline"
+                className="text-blue-400 hover:text-blue-300 underline cursor-pointer font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(href, "_blank", "noopener,noreferrer");
+                }}
               >
-                {part.slice(3, -3)}
+                @{usernameOnly}
               </span>
             );
           }
+        } else if (part.startsWith("***") && part.endsWith("***")) {
+          parts.push(
+            <span key={key} className="font-extrabold italic text-sky-600">
+              {part.slice(3, -3)}
+            </span>
+          );
+        } else if (part.startsWith("```") && part.endsWith("```")) {
+          parts.push(
+            <code
+              key={key}
+              className="bg-gray-900 text-yellow-500 px-1 rounded"
+            >
+              {part.slice(3, -3)}
+            </code>
+          );
+        } else if (part.startsWith("`") && part.endsWith("`")) {
+          parts.push(
+            <code
+              key={key}
+              className="bg-gray-900 text-yellow-600 px-1 rounded"
+            >
+              {part.slice(1, -1)}
+            </code>
+          );
+        } else if (part.startsWith("**") && part.endsWith("**")) {
+          parts.push(
+            <span key={key} className="font-bold text-pink-600 text-base">
+              {part.slice(2, -2)}
+            </span>
+          );
+        } else if (part.startsWith("*") && part.endsWith("*")) {
+          parts.push(
+            <span key={key} className="italic text-red-400">
+              {part.slice(1, -1)}
+            </span>
+          );
+        } else if (part.startsWith('"') && part.endsWith('"')) {
+          parts.push(
+            <span key={key} className="text-orange-500 font-semibold italic">
+              {part}
+            </span>
+          );
+        } else {
+          // Fallback just in case
+          parts.push(<span key={key}>{part}</span>);
+        }
 
-          // Bold (**text**)
-          if (part.startsWith("**") && part.endsWith("**")) {
-            return (
-              <span
-                key={key}
-                className="font-bold text-pink-400 inline"
-              >
-                {part.slice(2, -2)}
-              </span>
-            );
-          }
+        lastIndex = regex.lastIndex;
+      }
 
-          // Italic (*text*)
-          if (part.startsWith("*") && part.endsWith("*")) {
-            return (
-              <span
-                key={key}
-                className="italic text-red-400 inline"
-              >
-                {part.slice(1, -1)}
-              </span>
-            );
-          }
-
-          // Quoted ("text")
-          if (part.startsWith('"') && part.endsWith('"')) {
-            return (
-              <span
-                key={key}
-                className="text-pink-300 italic inline"
-              >
-                {part}
-              </span>
-            );
-          }
-
-          // Default text
-          return <span key={key}>{part}</span>;
-        });
+      // Add remaining part of the line
+      const remaining = line.slice(lastIndex);
+      if (remaining) {
+        parts.push(<span key={`${lineIndex}-last`}>{remaining}</span>);
+      }
 
       return (
         <p key={lineIndex} className="mb-2 text-sm leading-relaxed">
@@ -132,30 +154,6 @@ const DashChatSection = () => {
         </p>
       );
     });
-  };
-
-  // Function to format message with proper structure
-  const formatMessage = (text) => {
-    if (!text) return "";
-
-    const parts = text.split(
-      "***EndVerse AI v2.0 (Powered by EndGaming AI)***"
-    );
-    const mainContent = parts[0].trim();
-    const signature = parts[1]
-      ? "***EndVerse AI v2.0 (Powered by EndGaming AI)***" + parts[1]
-      : null;
-
-    return (
-      <div className="message-content">
-        {formatTextContent(mainContent)}
-        {signature && (
-          <div className="mt-4 pt-4 border-t border-gray-700">
-            {formatTextContent(signature)}
-          </div>
-        )}
-      </div>
-    );
   };
 
   const handleInputChange = (e) => {
@@ -388,7 +386,7 @@ const DashChatSection = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-gray-900 border-l border-gray-700">
+    <div className="h-full w-full flex flex-col bg-gray-950">
       <div
         onClick={scrollToBottom}
         className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600/30 backdrop-blur-xl border-1
@@ -445,7 +443,7 @@ const DashChatSection = () => {
                       className={`rounded-2xl px-4 py-3 max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl ${
                         message.sender === "user"
                           ? "bg-gradient-to-br from-red-800 to-pink-700 text-white"
-                          : "bg-gray-700/80 backdrop-blur-sm text-white"
+                          : "bg-gray-800/80 backdrop-blur-sm text-white"
                       }`}
                     >
                       <div className="max-w-full">
