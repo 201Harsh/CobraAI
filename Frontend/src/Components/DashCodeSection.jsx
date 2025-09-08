@@ -12,6 +12,8 @@ import {
   FaBars,
   FaTimes,
   FaPlus,
+  FaEye,
+  FaWindowClose
 } from "react-icons/fa";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
@@ -23,7 +25,10 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [ProgramingLang, setProgramingLang] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
+  const [isPreviewFullscreen, setIsPreviewFullscreen] = useState(false);
   const editorRef = useRef(null);
+  const previewRef = useRef(null);
 
   const monacoLanguageMap = {
     "html-css-js": "html",
@@ -122,6 +127,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 </head>
 <body>
     <h1>Welcome to CodeAstra!</h1>
+    <p>Edit this code to see changes in the preview.</p>
     <script src="script.js"></script>
 </body>
 </html>`;
@@ -135,13 +141,25 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 
 h1 {
     color: #333;
+}
+
+p {
+    color: #666;
 }`;
       case "javascript":
         return `console.log('CodeAstra! By Harsh!');
 
 function greet() {
     return 'Welcome to CodeAstra!';
-}`;
+}
+
+// Display greeting
+document.addEventListener('DOMContentLoaded', function() {
+    const greetingElement = document.createElement('p');
+    greetingElement.textContent = greet();
+    greetingElement.style.color = 'blue';
+    document.body.appendChild(greetingElement);
+});`;
       case "python":
         return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
       case "json":
@@ -256,6 +274,12 @@ function greet() {
     setIsLoading(true);
     setOutput("Running code...");
 
+    // For HTML/CSS/JS, update the preview if it's open
+    const language = localStorage.getItem("Language");
+    if (language === "html-css-js" && showPreview) {
+      updatePreview();
+    }
+
     // Simulate code execution with a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -270,6 +294,62 @@ Execution completed in 0.45 seconds.`;
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Update the preview iframe
+  const updatePreview = () => {
+    if (!previewRef.current) return;
+    
+    const htmlTab = tabs.find(tab => tab.language === "html");
+    const cssTab = tabs.find(tab => tab.language === "css");
+    const jsTab = tabs.find(tab => tab.language === "javascript");
+    
+    let htmlContent = htmlTab?.code || "";
+    const cssContent = cssTab?.code || "";
+    const jsContent = jsTab?.code || "";
+    
+    // Inject CSS and JS into the HTML
+    if (cssContent) {
+      const styleTag = `<style>${cssContent}</style>`;
+      if (htmlContent.includes('</head>')) {
+        htmlContent = htmlContent.replace('</head>', `${styleTag}</head>`);
+      } else {
+        htmlContent = htmlContent.replace('<head>', `<head>${styleTag}`);
+      }
+    }
+    
+    if (jsContent) {
+      const scriptTag = `<script>${jsContent}</script>`;
+      if (htmlContent.includes('</body>')) {
+        htmlContent = htmlContent.replace('</body>', `${scriptTag}</body>`);
+      } else {
+        htmlContent += scriptTag;
+      }
+    }
+    
+    const iframe = previewRef.current;
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(htmlContent);
+    iframeDoc.close();
+  };
+
+  // Toggle preview visibility
+  const togglePreview = () => {
+    const newShowPreview = !showPreview;
+    setShowPreview(newShowPreview);
+    
+    if (newShowPreview) {
+      // Small delay to ensure the iframe is rendered
+      setTimeout(() => {
+        updatePreview();
+      }, 100);
+    }
+  };
+
+  // Toggle preview fullscreen
+  const togglePreviewFullscreen = () => {
+    setIsPreviewFullscreen(!isPreviewFullscreen);
   };
 
   // Copy code to clipboard
@@ -328,6 +408,14 @@ Execution completed in 0.45 seconds.`;
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showToolbar]);
 
+  // Update preview when code changes for HTML/CSS/JS
+  useEffect(() => {
+    const language = localStorage.getItem("Language");
+    if (language === "html-css-js" && showPreview) {
+      updatePreview();
+    }
+  }, [tabs, activeTab]);
+
   // Responsive editor options
   const editorOptions = {
     selectOnLineNumbers: true,
@@ -370,6 +458,8 @@ Execution completed in 0.45 seconds.`;
   }
 
   const activeTabData = getActiveTab();
+  const language = localStorage.getItem("Language");
+  const isWebLanguage = language === "html-css-js";
 
   return (
     <div
@@ -398,6 +488,23 @@ Execution completed in 0.45 seconds.`;
         </div>
 
         <div className="flex items-center space-x-1">
+          {/* Preview button for HTML/CSS/JS */}
+          {isWebLanguage && (
+            <motion.button
+              onClick={togglePreview}
+              className={`p-1 rounded-lg transition-colors ${
+                showPreview 
+                  ? "bg-red-600 text-white" 
+                  : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title={showPreview ? "Hide Preview" : "Show Preview"}
+            >
+              <FaEye className="text-sm" />
+            </motion.button>
+          )}
+
           {/* Mobile toolbar toggle */}
           {isMobileView && (
             <div className="toolbar-container relative">
@@ -576,20 +683,71 @@ Execution completed in 0.45 seconds.`;
         </button>
       </div>
 
-      {/* Code Editor Section */}
-      <div className="flex-1 overflow-hidden">
-        {activeTabData && (
-          <Editor
-            height="100%"
-            language={activeTabData.language}
-            value={activeTabData.code}
-            onChange={updateTabCode}
-            onMount={handleEditorDidMount}
-            options={editorOptions}
-            theme="codeastra-dark"
-          />
+      {/* Main Content Area - Editor and Preview */}
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+        {/* Code Editor Section */}
+        <div className={`${showPreview && isWebLanguage ? "md:w-1/2" : "w-full"} h-full overflow-hidden`}>
+          {activeTabData && (
+            <Editor
+              height="100%"
+              language={activeTabData.language}
+              value={activeTabData.code}
+              onChange={updateTabCode}
+              onMount={handleEditorDidMount}
+              options={editorOptions}
+              theme="codeastra-dark"
+            />
+          )}
+        </div>
+
+        {/* Preview Section for HTML/CSS/JS */}
+        {showPreview && isWebLanguage && (
+          <div className={`${isPreviewFullscreen ? "fixed inset-0 z-50" : "md:w-1/2"} h-full border-t md:border-t-0 md:border-l border-gray-700 bg-white`}>
+            <div className="flex justify-between items-center bg-gray-800 text-white p-2">
+              <span className="text-sm">Preview</span>
+              <div className="flex space-x-2">
+                <motion.button
+                  onClick={togglePreviewFullscreen}
+                  className="p-1 rounded text-gray-400 hover:text-white hover:bg-gray-700/50"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  title={isPreviewFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                >
+                  {isPreviewFullscreen ? (
+                    <FaCompress className="text-sm" />
+                  ) : (
+                    <FaExpand className="text-sm" />
+                  )}
+                </motion.button>
+                <motion.button
+                  onClick={togglePreview}
+                  className="p-1 rounded text-gray-400 hover:text-white hover:bg-gray-700/50"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  title="Close Preview"
+                >
+                  <FaWindowClose className="text-sm" />
+                </motion.button>
+              </div>
+            </div>
+            <iframe
+              ref={previewRef}
+              title="code-preview"
+              className="w-full h-full border-0"
+              sandbox="allow-same-origin allow-scripts"
+            />
+          </div>
         )}
       </div>
+
+      {/* Output Console */}
+      {output && (
+        <div className="bg-gray-800 border-t border-gray-700 p-3">
+          <div className="text-white text-sm font-mono whitespace-pre-wrap overflow-auto max-h-40">
+            {output}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
