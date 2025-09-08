@@ -394,7 +394,7 @@ const DashChatSection = () => {
       <div
         onClick={scrollToBottom}
         className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-600/30 backdrop-blur-xl border-1
-       border-gray-600 absolute bottom-28 right-3 sm:bottom-32 z-50 cursor-pointer"
+       border-gray-600 absolute bottom-28 right-5 sm:bottom-32 z-50 cursor-pointer"
       >
         <FaArrowDown className="text-pink-300 text-xs" />
       </div>
@@ -595,7 +595,7 @@ const DashChatSection = () => {
               placeholder={
                 isWaitingForResponse
                   ? "Waiting for response..."
-                  : "Message CodeAstra for Help..."
+                  : "Message CodeAstra to Start Learning..."
               }
               className="w-full resize-none overflow-y-auto flex text-area flex-col gap-2 px-3 py-2 sm:px-4 sm:py-3 
              bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 
