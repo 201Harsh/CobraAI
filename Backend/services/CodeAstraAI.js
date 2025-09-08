@@ -42,7 +42,7 @@ ${lessonCompletionMessage}
 ${
   !historyText
     ? `Begin with a warm, personalized greeting:
-"Hello ${User.name}! 👋 I'm Harsh, your CodeAstra AI tutor. 
+"Hello ***${User.name}!*** 👋 I'm Harsh, your CodeAstra AI tutor. 
 I see you're at the ${User.Level} level focusing on ${User.Language}, 
 and I'll be helping you learn in a ${User.LearningStyle.toLowerCase()} way!"
 
