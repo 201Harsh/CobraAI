@@ -2,8 +2,25 @@ const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({ apiKey: process.env.CODEASTRA_AI_API_KEY });
 
+// Store lesson progress
+const lessonProgress = new Map();
+
 async function main({ prompt, User, fullPrompt, historyText }) {
   try {
+    // Extract current topic from prompt (simplified approach)
+    const currentTopic = extractTopicFromPrompt(prompt, User.Language);
+    
+    // Check if this is a continuation of a previous lesson
+    let lessonCompletionMessage = "";
+    if (currentTopic && historyText) {
+      lessonCompletionMessage = checkLessonCompletion(
+        User.id, 
+        currentTopic, 
+        historyText,
+        User.Language
+      );
+    }
+
     const systemInstructions = `
 ***Trinetra AI***
 **CodeAstra AI Tutor - Mentored by Harsh**
@@ -14,6 +31,12 @@ ${
     ? `Here is the user's recent conversation history:\n${historyText}\n\nPlease use this context to provide a continuous, coherent learning experience.`
     : "This appears to be a new conversation. Start with a warm greeting."
 }
+
+# LESSON COMPLETION TRACKING:
+${lessonCompletionMessage ? `
+**LESSON COMPLETION NOTICE:**
+${lessonCompletionMessage}
+` : ""}
 
 # GREETING AND INTRODUCTION:
 ${
@@ -121,7 +144,7 @@ ${
     ? "1. PERSONALIZED GREETING (new conversation)"
     : "1. CONTINUE naturally from previous conversation"
 }
-2. ACKNOWLEDGE question/request in context of our discussion
+${lessonCompletionMessage ? "2. LESSON COMPLETION ACKNOWLEDGEMENT" : "2. ACKNOWLEDGE question/request in context of our discussion"}
 3. If language request matches user's selected language: PROVIDE level-appropriate explanation
 4. If language request differs: POLITELY REFUSE and explain benefits of focusing on ${
       User.Language
@@ -137,7 +160,6 @@ ${
 - For Python files, use # comments at the top
 - Always Use Harsh's Name or CodeAstra in the Code Like Variables name or Function Name or Anything.
 - Ensure code is well-formatted and adheres to best practices
-- Use appropriate comments to explain code logic
 - No Buggy Code or Error-Prone Code - Always Test Code before Providing
 - Best Code Must Be given to User with all the Latest Features and Best Practices.
 
@@ -153,6 +175,13 @@ ${
 - When refusing other languages, be encouraging but firm
 - Reference previous conversations when appropriate for continuity
 
+# LESSON COMPLETION RECOGNITION:
+- Track when a user completes a significant lesson (like React Hooks)
+- When a topic is completed, acknowledge this achievement
+- Provide positive reinforcement for completing the lesson
+- Encourage questions about the completed topic before moving on
+- Example: "Great job ${User.name}! 🎉 You've now completed the React Hooks concepts. If you have any doubts about hooks, feel free to ask before we move forward!"
+
 # IMPORTANT RULES:
 - ONLY provide solutions in the user's selected language: ${User.Language}
 - STRICTLY REFUSE to provide code in any other programming language
@@ -166,7 +195,7 @@ ${
 - NEVER break character as CodeAstra AI Tutor mentored by Harsh
 - USE conversation history to provide context-aware responses
 - You Have the Lastest Knowledge about the Technologies till ${new Date().getFullYear()}
-
+- RECOGNIZE and ACKNOWLEDGE when a lesson is completed
 
 Remember: You're guiding ${
       User.name
@@ -180,6 +209,12 @@ Remember: You're guiding ${
         systemInstruction: systemInstructions,
       },
     });
+    
+    // Update lesson progress after response
+    if (currentTopic) {
+      updateLessonProgress(User.id, currentTopic, prompt, response.text, User.Language);
+    }
+    
     return response.text;
   } catch (error) {
     return `Error in CodeAstraAI: ${error.message}`;
@@ -243,6 +278,223 @@ Remember: You're guiding ${
       "Use a balanced approach with clear explanations and practical examples."
     );
   }
+}
+
+// Helper function to extract topic from prompt based on language
+function extractTopicFromPrompt(prompt, userLanguage) {
+  const languageTopics = {
+    "html-css-js": {
+      html_basics: ["html", "tags", "elements", "attributes", "semantic", "doctype"],
+      css_basics: ["css", "styles", "selectors", "properties", "box model", "flexbox", "grid"],
+      javascript_basics: ["javascript", "variables", "data types", "functions", "dom", "events"],
+      responsive_design: ["responsive", "media queries", "mobile", "viewport"],
+      css_frameworks: ["bootstrap", "tailwind", "foundation", "materialize"],
+      javascript_advanced: ["es6", "async", "promises", "ajax", "fetch", "apis"],
+    },
+    reactjs: {
+      hooks: ["hooks", "useState", "useEffect", "useContext", "useReducer", "custom hooks"],
+      components: ["components", "jsx", "props", "stateful", "stateless", "composition"],
+      routing: ["routing", "react router", "routes", "navigation", "link"],
+      state_management: ["state management", "redux", "context api", "state", "zustand"],
+      lifecycle: ["lifecycle", "componentDidMount", "componentDidUpdate", "useEffect"],
+      performance: ["performance", "memo", "useMemo", "useCallback", "lazy loading"],
+    },
+    "react-native": {
+      components: ["components", "view", "text", "image", "scrollview", "flatlist"],
+      navigation: ["navigation", "react navigation", "stack", "tab", "drawer"],
+      styling: ["styles", "stylesheet", "flexbox", "responsive", "dimensions"],
+      apis: ["apis", "asyncstorage", "geolocation", "camera", "permissions"],
+      performance: ["performance", "optimization", "memory", "rendering"],
+      deployment: ["deployment", "app store", "play store", "building", "signing"],
+    },
+    "node-express": {
+      basics: ["node", "express", "server", "middleware", "routing", "requests"],
+      rest_apis: ["rest", "api", "endpoints", "crud", "http methods", "status codes"],
+      authentication: ["authentication", "jwt", "oauth", "passport", "sessions"],
+      database: ["database", "mongodb", "mongoose", "orm", "models", "queries"],
+      security: ["security", "helmet", "cors", "validation", "sanitization"],
+      deployment: ["deployment", "heroku", "vercel", "aws", "digital ocean"],
+    },
+    mongodb: {
+      basics: ["mongodb", "nosql", "documents", "collections", "databases"],
+      crud: ["create", "read", "update", "delete", "insert", "find", "update", "remove"],
+      queries: ["queries", "operators", "comparison", "logical", "array", "element"],
+      aggregation: ["aggregation", "pipeline", "group", "match", "project", "sort"],
+      indexing: ["indexes", "performance", "query optimization", "explain"],
+      data_modeling: ["data modeling", "relationships", "embedding", "referencing"],
+    },
+    mysql: {
+      basics: ["mysql", "sql", "tables", "columns", "rows", "datatypes", "constraints"],
+      queries: ["select", "insert", "update", "delete", "where", "order by", "limit"],
+      joins: ["joins", "inner join", "left join", "right join", "cross join", "union"],
+      functions: ["functions", "aggregate", "string", "date", "numeric", "conditional"],
+      normalization: ["normalization", "1nf", "2nf", "3nf", "relationships", "keys"],
+      transactions: ["transactions", "acid", "commit", "rollback", "isolation levels"],
+    },
+    python: {
+      basics: ["python", "variables", "data types", "operators", "input", "output"],
+      control_flow: ["if", "else", "elif", "for", "while", "break", "continue"],
+      functions: ["functions", "parameters", "return", "lambda", "scope", "recursion"],
+      data_structures: ["list", "tuple", "dictionary", "set", "comprehensions"],
+      oop: ["oop", "class", "object", "inheritance", "polymorphism", "encapsulation"],
+      modules: ["modules", "packages", "import", "standard library", "pip"],
+    },
+    "ai-ml-basics": {
+      basics: ["ai", "ml", "machine learning", "artificial intelligence", "types"],
+      preprocessing: ["preprocessing", "cleaning", "normalization", "encoding", "scaling"],
+      linear_regression: ["linear regression", "regression", "line fitting", "gradient descent"],
+      classification: ["classification", "logistic regression", "decision trees", "naive bayes"],
+      evaluation: ["evaluation", "accuracy", "precision", "recall", "f1 score", "confusion matrix"],
+      libraries: ["libraries", "sklearn", "scikit learn", "pandas", "numpy", "matplotlib"],
+    }
+  };
+
+  const lowerPrompt = prompt.toLowerCase();
+  const topics = languageTopics[userLanguage] || {};
+  
+  for (const [topic, keywords] of Object.entries(topics)) {
+    if (keywords.some(keyword => lowerPrompt.includes(keyword))) {
+      return topic;
+    }
+  }
+  
+  return null;
+}
+
+// Helper function to check if a lesson is completed
+function checkLessonCompletion(userId, currentTopic, historyText, userLanguage) {
+  if (!lessonProgress.has(userId)) {
+    lessonProgress.set(userId, {});
+  }
+  
+  const userProgress = lessonProgress.get(userId);
+  const lowerHistory = historyText.toLowerCase();
+  
+  // Completion criteria for all languages and topics
+  const completionCriteria = {
+    "html-css-js": {
+      html_basics: ["html structure", "semantic tags", "attributes", "forms", "tables", "accessibility"],
+      css_basics: ["selectors", "box model", "positioning", "flexbox", "grid", "responsive design"],
+      javascript_basics: ["variables", "data types", "functions", "dom manipulation", "events", "conditionals"],
+      responsive_design: ["media queries", "viewport", "responsive units", "mobile first", "breakpoints"],
+      css_frameworks: ["bootstrap components", "tailwind utilities", "grid system", "responsive classes"],
+      javascript_advanced: ["es6 features", "async/await", "promises", "fetch api", "modules", "closures"],
+    },
+    reactjs: {
+      hooks: ["useState", "useEffect", "useContext", "useReducer", "custom hooks", "rules of hooks"],
+      components: ["functional components", "class components", "jsx", "props", "component composition"],
+      routing: ["react router", "route parameters", "navigation", "link component", "programmatic navigation"],
+      state_management: ["redux", "context api", "state", "actions", "reducers", "store"],
+      lifecycle: ["componentDidMount", "componentDidUpdate", "useEffect lifecycle", "cleanup", "dependencies"],
+      performance: ["memo", "useMemo", "useCallback", "lazy loading", "code splitting", "virtual dom"],
+    },
+    "react-native": {
+      components: ["view", "text", "image", "scrollview", "flatlist", "touchable", "styles"],
+      navigation: ["react navigation", "stack navigator", "tab navigator", "drawer navigator", "params"],
+      styling: ["stylesheet", "flexbox layout", "responsive design", "platform specific styles"],
+      apis: ["asyncstorage", "geolocation", "camera", "permissions", "network requests"],
+      performance: ["optimization", "memory management", "rendering performance", "debugging"],
+      deployment: ["building apk", "app signing", "app store", "play store", "over-the-air updates"],
+    },
+    "node-express": {
+      basics: ["express server", "middleware", "routing", "request handling", "response sending"],
+      rest_apis: ["rest principles", "crud operations", "http methods", "status codes", "endpoint design"],
+      authentication: ["jwt tokens", "password hashing", "oauth", "session management", "middleware"],
+      database: ["mongodb integration", "mongoose models", "queries", "relationships", "aggregation"],
+      security: ["helmet.js", "cors", "input validation", "xss protection", "sql injection prevention"],
+      deployment: ["environment variables", "process managers", "cloud deployment", "logging", "monitoring"],
+    },
+    mongodb: {
+      basics: ["collections", "documents", "bson", "datatypes", "database operations"],
+      crud: ["insert", "find", "update", "delete", "query operators", "bulk operations"],
+      queries: ["comparison operators", "logical operators", "array operators", "element operators"],
+      aggregation: ["aggregation pipeline", "$match", "$group", "$project", "$sort", "$lookup"],
+      indexing: ["index types", "index creation", "query optimization", "explain plans"],
+      data_modeling: ["embedded documents", "referenced documents", "relationships", "schema design"],
+    },
+    mysql: {
+      basics: ["tables", "columns", "datatypes", "constraints", "create table", "alter table"],
+      queries: ["select", "where", "order by", "group by", "having", "limit", "subqueries"],
+      joins: ["inner join", "left join", "right join", "cross join", "self join", "union"],
+      functions: ["aggregate functions", "string functions", "date functions", "numeric functions"],
+      normalization: ["first normal form", "second normal form", "third normal form", "primary keys", "foreign keys"],
+      transactions: ["begin transaction", "commit", "rollback", "acid properties", "isolation levels"],
+    },
+    python: {
+      basics: ["variables", "data types", "operators", "input/output", "type conversion", "comments"],
+      control_flow: ["if statements", "for loops", "while loops", "break", "continue", "pass"],
+      functions: ["function definition", "parameters", "return values", "lambda functions", "scope"],
+      data_structures: ["lists", "tuples", "dictionaries", "sets", "list comprehensions", "dictionary comprehensions"],
+      oop: ["classes", "objects", "inheritance", "polymorphism", "encapsulation", "magic methods"],
+      modules: ["import statements", "standard library", "pip packages", "virtual environments", "package creation"],
+    },
+    "ai-ml-basics": {
+      basics: ["supervised learning", "unsupervised learning", "reinforcement learning", "training/testing"],
+      preprocessing: ["data cleaning", "handling missing values", "feature scaling", "one-hot encoding", "label encoding"],
+      linear_regression: ["simple linear regression", "multiple linear regression", "gradient descent", "cost function"],
+      classification: ["logistic regression", "decision trees", "naive bayes", "k-nearest neighbors", "support vector machines"],
+      evaluation: ["train-test split", "cross-validation", "accuracy", "precision", "recall", "confusion matrix"],
+      libraries: ["pandas dataframes", "numpy arrays", "scikit-learn models", "matplotlib plotting", "seaborn visualization"],
+    }
+  };
+
+  const languageCriteria = completionCriteria[userLanguage];
+  if (languageCriteria && languageCriteria[currentTopic]) {
+    const coveredConcepts = languageCriteria[currentTopic].filter(
+      concept => lowerHistory.includes(concept.toLowerCase())
+    );
+    
+    // If 80% of concepts are covered, consider the lesson complete
+    if (coveredConcepts.length >= languageCriteria[currentTopic].length * 0.8) {
+      if (!userProgress[currentTopic] || !userProgress[currentTopic].completed) {
+        userProgress[currentTopic] = { completed: true, completedAt: new Date() };
+        lessonProgress.set(userId, userProgress);
+        
+        const languageLabel = getLanguageLabel(userLanguage);
+        return `🎉 Congratulations ${User.name}! You've successfully completed the ${currentTopic.replace(/_/g, ' ')} concepts in ${languageLabel}. If you have any doubts about ${currentTopic.replace(/_/g, ' ')}, feel free to ask before we move on to the next topic!`;
+      }
+    }
+  }
+  
+  return "";
+}
+
+// Helper function to get language label
+function getLanguageLabel(languageValue) {
+  const languageMap = {
+    "html-css-js": "HTML, CSS and JavaScript",
+    reactjs: "React JS",
+    "react-native": "React Native",
+    "node-express": "Node.js & Express.js",
+    mongodb: "MongoDB",
+    mysql: "MySQL",
+    python: "Python",
+    "ai-ml-basics": "AI / ML Basics",
+  };
+  return languageMap[languageValue] || languageValue;
+}
+
+// Helper function to update lesson progress
+function updateLessonProgress(userId, topic, prompt, response, userLanguage) {
+  if (!lessonProgress.has(userId)) {
+    lessonProgress.set(userId, {});
+  }
+  
+  const userProgress = lessonProgress.get(userId);
+  
+  if (!userProgress[topic]) {
+    userProgress[topic] = {
+      startedAt: new Date(),
+      interactions: 1,
+      completed: false,
+      language: userLanguage
+    };
+  } else {
+    userProgress[topic].interactions = (userProgress[topic].interactions || 0) + 1;
+    userProgress[topic].lastInteraction = new Date();
+  }
+  
+  lessonProgress.set(userId, userProgress);
 }
 
 module.exports = main;
