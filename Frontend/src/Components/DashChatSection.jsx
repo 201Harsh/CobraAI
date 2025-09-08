@@ -396,7 +396,7 @@ const DashChatSection = () => {
         <FaArrowDown className="text-pink-300" />
       </div>
       {/* Chat Messages Section */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 welcome-pg">
+      <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-850 chat-Section">
         <div className="max-w-full space-y-6">
           <AnimatePresence>
             {messages.map((message) => {
@@ -440,13 +440,13 @@ const DashChatSection = () => {
 
                     {/* Message Content */}
                     <div
-                      className={`rounded-2xl px-4 py-3 max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl ${
+                      className={`rounded-2xl px-4 py-3 whitespace-nowrap max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl ${
                         message.sender === "user"
                           ? "bg-gradient-to-br from-red-800 to-pink-700 text-white"
                           : "bg-gray-800/80 backdrop-blur-sm text-white"
                       }`}
                     >
-                      <div className="max-w-full">
+                      <div className="max-w-sm sm:max-w-2xl md:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl overflow-hidden">
                         {messageParts.map((part, index) => {
                           if (part.type === "code") {
                             return (

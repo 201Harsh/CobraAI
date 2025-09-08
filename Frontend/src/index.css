@@ -14,12 +14,35 @@
 }
 
 .text-area::-webkit-scrollbar-thumb {
-  background: #4B5563;
+  background: #4b5563;
   border-radius: 3px;
 }
 
 .text-area::-webkit-scrollbar-thumb:hover {
-  background: #6B7280;
+  background: #6b7280;
 }
 
+.chat-Section::-webkit-scrollbar {
+    width: 8px;
+  }
 
+  .chat-Section::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  .chat-Section::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 3px;
+  }
+
+  .chat-Section::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
+
+@media screen and (max-width: 640px) {
+  .chat-Section::-webkit-scrollbar {
+    display: none;
+  }
+}
