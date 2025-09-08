@@ -34,6 +34,37 @@ const DashChatSection = () => {
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 
+  // Function to format text with special characters and links
+  const formatText = (text) => {
+    // Don't process empty text
+    if (!text) return text;
+    
+    // Process text to make content within special characters bold
+    let formattedText = text.replace(
+      /([*_`'"])(.*?)\1/g, 
+      (match, symbol, content) => {
+        // Don't process if it's part of a code block marker
+        if (match.startsWith('```') || match.endsWith('```')) return match;
+        return `<strong>${content}</strong>`;
+      }
+    );
+    
+    // Process URLs to convert them to proper links
+    formattedText = formattedText.replace(
+      /<a\s+href=["'](.*?)["']>(.*?)<\/a>/g,
+      (match, url, linkText) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">${linkText}</a>`;
+      }
+    );
+    
+    return formattedText;
+  };
+
+  // Component to render formatted text with HTML
+  const FormattedText = ({ text }) => {
+    return <span dangerouslySetInnerHTML={{ __html: formatText(text) }} />;
+  };
+
   const handleInputChange = (e) => {
     setInputMessage(e.target.value);
 
@@ -217,6 +248,7 @@ const DashChatSection = () => {
       });
 
       if (response.status === 200) {
+        console.log(response.data.response);
         const botResponse = response.data.response;
         const newBotMessage = {
           id: Date.now() + 1,
@@ -389,7 +421,7 @@ const DashChatSection = () => {
                                 key={index}
                                 className="text-sm whitespace-pre-wrap mb-2 last:mb-0"
                               >
-                                {part.content}
+                                <FormattedText text={part.content} />
                               </p>
                             );
                           }
