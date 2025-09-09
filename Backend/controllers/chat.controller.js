@@ -11,10 +11,6 @@ module.exports.SaveChatHistory = async (req, res) => {
     if (chat) {
       chat.ChatHistory.push(newChatMessage);
 
-      if (chat.ChatHistory.length > 50) {
-        chat.ChatHistory = chat.ChatHistory.slice(-70);
-      }
-
       await chat.save();
     } else {
       chat = new ChatModel({
