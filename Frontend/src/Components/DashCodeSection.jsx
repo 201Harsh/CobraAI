@@ -109,7 +109,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
           id: 0,
           language: "python",
           name: "main.py",
-          code: "# Write your Python code here\nprint('Hello, World!')",
+          code: "# Write your Python code here\n print('Hello, World!')",
           isDefault: true,
         },
       ]);
@@ -166,14 +166,14 @@ p {
       case "javascript":
         return `// console.log('CodeAstra! By Harsh!');`;
       case "python":
-        return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
+        return "# Write your Python code here\n print('Welcome to CodeAstra!')";
       case "json":
         return `{
   "key": "value",
   "array": [1, 2, 3]
 }`;
       case "sql":
-        return "-- Write your SQL queries here\nSELECT * FROM users;";
+        return "-- Write your SQL queries here\n SELECT * FROM users;";
       default:
         return `// Write your ${language} code here`;
     }
