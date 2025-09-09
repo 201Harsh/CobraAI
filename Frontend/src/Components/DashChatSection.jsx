@@ -95,7 +95,7 @@ const DashChatSection = () => {
           }
         } else if (part.startsWith("***") && part.endsWith("***")) {
           parts.push(
-            <span key={key} className="font-extrabold italic text-sky-600">
+            <span key={key} className="font-extrabold text-lg capitalize italic text-sky-600">
               {part.slice(3, -3)}
             </span>
           );
