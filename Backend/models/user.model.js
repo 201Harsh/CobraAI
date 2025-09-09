@@ -28,7 +28,6 @@ const UserSchema = new mongoose.Schema({
   Level: {
     type: String,
     default: "Beginner",
-    enum: ["Beginner", "Intermediate", "Advanced", "Expert"],
   },
   Language: {
     type: String,
