@@ -746,22 +746,24 @@ p {
           )}
 
           {/* Run Button */}
-          <motion.button
-            onClick={handleRunCode}
-            disabled={isLoading}
-            className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
-              isLoading
-                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
-            }`}
-            whileHover={isLoading ? {} : { scale: 1.05 }}
-            whileTap={isLoading ? {} : { scale: 0.95 }}
-          >
-            <FaPlay className="text-xs" />
-            <span className="hidden sm:inline">
-              {isLoading ? "Running..." : "Run"}
-            </span>
-          </motion.button>
+          {language !== "html-css-js" && (
+  <motion.button
+    onClick={handleRunCode}
+    disabled={isLoading}
+    className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
+      isLoading
+        ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+        : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
+    }`}
+    whileHover={isLoading ? {} : { scale: 1.05 }}
+    whileTap={isLoading ? {} : { scale: 0.95 }}
+  >
+    <FaPlay className="text-xs" />
+    <span className="hidden sm:inline">
+      {isLoading ? "Running..." : "Run"}
+    </span>
+  </motion.button>
+)}
         </div>
       </div>
 
