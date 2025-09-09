@@ -15,6 +15,9 @@ import {
   FaPlus,
   FaEye,
   FaWindowClose,
+  FaChevronDown,
+  FaChevronUp,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
@@ -28,6 +31,9 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [isPreviewFullscreen, setIsPreviewFullscreen] = useState(false);
+  const [userInputs, setUserInputs] = useState("");
+  const [showInputPanel, setShowInputPanel] = useState(false);
+  const [inputRequired, setInputRequired] = useState(false);
   const editorRef = useRef(null);
   const previewRef = useRef(null);
 
@@ -56,7 +62,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const tabLanguageMap = {
     "html-css-js": ["html", "css", "javascript"],
     reactjs: ["javascript"],
-    "react-native": ["javascript"],
+    "react-native": "javascript",
     "node-express": ["javascript"],
     mongodb: ["json"],
     mysql: ["sql"],
@@ -110,7 +116,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
           id: 0,
           language: "python",
           name: "main.py",
-          code: "# Write your Python code here\nprint('Hello, World!')",
+          code: "# Write your Python code here\nprint('Hello, World!')\nname = input('Enter your name: ')\nprint(f'Hello, {name}!')",
           isDefault: true,
         },
       ]);
@@ -118,6 +124,41 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 
     setIsInitialized(true);
   }, []);
+
+  // Check if code contains input() calls
+  const checkForInputCalls = (code) => {
+    if (!code) return false;
+
+    // Check for input() function calls, ignoring commented lines
+    const lines = code.split("\n");
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Skip empty lines and comments
+      if (!trimmedLine || trimmedLine.startsWith("#")) continue;
+
+      // Check if line contains input() call (not in a comment)
+      if (trimmedLine.includes("input(") && !trimmedLine.includes("#")) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  // Update input required state when code changes
+  useEffect(() => {
+    const activeTabData = getActiveTab();
+    if (activeTabData) {
+      const hasInputCalls = checkForInputCalls(activeTabData.code);
+      setInputRequired(hasInputCalls);
+
+      // Auto-show input panel if input() calls are detected
+      if (hasInputCalls && !showInputPanel) {
+        setShowInputPanel(true);
+      }
+    }
+  }, [tabs, activeTab]);
 
   // Get default code for a language
   const getDefaultCode = (language) => {
@@ -181,12 +222,13 @@ p {
   };
 
   // Execute Python code using Piston API
-  const executePythonCode = async (code) => {
+  const executePythonCode = async (code, input) => {
     try {
       const res = await axios.post("https://emkc.org/api/v2/piston/execute", {
         language: "python3",
         version: "3.10.0",
         files: [{ content: code }],
+        stdin: input,
       });
 
       if (res.status === 200) {
@@ -296,6 +338,14 @@ p {
   const handleRunCode = async () => {
     if (!tabs[activeTab]) return;
 
+    // Check if input is required but not provided
+    if (inputRequired && !userInputs.trim()) {
+      setOutput(
+        "Error: This code requires input but no input was provided.\nPlease provide input in the input panel above."
+      );
+      return;
+    }
+
     setIsLoading(true);
     setOutput("Running code...");
 
@@ -308,7 +358,10 @@ p {
     // Execute Python code using Piston API
     if (language === "python" || language === "ai-ml-basics") {
       try {
-        const result = await executePythonCode(tabs[activeTab].code);
+        const result = await executePythonCode(
+          tabs[activeTab].code,
+          userInputs
+        );
         setOutput(result || "Code executed successfully (no output)");
       } catch (error) {
         setOutput(`Error: ${error.message}`);
@@ -432,6 +485,11 @@ p {
     setShowToolbar(false);
   };
 
+  // Toggle input panel visibility
+  const toggleInputPanel = () => {
+    setShowInputPanel(!showInputPanel);
+  };
+
   // Close toolbar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -496,6 +554,7 @@ p {
   const activeTabData = getActiveTab();
   const language = localStorage.getItem("Language");
   const isWebLanguage = language === "html-css-js";
+  const isPythonLanguage = language === "python" || language === "ai-ml-basics";
 
   return (
     <div
@@ -538,6 +597,27 @@ p {
               title={showPreview ? "Hide Preview" : "Show Preview"}
             >
               <FaEye className="text-sm" />
+            </motion.button>
+          )}
+
+          {/* Input panel toggle for Python */}
+          {isPythonLanguage && (
+            <motion.button
+              onClick={toggleInputPanel}
+              className={`p-1 rounded-lg transition-colors ${
+                showInputPanel
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-400 hover:text-white hover:bg-gray-700/50"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title={showInputPanel ? "Hide Input Panel" : "Show Input Panel"}
+            >
+              {showInputPanel ? (
+                <FaChevronUp className="text-sm" />
+              ) : (
+                <FaChevronDown className="text-sm" />
+              )}
             </motion.button>
           )}
 
@@ -685,6 +765,35 @@ p {
           </motion.button>
         </div>
       </div>
+
+      {/* Input Panel for Python */}
+      {isPythonLanguage && showInputPanel && (
+        <div className="bg-gray-800 border-b border-gray-700 p-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-300 font-medium">
+                Program Input (for input() calls)
+              </span>
+              {inputRequired && !userInputs.trim() && (
+                <div className="flex items-center space-x-1 text-yellow-400 text-xs">
+                  <FaExclamationTriangle className="text-xs" />
+                  <span>Input required</span>
+                </div>
+              )}
+            </div>
+            <span className="text-xs text-gray-500">
+              Enter each input on a new line
+            </span>
+          </div>
+          <textarea
+            value={userInputs}
+            onChange={(e) => setUserInputs(e.target.value)}
+            placeholder="Enter inputs here (each on a new line)"
+            className="w-full bg-gray-700 text-white p-2 rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={3}
+          />
+        </div>
+      )}
 
       {/* Tab Bar */}
       <div className="bg-gray-800 border-b border-gray-700 flex items-center overflow-x-auto">
