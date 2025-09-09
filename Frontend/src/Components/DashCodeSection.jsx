@@ -324,9 +324,8 @@ p {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const simulatedOutput = `> Running ${tabs[activeTab].name}
-The sum is: 12
-
-Execution completed in 0.45 seconds.`;
+      Not Actually Executed. Execution feature coming soon!
+      `;
       setOutput(simulatedOutput);
     } catch (error) {
       setOutput(`Error: ${error.message}`);
