@@ -173,8 +173,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 <body>
     <h1>Welcome to CodeAstra!</h1>
     <h4>Code Mentored by <span>Harsh</span></h4>
-    <p>Edit this code to see changes in the preview.</p>
-    <script src="script.js"></script>
+    <p>Edit the code in the editor to see changes in the preview.</p>
 </body>
 </html>`;
       case "css":
@@ -199,7 +198,7 @@ h4 {
 
 h4 span {
     font-weight: 600;
-    color: yellow;
+    color: blueviolet;
 }
 
 p {
