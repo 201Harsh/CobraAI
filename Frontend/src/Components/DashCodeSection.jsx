@@ -788,14 +788,72 @@ p {
         )}
       </div>
 
-      {/* Output Console */}
-      {output && (
-        <div className="bg-gray-800 border-t border-gray-700 p-3">
-          <div className="text-white text-sm font-mono whitespace-pre-wrap overflow-auto max-h-40">
-            {output}
+     {output && (
+  <div className="bg-gray-900 border-t border-gray-700">
+    <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+      <div className="flex items-center space-x-2">
+        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        <span className="text-sm font-medium text-gray-300">Output</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        {isLoading && (
+          <div className="flex items-center space-x-1 text-xs text-gray-400">
+            <div className="flex space-x-0.5">
+              <div className="w-1 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-1 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '100ms' }}></div>
+              <div className="w-1 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+            </div>
+            <span>Running...</span>
+          </div>
+        )}
+        <button 
+          onClick={() => setOutput("")}
+          className="p-1 text-gray-400 hover:text-white rounded-md hover:bg-gray-700"
+          title="Clear output"
+        >
+          <FaTimes className="text-xs" />
+        </button>
+      </div>
+    </div>
+    <div className="p-4 font-mono text-sm">
+      <div className="whitespace-pre-wrap overflow-auto max-h-60">
+        {output.split('\n').map((line, index) => {
+          // Check if line is an error message
+          const isError = line.toLowerCase().includes('error') || line.includes('Traceback');
+          // Check if line is a warning
+          const isWarning = line.toLowerCase().includes('warning');
+          // Check if line contains file info
+          const isFileInfo = line.includes('File ');
+          
+          let lineClass = 'text-gray-300';
+          if (isError) lineClass = 'text-red-400';
+          if (isWarning) lineClass = 'text-yellow-400';
+          if (isFileInfo) lineClass = 'text-blue-400';
+          
+          return (
+            <div key={index} className={`flex ${lineClass}`}>
+              <span className="select-none text-gray-500 w-8 pr-2 text-right">{">>>"}</span>
+              <span className="flex-1">{line}</span>
+            </div>
+          );
+        })}
+      </div>
+      
+      {output && !isLoading && (
+        <div className="flex items-center justify-between pt-3 mt-3 text-xs border-t border-gray-800">
+          <div className="text-gray-500">
+            Process completed {output.toLowerCase().includes('error') ? 'with errors' : 'successfully'}
+          </div>
+          <div className="text-gray-500">
+            {output.split('\n').length} line(s) • {output.length} character(s)
           </div>
         </div>
       )}
+    </div>
+  </div>
+)}
     </div>
   );
 };
