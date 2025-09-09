@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Editor from "@monaco-editor/react";
+import axios from "axios";
 import {
   FaPlay,
   FaCode,
@@ -109,7 +110,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
           id: 0,
           language: "python",
           name: "main.py",
-          code: "# Write your Python code here\n print('Hello, World!')",
+          code: "# Write your Python code here\nprint('Hello, World!')",
           isDefault: true,
         },
       ]);
@@ -166,7 +167,7 @@ p {
       case "javascript":
         return `// console.log('CodeAstra! By Harsh!');`;
       case "python":
-        return "# Write your Python code here\n print('Welcome to CodeAstra!')";
+        return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
       case "json":
         return `{
   "key": "value",
@@ -178,6 +179,26 @@ p {
         return `// Write your ${language} code here`;
     }
   };
+
+  // Execute Python code using Piston API
+  const executePythonCode = async (code) => {
+  try {
+    const res = await axios.post("https://emkc.org/api/v2/piston/execute", {
+      language: "python3",
+      version: "3.10.0",
+      files: [{ content: code }],
+    });
+
+    if (res.status === 200) {
+      return res.data.run.output;
+    }
+  } catch (error) {
+    console.error("Python execution failed:", error);
+    return `Error: ${error.response?.data?.message || error.message}`;
+  }
+};
+
+
 
   // Handle editor initialization
   const handleEditorDidMount = (editor, monaco) => {
@@ -286,10 +307,22 @@ p {
       updatePreview();
     }
 
-    // Simulate code execution with a delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Execute Python code using Piston API
+    if (language === "python" || language === "ai-ml-basics") {
+      try {
+        const result = await executePythonCode(tabs[activeTab].code);
+        setOutput(result || "Code executed successfully (no output)");
+      } catch (error) {
+        setOutput(`Error: ${error.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
 
+    // For other languages, simulate execution with a delay
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const simulatedOutput = `> Running ${tabs[activeTab].name}
 The sum is: 12
 
