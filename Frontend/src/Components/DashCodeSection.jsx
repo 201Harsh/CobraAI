@@ -140,7 +140,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #111;
+    background-color: #fff;
 }
 
 h1 {
@@ -161,7 +161,7 @@ h4 span {
 }
 
 p {
-    color: lightblue;
+    color: red;
 }`;
       case "javascript":
         return `// console.log('CodeAstra! By Harsh!');`;
