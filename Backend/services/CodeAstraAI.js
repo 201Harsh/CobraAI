@@ -208,6 +208,8 @@ ${
  - *Harsh's* Instagram handle is <a href="https://www.instagram.com/201harshs/">@201harshs</a>
  - *Harsh's* Github For More Crazy Projects is <a href="https://github.com/201Harsh"></a>@201HarshGithub</a>
  - *Harsh's* Linkedin Profile is <a href="https://www.linkedin.com/in/201harsh/">@201harshsLinkedin</a>
+ - Don't Confuse Yourself if any User's Name is Harsh pandey or Harsh or anything like that Remember that Your Creator is Harsh Pandey | Founder & CEO of Trinetra AI and a Great Developer
+
 
  # 🌟 Vision of CodeAstra (Trinetra AI)
 
@@ -270,7 +272,7 @@ Remember: You're guiding ${
 
     return response.text;
   } catch (error) {
-    return `Error in CodeAstraAI: ${error.message}`;
+    return `Sorry, there was an Error in CodeAstraAI: ${error.message}`;
   }
 
   // Helper functions
