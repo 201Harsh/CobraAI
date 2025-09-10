@@ -2,12 +2,12 @@
 
 ![CodeAstra Banner](https://img.shields.io/badge/🚀_CodeAstra-Code_Compiler_+_AI_Tutor-EA1E63?style=for-the-badge&logo=code&logoColor=white)
 
-
 **CodeAstra** is a next-generation web platform combining an intelligent code compiler and an AI-powered tutor to help developers learn and execute code efficiently. Featuring code execution for frontend technologies (HTML, CSS, JS) and Python, smart AI suggestions, personalized adaptive learning, and persistent chat history — all wrapped in a modern, sleek interface.
 
-[![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org)  
-[![Node.js](https://img.shields.io/badge/Node-18.16.0-green)](https://nodejs.org)  
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.0.9-green)](https://www.mongodb.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-8.0.13-green)](https://www.mongodb.com)
+[![Express](https://img.shields.io/badge/Express-5.1.0-yellow)](https://expressjs.com)
+[![React](https://img.shields.io/badge/React-19.1.1-blue)](https://reactjs.org)  
+[![Node.js](https://img.shields.io/badge/Node-24.7.0-green)](https://nodejs.org)
 
 ---
 
@@ -34,7 +34,7 @@
 | 💻 **HTML/CSS/JS Compiler**    | Execute and preview frontend code in real-time within the platform                                  |
 | 🐍 **Python Code Execution**   | Execute Python code with standard input support                                                     |
 | 🧠 **AI Tutor Assistant**      | Personalized adaptive AI tutor giving intelligent suggestions, code fixes, and guidance             |
-| 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                          |
+| 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                             |
 | 🔐 **Authentication**          | Secure login and signup with JWT authentication                                                     |
 | 🌱 **Auto Level Up System**    | Tracks user progress and automatically upgrades skill level from Beginner → Intermediate → Advanced |
 | 🚀 **Modern UI/UX**            | Sleek interface powered by Tailwind CSS & Framer Motion animations                                  |
