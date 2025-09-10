@@ -18,7 +18,9 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaExclamationTriangle,
+  FaRobot,
 } from "react-icons/fa";
+import AxiosInstance from "../Config/Axios";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [tabs, setTabs] = useState([]);
@@ -34,6 +36,9 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [userInputs, setUserInputs] = useState("");
   const [showInputPanel, setShowInputPanel] = useState(false);
   const [inputRequired, setInputRequired] = useState(false);
+  const [showCodeReviewModal, setShowCodeReviewModal] = useState(false);
+  const [codeReviewResult, setCodeReviewResult] = useState("");
+  const [isReviewLoading, setIsReviewLoading] = useState(false);
   const editorRef = useRef(null);
   const previewRef = useRef(null);
 
@@ -235,6 +240,39 @@ p {
     } catch (error) {
       console.error("Python execution failed:", error);
       return `Error: ${error.response?.data?.message || error.message}`;
+    }
+  };
+
+  // AI Code Review function
+  const CodeReview = async () => {
+    const activeTabData = getActiveTab();
+    if (!activeTabData) return;
+
+    setIsReviewLoading(true);
+    setShowCodeReviewModal(true);
+    setCodeReviewResult("Analyzing your code...");
+
+    try {
+      // Get the language from localStorage
+      const language = localStorage.getItem("Language");
+      
+      // Make API call to backend for code review
+      const response = await AxiosInstance.post("/ai/reviewCode", {
+        codeSnippet: activeTabData.code,
+        language: language || "python" // Default to python if not set
+      });
+
+      if (response.status === 200) {
+        console.log(response.data.response)
+        setCodeReviewResult(response.data.response || "No review provided.");
+      } else {
+        setCodeReviewResult("Error: Unable to get code review.");
+      }
+    } catch (error) {
+      console.error("Code review failed:", error);
+      setCodeReviewResult(`Error: ${error.response?.data?.message || error.message}`);
+    } finally {
+      setIsReviewLoading(false);
     }
   };
 
@@ -581,6 +619,24 @@ p {
         </div>
 
         <div className="flex items-center space-x-1">
+          {/* AI Code Review Button */}
+          <motion.button
+            onClick={CodeReview}
+            className={`px-2 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
+              isReviewLoading
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+            }`}
+            whileHover={isReviewLoading ? {} : { scale: 1.05 }}
+            whileTap={isReviewLoading ? {} : { scale: 0.95 }}
+            disabled={isReviewLoading}
+          >
+            <FaRobot className="text-xs" />
+            <span className="hidden sm:inline">
+              {isReviewLoading ? "Reviewing..." : "AI Review"}
+            </span>
+          </motion.button>
+
           {/* Preview button for HTML/CSS/JS */}
           {isWebLanguage && (
             <motion.button
@@ -746,23 +802,23 @@ p {
 
           {/* Run Button */}
           {language !== "html-css-js" && (
-  <motion.button
-    onClick={handleRunCode}
-    disabled={isLoading}
-    className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
-      isLoading
-        ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-        : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
-    }`}
-    whileHover={isLoading ? {} : { scale: 1.05 }}
-    whileTap={isLoading ? {} : { scale: 0.95 }}
-  >
-    <FaPlay className="text-xs" />
-    <span className="hidden sm:inline">
-      {isLoading ? "Running..." : "Run"}
-    </span>
-  </motion.button>
-)}
+            <motion.button
+              onClick={handleRunCode}
+              disabled={isLoading}
+              className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
+                isLoading
+                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
+              }`}
+              whileHover={isLoading ? {} : { scale: 1.05 }}
+              whileTap={isLoading ? {} : { scale: 0.95 }}
+            >
+              <FaPlay className="text-xs" />
+              <span className="hidden sm:inline">
+                {isLoading ? "Running..." : "Run"}
+              </span>
+            </motion.button>
+          )}
         </div>
       </div>
 
@@ -976,6 +1032,60 @@ p {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Code Review Modal */}
+      {showCodeReviewModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden flex flex-col"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-900">
+              <h3 className="text-lg font-semibold text-white flex items-center">
+                <FaRobot className="text-blue-400 mr-2" />
+                AI Code Review
+              </h3>
+              <button
+                onClick={() => setShowCodeReviewModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <FaTimes />
+              </button>
+            </div>
+            
+            <div className="p-4 overflow-y-auto flex-1 bg-gray-850">
+              {isReviewLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <div className="flex flex-col items-center">
+                    <div className="flex space-x-2 mb-4">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
+                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                    </div>
+                    <p className="text-gray-400">Analyzing your code...</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="prose prose-invert max-w-none">
+                  <div className="whitespace-pre-wrap text-sm text-gray-200">
+                    {codeReviewResult}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="p-4 border-t border-gray-700 bg-gray-800 flex justify-end">
+              <button
+                onClick={() => setShowCodeReviewModal(false)}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-white transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
         </div>
       )}
     </div>
