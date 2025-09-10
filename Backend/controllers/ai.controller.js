@@ -1,6 +1,7 @@
 const UserModel = require("../models/user.model");
 const ChatModel = require("../models/chat.model");
 const CodeAstraAI = require("../services/CodeAstraAI");
+const CodeAstraReviewAI = require("../services/CodeAstraReviewAI");
 
 module.exports.chatWithAI = async (req, res) => {
   try {
@@ -36,11 +37,11 @@ module.exports.chatWithAI = async (req, res) => {
 
     const fullPrompt = `${historyText}\nUser: ${prompt}\nAI:`;
 
-    const AIResponse = await CodeAstraAI({ 
-      prompt, 
-      User, 
+    const AIResponse = await CodeAstraAI({
+      prompt,
+      User,
       fullPrompt,
-      historyText // Pass the history text separately
+      historyText, // Pass the history text separately
     });
 
     // Save the new message to chat history
@@ -50,7 +51,7 @@ module.exports.chatWithAI = async (req, res) => {
     } else {
       await ChatModel.create({
         UserId,
-        ChatHistory: [{ user: prompt, ai: AIResponse }]
+        ChatHistory: [{ user: prompt, ai: AIResponse }],
       });
     }
 
@@ -59,6 +60,37 @@ module.exports.chatWithAI = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+module.exports.reviewCode = async (req, res) => {
+  try {
+    const { codeSnippet, language } = req.body;
+    const UserId = req.user._id;
+
+    if (!codeSnippet) {
+      return res.status(400).json({
+        error: "Code snippet is required",
+      });
+    }
+
+    const User = await UserModel.findById(UserId);
+
+    if (!User) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    const AIResponse = await CodeAstraReviewAI({ codeSnippet, language, User });
+
+    res.status(200).json({
+      response: AIResponse,
+    });
+  } catch (error) {
     res.status(500).json({
       error: error.message,
     });
