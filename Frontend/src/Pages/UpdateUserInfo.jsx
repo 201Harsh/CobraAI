@@ -279,24 +279,32 @@ const UpdateUserInfo = () => {
                 <FaBrain className="mr-2 text-red-400" />
                 Preferred learning style
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 relative">
                 {learningStyles.map((style) => (
-                  <motion.button
-                    key={style.value}
-                    type="button"
-                    onClick={() =>
-                      handleInputChange("learningStyle", style.value)
-                    }
-                    className={`p-3 rounded-lg border transition-all duration-200 ${
-                      userData.learningStyle === style.value
-                        ? "bg-gradient-to-r from-red-600 to-pink-600 border-transparent text-white"
-                        : "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-red-500"
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {style.label}
-                  </motion.button>
+                  <div key={style.value} className="relative">
+                    {style.value === "kinesthetic" && (
+                      <div className="absolute -top-2 -right-2 z-10">
+                        <span className="bg-gradient-to-r from-red-500 to-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                          Recommended
+                        </span>
+                      </div>
+                    )}
+                    <motion.button
+                      type="button"
+                      onClick={() =>
+                        handleInputChange("learningStyle", style.value)
+                      }
+                      className={`p-3 rounded-lg border transition-all duration-200 w-full ${
+                        userData.learningStyle === style.value
+                          ? "bg-gradient-to-r from-red-600 to-pink-600 border-transparent text-white"
+                          : "bg-gray-700/50 border-gray-600 text-gray-300 hover:border-red-500"
+                      }`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {style.label}
+                    </motion.button>
+                  </div>
                 ))}
               </div>
             </div>
