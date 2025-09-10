@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import {
@@ -19,7 +19,10 @@ import {
   FaChevronUp,
   FaExclamationTriangle,
   FaRobot,
+  FaCheck,
 } from "react-icons/fa";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import AxiosInstance from "../Config/Axios";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
@@ -39,6 +42,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [showCodeReviewModal, setShowCodeReviewModal] = useState(false);
   const [codeReviewResult, setCodeReviewResult] = useState("");
   const [isReviewLoading, setIsReviewLoading] = useState(false);
+  const [copiedCodeId, setCopiedCodeId] = useState(null);
   const editorRef = useRef(null);
   const previewRef = useRef(null);
 
@@ -243,6 +247,178 @@ p {
     }
   };
 
+  // Function to format text content with proper link handling
+  const formatTextContent = (text) => {
+    if (!text) return null;
+
+    return text.split("\n").map((line, lineIndex) => {
+      if (line.trim() === "") return null;
+
+      const headingMatch = line.match(/^###\s+(.*)/);
+      if (headingMatch) {
+        return (
+          <h3
+            key={lineIndex}
+            className="text-lg md:text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 mb-2"
+          >
+            {headingMatch[1]}
+          </h3>
+        );
+      }
+
+      const regex =
+        /(<a\s+[^>]*href="[^"]*"[^>]*>.*?<\/a>|```.*?```|`.*?`|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|".*?")/gu;
+
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+
+      while ((match = regex.exec(line)) !== null) {
+        const partBefore = line.slice(lastIndex, match.index);
+        if (partBefore) {
+          parts.push(
+            <span key={`${lineIndex}-${lastIndex}`}>{partBefore}</span>
+          );
+        }
+
+        const part = match[0];
+
+        const key = `${lineIndex}-${match.index}`;
+
+        if (part.startsWith("<a ") && part.includes("</a>")) {
+          const anchorMatch = part.match(
+            /<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/i
+          );
+          if (anchorMatch) {
+            const [, href, text] = anchorMatch;
+            const usernameOnly = text.replace(/^@/, "");
+            parts.push(
+              <span
+                key={key}
+                className="text-blue-400 hover:text-blue-300 underline cursor-pointer font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(href, "_blank", "noopener,noreferrer");
+                }}
+              >
+                @{usernameOnly}
+              </span>
+            );
+          }
+        } else if (part.startsWith("***") && part.endsWith("***")) {
+          parts.push(
+            <span key={key} className="font-extrabold text-lg capitalize italic text-sky-600">
+              {part.slice(3, -3)}
+            </span>
+          );
+        } else if (part.startsWith("```") && part.endsWith("```")) {
+          parts.push(
+            <code
+              key={key}
+              className="bg-gray-950 text-yellow-500 px-1 rounded text-xs sm:text-sm"
+            >
+              {part.slice(3, -3)}
+            </code>
+          );
+        } else if (part.startsWith("`") && part.endsWith("`")) {
+          parts.push(
+            <code
+              key={key}
+              className="bg-gray-950 text-yellow-600 px-1 rounded text-xs sm:text-sm"
+            >
+              {part.slice(1, -1)}
+            </code>
+          );
+        } else if (part.startsWith("**") && part.endsWith("**")) {
+          parts.push(
+            <span key={key} className="font-bold text-pink-600 text-sm sm:text-base">
+              {part.slice(2, -2)}
+            </span>
+          );
+        } else if (part.startsWith("*") && part.endsWith("*")) {
+          parts.push(
+            <span key={key} className="italic text-red-400">
+              {part.slice(1, -1)}
+            </span>
+          );
+        } else if (part.startsWith('"') && part.endsWith('"')) {
+          parts.push(
+            <span key={key} className="text-orange-500 font-semibold italic">
+              {part}
+            </span>
+          );
+        } else {
+          // Fallback just in case
+          parts.push(<span key={key}>{part}</span>);
+        }
+
+        lastIndex = regex.lastIndex;
+      }
+
+      // Add remaining part of the line
+      const remaining = line.slice(lastIndex);
+      if (remaining) {
+        parts.push(<span key={`${lineIndex}-last`}>{remaining}</span>);
+      }
+
+      return (
+        <p key={lineIndex} className="mb-2 text-xs sm:text-sm leading-relaxed">
+          {parts}
+        </p>
+      );
+    });
+  };
+
+  // Extract code blocks from message
+  const extractCodeBlocks = (text) => {
+    const codeBlockRegex = /```(\w+)?\s*([\s\S]*?)```/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      // Add text before code block
+      if (match.index > lastIndex) {
+        parts.push({
+          type: "text",
+          content: text.slice(lastIndex, match.index),
+        });
+      }
+
+      // Add code block
+      const language = match[1] || "javascript";
+      const code = match[2].trim();
+      parts.push({
+        type: "code",
+        language,
+        code,
+      });
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.push({
+        type: "text",
+        content: text.slice(lastIndex),
+      });
+    }
+
+    return parts;
+  };
+
+  // Handle code copy
+  const handleCopyCode = async (code, codeId) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCodeId(codeId);
+      setTimeout(() => setCopiedCodeId(null), 1200);
+    } catch (err) {
+      console.error("Failed to copy code to clipboard");
+    }
+  };
+
   // AI Code Review function
   const CodeReview = async () => {
     const activeTabData = getActiveTab();
@@ -263,7 +439,6 @@ p {
       });
 
       if (response.status === 200) {
-        console.log(response.data.response)
         setCodeReviewResult(response.data.response || "No review provided.");
       } else {
         setCodeReviewResult("Error: Unable to get code review.");
@@ -478,7 +653,7 @@ p {
   };
 
   // Copy code to clipboard
-  const handleCopyCode = async () => {
+  const handleCopyEditorCode = async () => {
     try {
       await navigator.clipboard.writeText(tabs[activeTab]?.code || "");
       setShowToolbar(false);
@@ -592,6 +767,9 @@ p {
   const isWebLanguage = language === "html-css-js";
   const isPythonLanguage = language === "python" || language === "ai-ml-basics";
 
+  // Extract code blocks from review result
+  const reviewParts = extractCodeBlocks(codeReviewResult);
+
   return (
     <div
       className={`h-full w-full flex flex-col bg-gray-900 ${
@@ -697,7 +875,7 @@ p {
                 >
                   <div className="grid grid-cols-2 gap-1">
                     <motion.button
-                      onClick={handleCopyCode}
+                      onClick={handleCopyEditorCode}
                       className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors flex flex-col items-center text-xs"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -755,7 +933,7 @@ p {
           {!isMobileView && (
             <>
               <motion.button
-                onClick={handleCopyCode}
+                onClick={handleCopyEditorCode}
                 className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -1056,7 +1234,7 @@ p {
               </button>
             </div>
             
-            <div className="p-4 overflow-y-auto flex-1 bg-gray-850">
+            <div className="p-4 overflow-y-auto flex-1 bg-gray-850 text-area">
               {isReviewLoading ? (
                 <div className="flex justify-center items-center py-8">
                   <div className="flex flex-col items-center">
@@ -1069,10 +1247,86 @@ p {
                   </div>
                 </div>
               ) : (
-                <div className="prose prose-invert max-w-none">
-                  <div className="whitespace-pre-wrap text-sm text-gray-200">
-                    {codeReviewResult}
-                  </div>
+                <div className="max-w-none">
+                  <AnimatePresence>
+                    {reviewParts.map((part, index) => {
+                      if (part.type === "code") {
+                        const codeId = `code-${index}-${Date.now()}`;
+                        return (
+                          <motion.div
+                            key={codeId}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="my-4"
+                          >
+                            <div className="relative max-w-full">
+                              {/* Code Header */}
+                              <div className="flex items-center justify-between bg-gray-950 px-3 py-2 rounded-t-lg border-b border-gray-600">
+                                <span className="text-xs text-gray-300 font-mono">
+                                  {part.language}
+                                </span>
+                                <motion.button
+                                  onClick={() => handleCopyCode(part.code, codeId)}
+                                  className="p-1 text-gray-400 hover:text-white transition-colors"
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  {copiedCodeId === codeId ? (
+                                    <FaCheck className="text-green-400 text-sm" />
+                                  ) : (
+                                    <FaCopy className="text-sm" />
+                                  )}
+                                </motion.button>
+                              </div>
+
+                              {/* Code Content */}
+                              <div className="relative overflow-x-auto">
+                                <SyntaxHighlighter
+                                  language={part.language}
+                                  style={vscDarkPlus}
+                                  customStyle={{
+                                    margin: 0,
+                                    padding: "1rem",
+                                    borderBottomLeftRadius: "0.5rem",
+                                    borderBottomRightRadius: "0.5rem",
+                                    background: "#030712",
+                                    fontSize: "0.875rem",
+                                    maxWidth: "100%",
+                                    whiteSpace: "pre-wrap",
+                                    wordBreak: "break-word",
+                                    overflowX: "auto",
+                                  }}
+                                  codeTagProps={{
+                                    style: {
+                                      fontFamily:
+                                        "Fira Code, Monaco, Consolas, monospace",
+                                    },
+                                  }}
+                                  wrapLongLines={true}
+                                  showLineNumbers={false}
+                                >
+                                  {part.code}
+                                </SyntaxHighlighter>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      } else {
+                        return (
+                          <motion.div
+                            key={`text-${index}`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-sm text-gray-200 whitespace-pre-wrap mb-4"
+                          >
+                            {formatTextContent(part.content)}
+                          </motion.div>
+                        );
+                      }
+                    })}
+                  </AnimatePresence>
                 </div>
               )}
             </div>
