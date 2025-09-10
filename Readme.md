@@ -58,7 +58,7 @@
 - Express.js
 - MongoDB (Mongoose)
 - JWT (Authentication)
-- Google Gemini API for AI Tutor
+- Google Gemini AI API for AI Tutor
 - Piston API for Python Code Execution
 
 ---
