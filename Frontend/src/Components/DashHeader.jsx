@@ -154,10 +154,12 @@ const DashHeader = () => {
                       </button>
                     </Link>
 
-                    <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors text-sm">
-                      <FaCog className="text-gray-400" />
-                      <span>Settings</span>
-                    </button>
+                    <Link to="/settings">
+                      <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md transition-colors text-sm">
+                        <FaCog className="text-gray-400" />
+                        <span>Settings</span>
+                      </button>
+                    </Link>
                   </div>
 
                   <div className="p-2 border-t border-gray-700">
