@@ -34,7 +34,7 @@
 | 💻 **HTML/CSS/JS Compiler**    | Execute and preview frontend code in real-time within the platform                                  |
 | 🐍 **Python Code Execution**   | Execute Python code with standard input support                                                     |
 | 🧠 **AI Tutor Assistant**      | Personalized adaptive AI tutor giving intelligent suggestions, code fixes, and guidance             |
-| 💬 **Persistent Chat History** | Stores last 50 user-AI interactions in database for context-aware learning                          |
+| 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                          |
 | 🔐 **Authentication**          | Secure login and signup with JWT authentication                                                     |
 | 🌱 **Auto Level Up System**    | Tracks user progress and automatically upgrades skill level from Beginner → Intermediate → Advanced |
 | 🚀 **Modern UI/UX**            | Sleek interface powered by Tailwind CSS & Framer Motion animations                                  |
