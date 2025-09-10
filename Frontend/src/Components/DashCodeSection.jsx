@@ -116,7 +116,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
           id: 0,
           language: "python",
           name: "main.py",
-          code: "# Write your Python code here\nprint('Hello, World!')\nname = input('Enter your name: ')\nprint(f'Hello, {name}!')",
+          code: "# Write your Python code here\n print('Welcome to CodeAstra!')",
           isDefault: true,
         },
       ]);
@@ -168,7 +168,6 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
 <html>
 <head>
     <title>Trinetra CodeAstra</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Welcome to CodeAstra!</h1>
