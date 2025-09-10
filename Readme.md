@@ -136,13 +136,13 @@ npm run dev
 > See the Screenshots Below
 
 ### Editor & AI Tutor Interface  
-<img src="./github_readme/codeastra_ss1.png" alt="Code Editor UI"/>  
+<img src="./Examples/img/1.png"/>  
 
 ### Real-Time Code Execution Output  
-<img src="./github_readme/codeastra_ss2.png" alt="Code Output UI"/>  
+<img src="./Examples/img/2.png"/>  
 
 ### AI Tutor Chat Section  
-<img src="./github_readme/codeastra_ss3.png" alt="AI Tutor Interface"/>  
+<img src="./Examples/img/3.png"/>  
 
 ---
 
@@ -184,8 +184,7 @@ Automatically upgrades user's skill level (Beginner → Intermediate → Advance
 - 🧱 File Upload & Media Sharing  
 - 🔔 In-App Notifications  
 - 🌐 Internationalization (i18n)  
-- 🧪 Unit & Integration Testing  
-
+- 🧪 Unit & Integration Testing 
 ---
 
 ## 🤝 Contributing
