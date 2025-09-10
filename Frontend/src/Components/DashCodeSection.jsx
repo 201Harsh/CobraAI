@@ -913,7 +913,7 @@ p {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       title={
-                        isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                        isFullscreen ? "Exit Focus Mode" : "Enter Focus Mode"
                       }
                     >
                       {isFullscreen ? (
@@ -921,7 +921,7 @@ p {
                       ) : (
                         <FaExpand className="text-xs mb-1" />
                       )}
-                      <span>{isFullscreen ? "Exit" : "Full"}</span>
+                      <span>{isFullscreen ? "Exit" : "Focus"}</span>
                     </motion.button>
                   </div>
                 </motion.div>
@@ -967,7 +967,7 @@ p {
                 className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                title={isFullscreen ? "Exit Focus Mode" : "Enter Focus Mode"}
               >
                 {isFullscreen ? (
                   <FaCompress className="text-sm" />
