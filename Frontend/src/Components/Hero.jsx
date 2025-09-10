@@ -9,6 +9,17 @@ import {
   FaShieldAlt,
   FaLightbulb,
   FaRocket,
+  FaGraduationCap,
+  FaBrain,
+  FaCogs,
+  FaGamepad,
+  FaHands,
+  FaBook,
+  FaCompass,
+  FaMusic,
+  FaPalette,
+  FaTrophy,
+  FaPeace,
 } from "react-icons/fa";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -38,6 +49,83 @@ const Hero = () => {
       },
     },
   };
+
+  const levels = [
+    { value: "beginner", label: "🌱 Beginner" },
+    { value: "intermediate", label: "🚀 Intermediate" },
+    { value: "advanced", label: "⚡ Advanced" },
+    { value: "expert", label: "🏆 Expert" },
+  ];
+
+  const programmingLanguages = [
+    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript" },
+    { value: "reactjs", label: "⚛️ React JS" },
+    { value: "react-native", label: "📱 React Native" },
+    { value: "node-express", label: "🚀 Node.js & Express.js" },
+    { value: "mongodb", label: "🍃 MongoDB" },
+    { value: "mysql", label: "🐬 MySQL" },
+    { value: "python", label: "🐍 Python" },
+    { value: "ai-ml-basics", label: "🤖 AI / ML Basics" },
+  ];
+
+  const learningStyles = [
+    { 
+      value: "fun_play", 
+      label: "Fun Play Learner 🎮",
+      icon: <FaGamepad className="text-xl" />,
+      description: "Learn through games, challenges, and interactive coding exercises",
+      aiResponse: "AI will create coding games, challenges, and reward systems to make learning enjoyable"
+    },
+    { 
+      value: "kinesthetic", 
+      label: "Hands-on Learner 🤝",
+      icon: <FaHands className="text-xl" />,
+      description: "Learn by doing, with practical examples and immediate practice",
+      aiResponse: "AI will provide interactive coding environments, sandboxes, and immediate practice opportunities"
+    },
+    { 
+      value: "story_mode", 
+      label: "Story Mode Learner 📖",
+      icon: <FaBook className="text-xl" />,
+      description: "Learn through narratives, real-world scenarios, and contextual examples",
+      aiResponse: "AI will frame concepts within stories, use case studies, and real-world application scenarios"
+    },
+    { 
+      value: "explorer", 
+      label: "Explorer Learner 🧭",
+      icon: <FaCompass className="text-xl" />,
+      description: "Learn through discovery, experimentation, and self-guided exploration",
+      aiResponse: "AI will suggest learning paths, provide resources for exploration, and encourage experimentation"
+    },
+    { 
+      value: "sound_wave", 
+      label: "Sound Wave Learner 🎧",
+      icon: <FaMusic className="text-xl" />,
+      description: "Learn through auditory explanations, podcasts, and verbal instructions",
+      aiResponse: "AI will provide audio explanations, voice-based interactions, and mnemonic devices"
+    },
+    { 
+      value: "visual_mind", 
+      label: "Visual Mind Learner 🎨",
+      icon: <FaPalette className="text-xl" />,
+      description: "Learn through diagrams, charts, visualizations, and color-coded examples",
+      aiResponse: "AI will create diagrams, flowcharts, visual code explanations, and color-highlighted examples"
+    },
+    { 
+      value: "challenge_mode", 
+      label: "Challenge Mode Learner 🏆",
+      icon: <FaTrophy className="text-xl" />,
+      description: "Learn through problem-solving, coding challenges, and achievement systems",
+      aiResponse: "AI will provide progressively difficult challenges, coding problems, and achievement tracking"
+    },
+    { 
+      value: "zen_mode", 
+      label: "Zen Mode Learner 🧘",
+      icon: <FaPeace className="text-xl" />,
+      description: "Learn through calm, focused, step-by-step explanations without pressure",
+      aiResponse: "AI will provide calm, structured, step-by-step guidance with mindfulness breaks"
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-hidden relative">
@@ -271,6 +359,153 @@ const Hero = () => {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Learning System Explanation Section */}
+      <section id="learning-system" className="container mx-auto px-4 py-16">
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold text-center mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          Personalized{" "}
+          <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+            Learning System
+          </span>
+        </motion.h2>
+        <motion.p
+          className="text-xl text-blue-200 text-center mb-12 max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          CodeAstra adapts to your unique learning style and skill level for the most effective learning experience
+        </motion.p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Learning Styles Card */}
+          <motion.div 
+            className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex items-center mb-4">
+              <FaBrain className="text-3xl text-purple-500 mr-3" />
+              <h3 className="text-2xl font-bold">Learning Styles</h3>
+            </div>
+            <p className="text-blue-200 mb-4">
+              Everyone learns differently. Choose the style that best matches how you absorb information:
+            </p>
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+              {learningStyles.map((style, index) => (
+                <div key={index} className="bg-gray-700/30 p-3 rounded-lg">
+                  <div className="flex items-center mb-2">
+                    <span className="text-pink-400 mr-2">{style.icon}</span>
+                    <span className="font-semibold">{style.label}</span>
+                  </div>
+                  <p className="text-sm text-blue-200 mb-2">{style.description}</p>
+                  <p className="text-xs text-pink-300">AI will: {style.aiResponse}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Skill Levels Card */}
+          <motion.div 
+            className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="flex items-center mb-4">
+              <FaGraduationCap className="text-3xl text-blue-500 mr-3" />
+              <h3 className="text-2xl font-bold">Skill Levels</h3>
+            </div>
+            <p className="text-blue-200 mb-4">
+              CodeAstra adjusts complexity based on your programming experience:
+            </p>
+            <div className="space-y-4">
+              {levels.map((level, index) => (
+                <div key={index} className="bg-gray-700/30 p-3 rounded-lg">
+                  <div className="flex items-center mb-2">
+                    <span className="text-pink-400 mr-2">•</span>
+                    <span className="font-semibold">{level.label}</span>
+                  </div>
+                  {level.value === "beginner" && (
+                    <p className="text-sm text-blue-200">Starting your coding journey? AI will provide foundational concepts with simple examples and step-by-step guidance.</p>
+                  )}
+                  {level.value === "intermediate" && (
+                    <p className="text-sm text-blue-200">Comfortable with basics? AI will focus on building projects, understanding patterns, and intermediate concepts.</p>
+                  )}
+                  {level.value === "advanced" && (
+                    <p className="text-sm text-blue-200">Ready for complex topics? AI will dive into architecture, optimization, and advanced programming techniques.</p>
+                  )}
+                  {level.value === "expert" && (
+                    <p className="text-sm text-blue-200">Mastering programming? AI will challenge you with cutting-edge concepts, system design, and mentorship.</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* AI Response Card */}
+          <motion.div 
+            className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <div className="flex items-center mb-4">
+              <FaCogs className="text-3xl text-green-500 mr-3" />
+              <h3 className="text-2xl font-bold">AI Response Adaptation</h3>
+            </div>
+            <p className="text-blue-200 mb-4">
+              Our AI customizes responses based on your level and learning style combination:
+            </p>
+            <div className="space-y-4">
+              <div className="bg-gray-700/30 p-3 rounded-lg">
+                <h4 className="font-semibold text-pink-400 mb-2">Example: Beginner + Visual Learner</h4>
+                <p className="text-sm text-blue-200">AI will provide color-coded code examples, diagrams of how code works, and visual step-by-step tutorials.</p>
+              </div>
+              <div className="bg-gray-700/30 p-3 rounded-lg">
+                <h4 className="font-semibold text-pink-400 mb-2">Example: Intermediate + Challenge Seeker</h4>
+                <p className="text-sm text-blue-200">AI will create coding challenges, project-based learning, and achievement systems to track progress.</p>
+              </div>
+              <div className="bg-gray-700/30 p-3 rounded-lg">
+                <h4 className="font-semibold text-pink-400 mb-2">Example: Advanced + Story Mode</h4>
+                <p className="text-sm text-blue-200">AI will frame complex concepts within real-world scenarios, case studies, and architectural decision narratives.</p>
+              </div>
+              <div className="bg-gray-700/30 p-3 rounded-lg">
+                <h4 className="font-semibold text-pink-400 mb-2">Try Different Combinations</h4>
+                <p className="text-sm text-blue-200">You can change your learning style anytime to discover what works best for different topics.</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div 
+          className="mt-12 bg-gray-800/30 p-6 rounded-xl border border-gray-700"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <h3 className="text-xl font-bold text-center mb-4 text-pink-400">Supported Programming Languages</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {programmingLanguages.map((lang, index) => (
+              <div key={index} className="flex items-center justify-center p-3 bg-gray-700/50 rounded-lg">
+                <span className="text-sm">{lang.label}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
