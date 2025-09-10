@@ -13,6 +13,7 @@ import AutoRedirecter from "../Hooks/AutoRedirecter";
 import DashboardProtector from "../Hooks/DashboardProtector";
 import Profile from "../Pages/Profile";
 import UpdateUserInfo from "../Pages/UpdateUserInfo";
+import Settings from "../Pages/Settings";
 
 const Router = () => {
   return (
@@ -37,6 +38,7 @@ const Router = () => {
         />
         <Route path="/profile" element={<Profile />} />
         <Route path="/updateInfo" element={<UpdateUserInfo />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );
