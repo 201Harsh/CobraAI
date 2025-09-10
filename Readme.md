@@ -157,6 +157,16 @@ npm run dev
 
 ---
 
+## 🤖 AI Tutor Integration
+
+Uses Google Gemini API to provide adaptive coding suggestions and explanations based on user profile.
+
+## 🔧 Auto-Level Up System
+
+Automatically upgrades user's skill level (Beginner → Intermediate → Advance) based on usage patterns and learning progress.
+
+---
+
 ## 🎯 Roadmap
 
 ### ✅ Completed  
