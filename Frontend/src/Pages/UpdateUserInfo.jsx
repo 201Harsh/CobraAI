@@ -185,7 +185,7 @@ const UpdateUserInfo = () => {
               </span>
             </div>
             <p className="text-green-300 text-sm mt-1">
-              Check console for details
+              Check Profile for details
             </p>
           </motion.div>
         )}
