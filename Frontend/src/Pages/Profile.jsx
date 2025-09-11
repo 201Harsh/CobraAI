@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaUser,
   FaEnvelope,
@@ -29,7 +29,7 @@ const Profile = () => {
     learningStreak: 18,
   });
 
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
 
   useEffect(() => {
     const FetchUserInfo = async () => {
@@ -38,9 +38,10 @@ const Profile = () => {
 
         if (res.status === 200) {
           setUserData(res.data.User);
+          setEditData(res.data.User);
         }
       } catch (error) {
-        toast.error(error.response.data.error, {
+        toast.error(error.response?.data?.error || "Failed to fetch user data", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -59,10 +60,58 @@ const Profile = () => {
   }, []);
 
   const [editData, setEditData] = useState({ ...userData });
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    setUserData({ ...editData });
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsSaving(true);
+    
+    try {
+      // Log the changes for API call
+      const changes = {
+        name: editData.name !== userData.name ? editData.name : undefined,
+        gender: editData.gender !== userData.gender ? editData.gender : undefined,
+        Language: editData.Language !== userData.Language ? editData.Language : undefined,
+        Level: editData.Level !== userData.Level ? editData.Level : undefined,
+      };
+      
+      console.log("Changes to be sent to API:", changes);
+      
+      // Here you would call your API
+      // const response = await AxiosInstance.put("/users/update", changes);
+      
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Update user data with the new values
+      setUserData({ ...editData });
+      setIsEditing(false);
+      
+      toast.success("Profile updated successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } catch (error) {
+      toast.error("Failed to update profile. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -117,32 +166,15 @@ const Profile = () => {
               {/* Profile Picture */}
               <div className="relative mb-6">
                 <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-600 relative">
-                  <img
+                  <motion.img
+                    key={userData.ProfilePicUrl}
                     src={userData.ProfilePicUrl}
                     alt="Profile"
                     className="w-full h-full object-cover"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                   />
-                  {isEditing && (
-                    <label className="absolute bottom-0 right-0 bg-gradient-to-r from-red-600 to-pink-600 p-2 rounded-full cursor-pointer">
-                      <FaCamera className="text-white text-sm" />
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={(e) => {
-                          // Handle image upload here
-                          const file = e.target.files[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                              handleInputChange("profilePic", e.target.result);
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                      />
-                    </label>
-                  )}
                 </div>
               </div>
 
@@ -150,32 +182,32 @@ const Profile = () => {
               <div className="text-center">
                 <h2 className="text-2xl font-bold mb-2">
                   {isEditing ? (
-                    <input
+                    <motion.input
+                      key="name-input"
                       type="text"
                       value={editData.name}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
                       className="bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white text-center w-full"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
                     />
                   ) : (
-                    userData.name
+                    <motion.span
+                      key="name-text"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {userData.name}
+                    </motion.span>
                   )}
                 </h2>
                 <p className="text-gray-400 mb-4 flex items-center justify-center">
                   <FaEnvelope className="mr-2 text-red-400" />
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={editData.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
-                      className="bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-1 text-white text-center"
-                    />
-                  ) : (
-                    userData.email
-                  )}
+                  {userData.email}
                 </p>
                 <div className="bg-gradient-to-r from-red-900/30 to-pink-900/30 rounded-lg p-3 mb-4">
                   <p className="text-sm text-gray-300">Member since</p>
@@ -189,15 +221,27 @@ const Profile = () => {
                   <>
                     <motion.button
                       onClick={handleSave}
-                      className="flex-1 bg-gradient-to-r from-green-600 to-green-500 py-2 rounded-lg font-semibold flex items-center justify-center"
+                      disabled={isSaving}
+                      className="flex-1 bg-gradient-to-r from-green-600 to-green-500 py-2 rounded-lg font-semibold flex items-center justify-center disabled:opacity-50"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <FaSave className="mr-2" /> Save
+                      {isSaving ? (
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                        />
+                      ) : (
+                        <>
+                          <FaSave className="mr-2" /> Save
+                        </>
+                      )}
                     </motion.button>
                     <motion.button
                       onClick={handleCancel}
-                      className="flex-1 bg-gray-700 py-2 rounded-lg font-semibold flex items-center justify-center"
+                      disabled={isSaving}
+                      className="flex-1 bg-gray-700 py-2 rounded-lg font-semibold flex items-center justify-center disabled:opacity-50"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -256,28 +300,49 @@ const Profile = () => {
               </h3>
 
               <div className="space-y-4">
-                {/* Level */}
+                {/* Name */}
                 <div>
-                  <label className="block text-gray-400 mb-2">
-                    Skill Level
-                  </label>
+                  <label className="block text-gray-400 mb-2">Name</label>
                   {isEditing ? (
-                    <select
-                      value={editData.Level}
-                      onChange={(e) =>
-                        handleInputChange("level", e.target.value)
-                      }
+                    <motion.input
+                      type="text"
+                      value={editData.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
-                    >
-                      {levels.map((level) => (
-                        <option key={level} value={level}>
-                          {level}
-                        </option>
-                      ))}
-                    </select>
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
                   ) : (
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2">
-                      <span className="text-white">{userData.Level}</span>
+                      <span className="text-white">{userData.name}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Gender */}
+                <div>
+                  <label className="block text-gray-400 mb-2">Gender</label>
+                  {isEditing ? (
+                    <motion.select
+                      value={editData.gender}
+                      onChange={(e) => handleInputChange("gender", e.target.value)}
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <option value="">Select Gender</option>
+                      {genders.map((gender) => (
+                        <option key={gender} value={gender}>
+                          {gender}
+                        </option>
+                      ))}
+                    </motion.select>
+                  ) : (
+                    <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
+                      <FaVenusMars className="mr-2 text-red-400" />
+                      <span className="text-white">{userData.gender || "Not specified"}</span>
                     </div>
                   )}
                 </div>
@@ -288,48 +353,53 @@ const Profile = () => {
                     Preferred Language
                   </label>
                   {isEditing ? (
-                    <select
-                      value={editData.language}
-                      onChange={(e) =>
-                        handleInputChange("language", e.target.value)
-                      }
+                    <motion.select
+                      value={editData.Language}
+                      onChange={(e) => handleInputChange("Language", e.target.value)}
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
                     >
+                      <option value="">Select Language</option>
                       {languages.map((lang) => (
                         <option key={lang} value={lang}>
                           {lang}
                         </option>
                       ))}
-                    </select>
+                    </motion.select>
                   ) : (
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
                       <FaCode className="mr-2 text-red-400" />
-                      <span className="text-white">{userData.Language}</span>
+                      <span className="text-white">{userData.Language || "Not specified"}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Gender */}
+                {/* Skill Level */}
                 <div>
-                  <label className="block text-gray-400 mb-2">Gender</label>
+                  <label className="block text-gray-400 mb-2">
+                    Skill Level
+                  </label>
                   {isEditing ? (
-                    <select
-                      value={editData.gender}
-                      onChange={(e) =>
-                        handleInputChange("gender", e.target.value)
-                      }
+                    <motion.select
+                      value={editData.Level}
+                      onChange={(e) => handleInputChange("Level", e.target.value)}
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      {genders.map((gender) => (
-                        <option key={gender} value={gender}>
-                          {gender}
+                      <option value="">Select Level</option>
+                      {levels.map((level) => (
+                        <option key={level} value={level}>
+                          {level}
                         </option>
                       ))}
-                    </select>
+                    </motion.select>
                   ) : (
-                    <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
-                      <FaVenusMars className="mr-2 text-red-400" />
-                      <span className="text-white">{userData.gender}</span>
+                    <div className="bg-gray-700/50 rounded-lg px-3 py-2">
+                      <span className="text-white">{userData.Level || "Not specified"}</span>
                     </div>
                   )}
                 </div>
@@ -351,7 +421,12 @@ const Profile = () => {
                   { name: "Bug Hunter", icon: "🐛", progress: 60 },
                   { name: "Syntax King", icon: "👑", progress: 40 },
                 ].map((achievement, index) => (
-                  <div key={index} className="text-center">
+                  <motion.div 
+                    key={index} 
+                    className="text-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <div className="text-2xl mb-2">{achievement.icon}</div>
                     <div className="text-sm text-gray-300 mb-2">
                       {achievement.name}
@@ -362,7 +437,7 @@ const Profile = () => {
                         style={{ width: `${achievement.progress}%` }}
                       ></div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
