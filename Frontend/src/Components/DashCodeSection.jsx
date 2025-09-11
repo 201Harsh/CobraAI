@@ -20,6 +20,8 @@ import {
   FaExclamationTriangle,
   FaRobot,
   FaCheck,
+  FaServer,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -44,6 +46,11 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [codeReviewResult, setCodeReviewResult] = useState("");
   const [isReviewLoading, setIsReviewLoading] = useState(false);
   const [copiedCodeId, setCopiedCodeId] = useState(null);
+  const [serverRunning, setServerRunning] = useState(false);
+  const [serverPort, setServerPort] = useState(null);
+  const [isWebContainerLoading, setIsWebContainerLoading] = useState(false);
+  const [webContainerError, setWebContainerError] = useState("");
+  const [isWebContainerReady, setIsWebContainerReady] = useState(false);
   const editorRef = useRef(null);
   const previewRef = useRef(null);
 
@@ -73,7 +80,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     "html-css-js": ["html", "css", "javascript"],
     reactjs: ["javascript"],
     "react-native": "javascript",
-    "node-express": ["javascript"],
+    "node-express": ["javascript", "json"],
     mongodb: ["json"],
     mysql: ["sql"],
     python: ["python"],
@@ -92,11 +99,51 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const tabDisplayNames = {
     html: "index.html",
     css: "style.css",
-    javascript: "script.js",
-    json: "data.json",
+    javascript: "server.js",
+    json: "package.json",
     sql: "query.sql",
     python: "main.py",
   };
+
+  // Check if WebContainer is supported
+  const isWebContainerSupported = () => {
+    return (
+      typeof window !== "undefined" &&
+      window.crossOriginIsolated &&
+      typeof SharedArrayBuffer !== "undefined"
+    );
+  };
+
+  // Initialize WebContainer
+  useEffect(() => {
+    const initWebContainer = async () => {
+      const language = localStorage.getItem("Language");
+      if (language === "node-express") {
+        setIsWebContainerLoading(true);
+        try {
+          const { WebContainer } = await import("@webcontainer/api");
+          window.webcontainerInstance = await WebContainer.boot();
+          console.log("WebContainer booted successfully");
+          setIsWebContainerReady(true); // Mark as ready
+        } catch (error) {
+          console.error("Failed to boot WebContainer:", error);
+          setWebContainerError(`Failed to initialize: ${error.message}`);
+        } finally {
+          setIsWebContainerLoading(false);
+        }
+      }
+    };
+
+    initWebContainer();
+
+    // Cleanup function to terminate WebContainer when component unmounts
+    return () => {
+      if (window.webcontainerInstance) {
+        window.webcontainerInstance.teardown();
+        window.webcontainerInstance = null;
+      }
+    };
+  }, []);
 
   // Initialize tabs based on selected language
   useEffect(() => {
@@ -112,7 +159,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
         language: lang,
         name:
           tabDisplayNames[lang] || `${lang}.${fileExtensions[lang] || lang}`,
-        code: getDefaultCode(lang),
+        code: getDefaultCode(lang, language),
         isDefault: true, // Mark default tabs that can't be closed
       }));
 
@@ -135,43 +182,50 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
     setIsInitialized(true);
   }, []);
 
-  // Check if code contains input() calls
-  const checkForInputCalls = (code) => {
-    if (!code) return false;
-
-    // Check for input() function calls, ignoring commented lines
-    const lines = code.split("\n");
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-
-      // Skip empty lines and comments
-      if (!trimmedLine || trimmedLine.startsWith("#")) continue;
-
-      // Check if line contains input() call (not in a comment)
-      if (trimmedLine.includes("input(") && !trimmedLine.includes("#")) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  // Update input required state when code changes
-  useEffect(() => {
-    const activeTabData = getActiveTab();
-    if (activeTabData) {
-      const hasInputCalls = checkForInputCalls(activeTabData.code);
-      setInputRequired(hasInputCalls);
-
-      // Auto-show input panel if input() calls are detected
-      if (hasInputCalls && !showInputPanel) {
-        setShowInputPanel(true);
-      }
-    }
-  }, [tabs, activeTab]);
-
   // Get default code for a language
-  const getDefaultCode = (language) => {
+  const getDefaultCode = (language, mainLanguage) => {
+    if (mainLanguage === "node-express") {
+      switch (language) {
+        case "javascript":
+          return `const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Hello from Express server running in WebContainer!');
+});
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'API endpoint working!', timestamp: new Date().toISOString() });
+});
+
+app.post('/api/echo', (req, res) => {
+  res.json({ received: req.body });
+});
+
+app.listen(port, () => {
+  console.log(\`Server running at http://localhost:\${port}\`);
+});`;
+        case "json":
+          return `{
+  "name": "express-server",
+  "version": "1.0.0",
+  "description": "Express server running in WebContainer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}`;
+        default:
+          return `// Write your ${language} code here`;
+      }
+    }
+
     switch (language) {
       case "html":
         return `<!DOCTYPE html>
@@ -229,6 +283,142 @@ p {
     }
   };
 
+  // Execute Express.js code using WebContainer
+  const executeExpressCode = async () => {
+  if (!window.webcontainerInstance || !isWebContainerReady) {
+    setOutput("Error: WebContainer not initialized yet. Please wait...");
+    return;
+  }
+
+    setIsLoading(true);
+    setOutput("Starting Express server...");
+
+    try {
+      // Get the JavaScript and package.json files
+      const jsTab = tabs.find((tab) => tab.language === "javascript");
+      const jsonTab = tabs.find((tab) => tab.language === "json");
+
+      if (!jsTab) {
+        throw new Error(
+          "No JavaScript file found. Please create a JavaScript file for your Express server."
+        );
+      }
+
+      // Write files to WebContainer filesystem
+      await window.webcontainerInstance.fs.writeFile("server.js", jsTab.code);
+
+      if (jsonTab) {
+        await window.webcontainerInstance.fs.writeFile(
+          "package.json",
+          jsonTab.code
+        );
+      } else {
+        // Create a default package.json if none exists
+        await window.webcontainerInstance.fs.writeFile(
+          "package.json",
+          `{
+  "name": "express-server",
+  "version": "1.0.0",
+  "description": "Express server running in WebContainer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}`
+        );
+      }
+
+      // Install dependencies
+      setOutput("Installing dependencies...");
+      const installProcess = await window.webcontainerInstance.spawn("npm", [
+        "install",
+      ]);
+
+      let installOutput = "";
+      installProcess.output.pipeTo(
+        new WritableStream({
+          write(data) {
+            installOutput += data;
+            setOutput((prev) => prev + data);
+          },
+        })
+      );
+
+      const installExitCode = await installProcess.exit;
+      if (installExitCode !== 0) {
+        throw new Error(
+          `Failed to install dependencies. Exit code: ${installExitCode}`
+        );
+      }
+
+      // Start the server
+      setOutput("Starting server...");
+      const serverProcess = await window.webcontainerInstance.spawn("npm", [
+        "start",
+      ]);
+
+      serverProcess.output.pipeTo(
+        new WritableStream({
+          write(data) {
+            setOutput((prev) => prev + data);
+            // Check for server start message to get the port
+            if (data.includes("Server running at")) {
+              const portMatch = data.match(/http:\/\/localhost:(\d+)/);
+              if (portMatch) {
+                setServerPort(portMatch[1]);
+                setServerRunning(true);
+              }
+            }
+          },
+        })
+      );
+
+      // Wait a bit for server to start, then show success message
+      setTimeout(() => {
+        if (serverRunning) {
+          setOutput(
+            (prev) =>
+              prev +
+              "\nServer started successfully! You can now make requests to it."
+          );
+        }
+      }, 2000);
+
+      // Handle server process exit
+      serverProcess.exit.then(() => {
+        setServerRunning(false);
+        setServerPort(null);
+      });
+    } catch (error) {
+      setOutput(`Error: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Stop the Express server
+  const stopExpressServer = async () => {
+    if (window.webcontainerInstance) {
+      // This will terminate all processes in the WebContainer
+      await window.webcontainerInstance.teardown();
+
+      // Reboot WebContainer for future use
+      try {
+        const { WebContainer } = await import("@webcontainer/api");
+        window.webcontainerInstance = await WebContainer.boot();
+      } catch (error) {
+        setOutput(`Error restarting WebContainer: ${error.message}`);
+      }
+
+      setServerRunning(false);
+      setServerPort(null);
+      setOutput("Server stopped.");
+    }
+  };
+
   // Execute Python code using Piston API
   const executePythonCode = async (code, input) => {
     try {
@@ -246,6 +436,41 @@ p {
       return `Error: ${error.response?.data?.message || error.message}`;
     }
   };
+
+  // Check if code contains input() calls
+  const checkForInputCalls = (code) => {
+    if (!code) return false;
+
+    // Check for input() function calls, ignoring commented lines
+    const lines = code.split("\n");
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Skip empty lines and comments
+      if (!trimmedLine || trimmedLine.startsWith("#")) continue;
+
+      // Check if line contains input() call (not in a comment)
+      if (trimmedLine.includes("input(") && !trimmedLine.includes("#")) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  // Update input required state when code changes
+  useEffect(() => {
+    const activeTabData = getActiveTab();
+    if (activeTabData) {
+      const hasInputCalls = checkForInputCalls(activeTabData.code);
+      setInputRequired(hasInputCalls);
+
+      // Auto-show input panel if input() calls are detected
+      if (hasInputCalls && !showInputPanel) {
+        setShowInputPanel(true);
+      }
+    }
+  }, [tabs, activeTab]);
 
   // Function to format text content with proper link handling
   const formatTextContent = (text) => {
@@ -529,7 +754,7 @@ p {
       id: tabs.length > 0 ? Math.max(...tabs.map((tab) => tab.id)) + 1 : 0,
       language: defaultLanguage,
       name: `new-${tabs.length + 1}.${extension}`,
-      code: getDefaultCode(defaultLanguage),
+      code: getDefaultCode(defaultLanguage, language),
       isDefault: false, // User-created tabs can be closed
     };
 
@@ -577,8 +802,10 @@ p {
   const handleRunCode = async () => {
     if (!tabs[activeTab]) return;
 
+    const language = localStorage.getItem("Language");
+
     // Check if input is required but not provided
-    if (inputRequired && !userInputs.trim()) {
+    if (inputRequired && !userInputs.trim() && language !== "node-express") {
       setOutput(
         "Error: This code requires input but no input was provided.\nPlease provide input in the input panel above."
       );
@@ -589,9 +816,14 @@ p {
     setOutput("Running code...");
 
     // For HTML/CSS/JS, update the preview if it's open
-    const language = localStorage.getItem("Language");
     if (language === "html-css-js" && showPreview) {
       updatePreview();
+    }
+
+    // Execute Express.js code using WebContainer
+    if (language === "node-express") {
+      await executeExpressCode();
+      return;
     }
 
     // Execute Python code using Piston API
@@ -718,9 +950,10 @@ p {
   const handleResetCode = () => {
     if (!tabs[activeTab]) return;
 
+    const language = localStorage.getItem("Language");
     const newTabs = tabs.map((tab) =>
       tab.id === activeTab
-        ? { ...tab, code: getDefaultCode(tab.language) }
+        ? { ...tab, code: getDefaultCode(tab.language, language) }
         : tab
     );
     setTabs(newTabs);
@@ -805,6 +1038,7 @@ p {
   const language = localStorage.getItem("Language");
   const isWebLanguage = language === "html-css-js";
   const isPythonLanguage = language === "python" || language === "ai-ml-basics";
+  const isExpressLanguage = language === "node-express";
 
   // Extract code blocks from review result
   const reviewParts = extractCodeBlocks(codeReviewResult);
@@ -890,6 +1124,22 @@ p {
                 <FaChevronDown className="text-sm" />
               )}
             </motion.button>
+          )}
+
+          {/* Server status for Express.js */}
+          {isExpressLanguage && serverRunning && (
+            <div className="flex items-center space-x-1 bg-green-600/20 px-2 py-1 rounded-lg">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-green-400 text-xs">Server Running</span>
+            </div>
+          )}
+
+          {/* WebContainer loading indicator */}
+          {isExpressLanguage && isWebContainerLoading && (
+            <div className="flex items-center space-x-1 bg-blue-600/20 px-2 py-1 rounded-lg">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <span className="text-blue-400 text-xs">Initializing</span>
+            </div>
           )}
 
           {/* Mobile toolbar toggle */}
@@ -1017,27 +1267,53 @@ p {
             </>
           )}
 
+          {/* Stop Server Button for Express.js */}
+          {isExpressLanguage && serverRunning && (
+            <motion.button
+              onClick={stopExpressServer}
+              className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm bg-red-600 text-white hover:bg-red-700`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaServer className="text-xs" />
+              <span className="hidden sm:inline">Stop Server</span>
+            </motion.button>
+          )}
+
           {/* Run Button */}
           {language !== "html-css-js" && (
             <motion.button
-              onClick={handleRunCode}
-              disabled={isLoading}
-              className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
-                isLoading
-                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
-              }`}
-              whileHover={isLoading ? {} : { scale: 1.05 }}
-              whileTap={isLoading ? {} : { scale: 0.95 }}
-            >
-              <FaPlay className="text-xs" />
-              <span className="hidden sm:inline">
-                {isLoading ? "Running..." : "Run"}
-              </span>
-            </motion.button>
+  onClick={handleRunCode}
+  disabled={isLoading || (isExpressLanguage && !isWebContainerReady)}
+  className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
+    isLoading || (isExpressLanguage && !isWebContainerReady)
+      ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+      : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
+  }`}
+>
+  <FaPlay className="text-xs" />
+  <span className="hidden sm:inline">
+    {isLoading ? "Running..." : (isExpressLanguage && !isWebContainerReady ? "Initializing..." : "Run")}
+  </span>
+</motion.button>
           )}
         </div>
       </div>
+
+      {/* WebContainer Error Message */}
+      {webContainerError && (
+        <div className="bg-yellow-900/20 border-b border-yellow-700 p-3">
+          <div className="flex items-center space-x-2">
+            <FaExclamationTriangle className="text-yellow-400" />
+            <span className="text-sm text-yellow-300">{webContainerError}</span>
+          </div>
+          <div className="mt-2 text-xs text-yellow-400">
+            Note: WebContainer requires a secure context with cross-origin
+            isolation. This typically means serving your application over HTTPS
+            with appropriate headers.
+          </div>
+        </div>
+      )}
 
       {/* Input Panel for Python */}
       {isPythonLanguage && showInputPanel && (
@@ -1065,6 +1341,38 @@ p {
             className="w-full bg-gray-700 text-white p-2 rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={3}
           />
+        </div>
+      )}
+
+      {/* Server Info Panel for Express.js */}
+      {isExpressLanguage && serverRunning && serverPort && (
+        <div className="bg-blue-900/20 border-b border-blue-700 p-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <FaServer className="text-blue-400" />
+              <span className="text-sm text-blue-300 font-medium">
+                Express Server Running
+              </span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-xs text-blue-400">Port: {serverPort}</span>
+              <a
+                href={`http://localhost:${serverPort}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded text-white flex items-center space-x-1"
+              >
+                <span>Open Server</span>
+                <FaExternalLinkAlt className="text-xs" />
+              </a>
+            </div>
+          </div>
+          <div className="mt-2 text-xs text-blue-400">
+            Endpoints:{" "}
+            <code className="bg-blue-900/50 px-1 rounded">GET /</code>{" "}
+            <code className="bg-blue-900/50 px-1 rounded">GET /api/data</code>{" "}
+            <code className="bg-blue-900/50 px-1 rounded">POST /api/echo</code>
+          </div>
         </div>
       )}
 
