@@ -776,6 +776,7 @@ p {
     lineNumbersMinChars: isMobileView ? 2 : 3,
     wordWrap: "on",
     wrappingIndent: "indent",
+    touchSupported: true,
     scrollbar: {
       vertical: "auto",
       horizontal: "auto",
