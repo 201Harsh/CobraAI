@@ -81,7 +81,6 @@ const OtpVerification = () => {
         Navigate("/updateInfo");
       }
     } catch (error) {
-      console.log(error)
       toast.error(error.response.data.error, {
         position: "top-center",
         autoClose: 5000,
@@ -104,7 +103,6 @@ const OtpVerification = () => {
     setCanResend(false);
 
     // Simulate resend OTP API call
-    console.log("Resending OTP...");
   };
 
   // Countdown timer effect
