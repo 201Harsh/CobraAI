@@ -24,6 +24,7 @@ import {
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import AxiosInstance from "../Config/Axios";
+import { toast, Slide } from "react-toastify";
 
 const DashCodeSection = ({ onToggleView, isMobileView }) => {
   const [tabs, setTabs] = useState([]);
@@ -242,7 +243,6 @@ p {
         return res.data.run.output;
       }
     } catch (error) {
-      console.error("Python execution failed:", error);
       return `Error: ${error.response?.data?.message || error.message}`;
     }
   };
@@ -307,7 +307,10 @@ p {
           }
         } else if (part.startsWith("***") && part.endsWith("***")) {
           parts.push(
-            <span key={key} className="font-extrabold text-lg capitalize italic text-sky-600">
+            <span
+              key={key}
+              className="font-extrabold text-lg capitalize italic text-sky-600"
+            >
               {part.slice(3, -3)}
             </span>
           );
@@ -331,7 +334,10 @@ p {
           );
         } else if (part.startsWith("**") && part.endsWith("**")) {
           parts.push(
-            <span key={key} className="font-bold text-pink-600 text-sm sm:text-base">
+            <span
+              key={key}
+              className="font-bold text-pink-600 text-sm sm:text-base"
+            >
               {part.slice(2, -2)}
             </span>
           );
@@ -415,7 +421,17 @@ p {
       setCopiedCodeId(codeId);
       setTimeout(() => setCopiedCodeId(null), 1200);
     } catch (err) {
-      console.error("Failed to copy code to clipboard");
+      toast.error("Failed to copy code", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
     }
   };
 
@@ -431,11 +447,11 @@ p {
     try {
       // Get the language from localStorage
       const language = localStorage.getItem("Language");
-      
+
       // Make API call to backend for code review
       const response = await AxiosInstance.post("/ai/reviewCode", {
         codeSnippet: activeTabData.code,
-        language: language || "python" // Default to python if not set
+        language: language || "python", // Default to python if not set
       });
 
       if (response.status === 200) {
@@ -444,8 +460,20 @@ p {
         setCodeReviewResult("Error: Unable to get code review.");
       }
     } catch (error) {
-      console.error("Code review failed:", error);
-      setCodeReviewResult(`Error: ${error.response?.data?.message || error.message}`);
+      toast.error(`Error: ${error.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+      setCodeReviewResult(
+        `Error: ${error.response?.data?.message || error.message}`
+      );
     } finally {
       setIsReviewLoading(false);
     }
@@ -658,7 +686,17 @@ p {
       await navigator.clipboard.writeText(tabs[activeTab]?.code || "");
       setShowToolbar(false);
     } catch (err) {
-      console.error("Failed to copy code");
+      toast.error("Failed to copy code", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
     }
   };
 
@@ -1233,15 +1271,21 @@ p {
                 <FaTimes />
               </button>
             </div>
-            
+
             <div className="p-4 overflow-y-auto flex-1 bg-gray-850 text-area">
               {isReviewLoading ? (
                 <div className="flex justify-center items-center py-8">
                   <div className="flex flex-col items-center">
                     <div className="flex space-x-2 mb-4">
                       <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
-                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                      <div
+                        className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.4s" }}
+                      ></div>
                     </div>
                     <p className="text-gray-400">Analyzing your code...</p>
                   </div>
@@ -1267,7 +1311,9 @@ p {
                                   {part.language}
                                 </span>
                                 <motion.button
-                                  onClick={() => handleCopyCode(part.code, codeId)}
+                                  onClick={() =>
+                                    handleCopyCode(part.code, codeId)
+                                  }
                                   className="p-1 text-gray-400 hover:text-white transition-colors"
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
@@ -1330,7 +1376,7 @@ p {
                 </div>
               )}
             </div>
-            
+
             <div className="p-4 border-t border-gray-700 bg-gray-800 flex justify-end">
               <button
                 onClick={() => setShowCodeReviewModal(false)}
