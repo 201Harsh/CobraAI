@@ -21,7 +21,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission here
-    console.log("Contact form data:", formData);
     // Reset form
     setFormData({
       name: "",

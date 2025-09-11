@@ -19,7 +19,6 @@ const Dashboard = () => {
   }, []);
 
   const handleMenuToggle = () => {
-    console.log("Menu toggle clicked");
     // You can implement sidebar toggle functionality here
   };
 
