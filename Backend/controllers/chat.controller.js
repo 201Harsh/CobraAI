@@ -25,7 +25,6 @@ module.exports.SaveChatHistory = async (req, res) => {
       chat,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: error.message,
     });

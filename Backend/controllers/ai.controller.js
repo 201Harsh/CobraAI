@@ -59,7 +59,6 @@ module.exports.chatWithAI = async (req, res) => {
       response: AIResponse,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: error.message,
     });

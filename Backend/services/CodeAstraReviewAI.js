@@ -187,7 +187,6 @@ Remember: You're not just reviewing code; you're mentoring ${User.name} on their
     
     return response.text;
   } catch (error) {
-    console.error("Error in AI code review:", error);
     throw new Error(`Code review failed: ${error.message}`);
   }
 }
