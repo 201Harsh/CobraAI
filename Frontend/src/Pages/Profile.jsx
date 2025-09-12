@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaUser,
   FaEnvelope,
   FaCode,
   FaVenusMars,
   FaEdit,
-  FaCamera,
   FaSave,
   FaTimes,
+  FaGraduationCap,
 } from "react-icons/fa";
 import AxiosInstance from "../Config/Axios";
 import { Bounce, toast } from "react-toastify";
@@ -20,9 +20,10 @@ const Profile = () => {
     name: "",
     email: "",
     Level: "",
-    ProfilePicUrl: "" || "https://i.ibb.co/s484785/profile-pic.png",
+    ProfilePicUrl: "" || "https://videos.openai.com/vg-assets/assets%2Ftask_01k4hn2gk1fmkt0t9ka1qw5ydc%2F1757234277_img_1.webp?st=2025-09-12T06%3A15%3A54Z&se=2025-09-18T07%3A15%3A54Z&sks=b&skt=2025-09-12T06%3A15%3A54Z&ske=2025-09-18T07%3A15%3A54Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Z%2Bm9U2z4n5zr4UdpwPKqMDXCT6lh2gHKZhKNZpm6teA%3D&az=oaivgprodscus",
     Language: "",
     gender: "",
+    LearningStyle: "",
     joiningDate: "",
     projectsCompleted: 24,
     codeGenerations: 156,
@@ -37,21 +38,25 @@ const Profile = () => {
         const res = await AxiosInstance.get("/users/me");
 
         if (res.status === 200) {
+          console.log(res.data)
           setUserData(res.data.User);
           setEditData(res.data.User);
         }
       } catch (error) {
-        toast.error(error.response?.data?.error || "Failed to fetch user data", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
+        toast.error(
+          error.response?.data?.error || "Failed to fetch user data",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          }
+        );
         Navigate("/");
       }
     };
@@ -64,7 +69,7 @@ const Profile = () => {
 
   const handleSave = async () => {
     setIsSaving(true);
-    
+
     try {
       // Log the changes for API call
       const changes = {
@@ -72,20 +77,21 @@ const Profile = () => {
         gender: editData.gender !== userData.gender ? editData.gender : undefined,
         Language: editData.Language !== userData.Language ? editData.Language : undefined,
         Level: editData.Level !== userData.Level ? editData.Level : undefined,
+        LearningStyle: editData.LearningStyle !== userData.LearningStyle ? editData.LearningStyle : undefined,
       };
-      
+
       console.log("Changes to be sent to API:", changes);
-      
+
       // Here you would call your API
       // const response = await AxiosInstance.put("/users/update", changes);
-      
+
       // Simulate API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Update user data with the new values
       setUserData({ ...editData });
       setIsEditing(false);
-      
+
       toast.success("Profile updated successfully!", {
         position: "top-right",
         autoClose: 3000,
@@ -123,15 +129,48 @@ const Profile = () => {
     setEditData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const getLabelFromValue = (options, value) => {
+    const option = options.find(opt => opt.value === value);
+    return option ? option.label : "Not specified";
+  };
+
   const stats = [
     { label: "Days Active", value: userData.learningStreak, icon: "🔥" },
     { label: "Projects", value: userData.projectsCompleted, icon: "📁" },
     { label: "Code Generations", value: userData.codeGenerations, icon: "⚡" },
   ];
 
-  const languages = ["JavaScript", "Python", "Java", "C++", "TypeScript", "Go"];
-  const levels = ["Beginner", "Intermediate", "Advanced", "Expert"];
-  const genders = ["Male", "Female", "Non-binary", "Prefer not to say"];
+  const languages = [
+    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript" },
+    { value: "reactjs", label: "⚛️ React JS" },
+    { value: "react-native", label: "📱 React Native" },
+    { value: "node-express", label: "🚀 Node.js & Express.js" },
+    { value: "mongodb", label: "🍃 MongoDB" },
+    { value: "mysql", label: "🐬 MySQL" },
+    { value: "python", label: "🐍 Python" },
+    { value: "ai-ml-basics", label: "🤖 AI / ML Basics" },
+  ];
+
+  const levels = [
+    { value: "beginner", label: "🌱 Beginner" },
+    { value: "intermediate", label: "🚀 Intermediate" },
+    { value: "advanced", label: "⚡ Advanced" },
+    { value: "expert", label: "🏆 Expert" },
+  ];
+
+  const genders = [
+    { value: "male", label: "👨 Male" },
+    { value: "female", label: "👩 Female" },
+    { value: "non_binary", label: "🌈 LGBTQ+" },
+  ];
+
+  const LearningStyles = [
+    { value: "visual", label: "👁️ Visual" },
+    { value: "auditory", label: "👂 Auditory" },
+    { value: "reading", label: "📖 Reading/Writing" },
+    { value: "kinesthetic", label: "🔧 Kinesthetic" },
+    { value: "mixed", label: "🔄 Mixed" },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 text-white p-4 md:p-8">
@@ -229,7 +268,11 @@ const Profile = () => {
                       {isSaving ? (
                         <motion.div
                           animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
                           className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                         />
                       ) : (
@@ -280,9 +323,15 @@ const Profile = () => {
                   className="bg-gray-800/30 backdrop-blur-md rounded-xl p-4 border border-gray-700 text-center"
                 >
                   <div className="text-2xl mb-2">{stat.icon}</div>
-                  <div className="text-2xl font-bold text-white">
+                  <motion.div 
+                    className="text-2xl font-bold text-white"
+                    key={stat.value}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {stat.value}
-                  </div>
+                  </motion.div>
                   <div className="text-gray-400 text-sm">{stat.label}</div>
                 </motion.div>
               ))}
@@ -307,7 +356,9 @@ const Profile = () => {
                     <motion.input
                       type="text"
                       value={editData.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -326,7 +377,9 @@ const Profile = () => {
                   {isEditing ? (
                     <motion.select
                       value={editData.gender}
-                      onChange={(e) => handleInputChange("gender", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("gender", e.target.value)
+                      }
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -334,15 +387,17 @@ const Profile = () => {
                     >
                       <option value="">Select Gender</option>
                       {genders.map((gender) => (
-                        <option key={gender} value={gender}>
-                          {gender}
+                        <option key={gender.value} value={gender.value}>
+                          {gender.label}
                         </option>
                       ))}
                     </motion.select>
                   ) : (
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
                       <FaVenusMars className="mr-2 text-red-400" />
-                      <span className="text-white">{userData.gender || "Not specified"}</span>
+                      <span className="text-white">
+                        {getLabelFromValue(genders, userData.gender)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -355,7 +410,9 @@ const Profile = () => {
                   {isEditing ? (
                     <motion.select
                       value={editData.Language}
-                      onChange={(e) => handleInputChange("Language", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("Language", e.target.value)
+                      }
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -363,15 +420,17 @@ const Profile = () => {
                     >
                       <option value="">Select Language</option>
                       {languages.map((lang) => (
-                        <option key={lang} value={lang}>
-                          {lang}
+                        <option key={lang.value} value={lang.value}>
+                          {lang.label}
                         </option>
                       ))}
                     </motion.select>
                   ) : (
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
                       <FaCode className="mr-2 text-red-400" />
-                      <span className="text-white">{userData.Language || "Not specified"}</span>
+                      <span className="text-white">
+                        {getLabelFromValue(languages, userData.Language)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -384,7 +443,9 @@ const Profile = () => {
                   {isEditing ? (
                     <motion.select
                       value={editData.Level}
-                      onChange={(e) => handleInputChange("Level", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("Level", e.target.value)
+                      }
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -392,14 +453,49 @@ const Profile = () => {
                     >
                       <option value="">Select Level</option>
                       {levels.map((level) => (
-                        <option key={level} value={level}>
-                          {level}
+                        <option key={level.value} value={level.value}>
+                          {level.label}
                         </option>
                       ))}
                     </motion.select>
                   ) : (
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2">
-                      <span className="text-white">{userData.Level || "Not specified"}</span>
+                      <span className="text-white">
+                        {getLabelFromValue(levels, userData.Level)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Learning Style */}
+                <div>
+                  <label className="block text-gray-400 mb-2">
+                    Learning Style
+                  </label>
+                  {isEditing ? (
+                    <motion.select
+                      value={editData.LearningStyle}
+                      onChange={(e) =>
+                        handleInputChange("LearningStyle", e.target.value)
+                      }
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <option value="">Select Learning Style</option>
+                      {LearningStyles.map((style) => (
+                        <option key={style.value} value={style.value}>
+                          {style.label}
+                        </option>
+                      ))}
+                    </motion.select>
+                  ) : (
+                    <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
+                      <FaGraduationCap className="mr-2 text-red-400" />
+                      <span className="text-white">
+                        {getLabelFromValue(LearningStyles, userData.LearningStyle)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -421,8 +517,8 @@ const Profile = () => {
                   { name: "Bug Hunter", icon: "🐛", progress: 60 },
                   { name: "Syntax King", icon: "👑", progress: 40 },
                 ].map((achievement, index) => (
-                  <motion.div 
-                    key={index} 
+                  <motion.div
+                    key={index}
                     className="text-center"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300 }}
@@ -432,10 +528,12 @@ const Profile = () => {
                       {achievement.name}
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div
+                      <motion.div
                         className="bg-gradient-to-r from-red-600 to-pink-600 h-2 rounded-full"
-                        style={{ width: `${achievement.progress}%` }}
-                      ></div>
+                        initial={{ width: 0 }}
+                        animate={{ width: `${achievement.progress}%` }}
+                        transition={{ duration: 1, delay: 1.2 + index * 0.1 }}
+                      />
                     </div>
                   </motion.div>
                 ))}
