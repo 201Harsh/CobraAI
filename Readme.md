@@ -1,13 +1,15 @@
-# 🌟 CodeAstra - Intelligent Code Compiler & AI Tutor [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
+# 🌟 CodeAstra - Intelligent Code Compiler & AI Tutor
+[![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
 
 ![CodeAstra Banner](https://img.shields.io/badge/🚀_CodeAstra-Code_Compiler_+_AI_Tutor-EA1E63?style=for-the-badge&logo=code&logoColor=white)
 
-**CodeAstra** is a next-generation web platform combining an intelligent code compiler and an AI-powered tutor to help developers learn and execute code efficiently. Featuring code execution for frontend technologies (HTML, CSS, JS) and Python, smart AI suggestions, personalized adaptive learning, and persistent chat history — all wrapped in a modern, sleek interface.
+**CodeAstra** is a next-generation web platform combining an intelligent code compiler and an AI-powered tutor to help developers learn and execute code efficiently. Featuring code execution for frontend technologies (HTML, CSS, JS), Python, **Express.js runtime via WebContainer**, smart AI suggestions, personalized adaptive learning, and persistent chat history — all wrapped in a modern, sleek interface.
 
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.0.13-green)](https://www.mongodb.com)
 [![Express](https://img.shields.io/badge/Express-5.1.0-yellow)](https://expressjs.com)
 [![React](https://img.shields.io/badge/React-19.1.1-blue)](https://reactjs.org)  
 [![Node.js](https://img.shields.io/badge/Node-24.7.0-green)](https://nodejs.org)
+[![WebContainer](https://img.shields.io/badge/WebContainer-Live_Runtime-orange)](https://webcontainers.io)
 
 ---
 
@@ -33,6 +35,7 @@
 | ------------------------------ | --------------------------------------------------------------------------------------------------- |
 | 💻 **HTML/CSS/JS Compiler**    | Execute and preview frontend code in real-time within the platform                                  |
 | 🐍 **Python Code Execution**   | Execute Python code with standard input support                                                     |
+| ⚡ **Express.js Runtime**       | Run full Express.js applications inside the browser using WebContainer                              |
 | 🧠 **AI Tutor Assistant**      | Personalized adaptive AI tutor giving intelligent suggestions, code fixes, and guidance             |
 | 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                             |
 | 🔐 **Authentication**          | Secure login and signup with JWT authentication                                                     |
@@ -52,7 +55,7 @@
 - Framer Motion
 - Context API
 
-**Backend:**
+**Backend & Runtime:**
 
 - Node.js
 - Express.js
@@ -60,6 +63,7 @@
 - JWT (Authentication)
 - Google Gemini AI API for AI Tutor
 - Piston API for Python Code Execution
+- **WebContainer API for Express.js Runtime inside Browser**
 
 ---
 
@@ -73,16 +77,21 @@ sequenceDiagram
     participant MongoDB
     participant Google Gemini API
     participant Piston API
+    participant WebContainer
 
     User->>Frontend: Login/Register
     Frontend->>Backend: Authenticated Request
     Backend->>MongoDB: Save/Retrieve Data
 
     User->>Frontend: Write Code
-    Frontend->>Backend: Send Code for Execution
-    Backend->>Piston API: Execute Code
+    Frontend->>Backend: Send Python Code for Execution
+    Backend->>Piston API: Execute Python Code
     Piston API-->>Backend: Code Output
     Backend-->>Frontend: Display Output
+
+    User->>Frontend: Run Express.js App
+    Frontend->>WebContainer: Execute Express.js Runtime
+    WebContainer-->>Frontend: Live Server Response
 
     User->>Frontend: Ask AI Question
     Frontend->>Backend: Send Prompt
@@ -125,12 +134,13 @@ npm run dev
 ## 👨‍💻 Usage Guide
 
 1. Register and login securely
-2. Write frontend code (HTML/CSS/JS) or Python in the provided editor
+2. Write frontend code (HTML/CSS/JS), Python, or Express.js in the editor
 3. Press "Run" to compile code and view output in real-time
-4. Ask questions in the AI Tutor section
-5. View code suggestions, fixes, and educational insights
-6. Chat history stores automatically with context
-7. Your skill level (Beginner/Intermediate/Advanced) upgrades based on usage and performance
+4. Express.js apps run fully inside the browser via WebContainer
+5. Ask questions in the AI Tutor section
+6. View code suggestions, fixes, and educational insights
+7. Chat history stores automatically with context
+8. Your skill level (Beginner/Intermediate/Advanced) upgrades based on usage and performance
 
 ---
 
@@ -181,6 +191,7 @@ Automatically upgrades user's skill level (Beginner → Intermediate → Advance
 - ✅ Authentication System (JWT-based)
 - ✅ Frontend HTML/CSS/JS Code Compiler
 - ✅ Python Code Execution (Piston API)
+- ✅ Express.js Runtime using WebContainer
 - ✅ AI Tutor Integration (Google Gemini API)
 - ✅ Persistent Chat History Storage
 - ✅ Adaptive Leveling System
@@ -188,7 +199,6 @@ Automatically upgrades user's skill level (Beginner → Intermediate → Advance
 
 ### 🚧 Planned
 
-- ⚡ Express & React Code Compiler
 - 📊 Detailed Performance Dashboard
 - 🧱 File Upload & Media Sharing
 - 🔔 In-App Notifications
