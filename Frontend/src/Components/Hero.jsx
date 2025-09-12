@@ -20,6 +20,9 @@ import {
   FaPalette,
   FaTrophy,
   FaPeace,
+  FaLinkedin,
+  FaGithub,
+  FaInstagram,
 } from "react-icons/fa";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -310,6 +313,145 @@ const Hero = () => {
               <p className="text-blue-200">{feature.description}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Who's Behind CodeAstra Section */}
+      <section id="developer" className="py-16">
+        <div className="container mx-auto px-6 lg:px-12">
+          {/* Section Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Who’s Behind{" "}
+              <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
+                CodeAstra
+              </span>
+            </h2>
+            <p className="text-blue-200 max-w-2xl mx-auto text-lg">
+              Meet the mind and the machine behind Trinetra’s CodeAstra project.
+            </p>
+          </motion.div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Developer Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
+            >
+              <img
+                src="https://avatars.githubusercontent.com/u/160850571?v=4" // replace with your image
+                alt="Developer"
+                className="w-28 h-28 rounded-full mx-auto border-2 border-red-500 mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Harsh</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                Full Stack Developer & Visionary
+              </p>
+              <p className="text-blue-200 text-sm mb-6">
+                Creator of Trinetra and CodeAstra. Passionate about building AI
+                tools that adapt to users’ skill levels and empower programmers.
+              </p>
+              <div className="flex justify-center space-x-5">
+                <a
+                  href="https://github.com/201Harsh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaGithub className="text-2xl" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/201harsh/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaLinkedin className="text-2xl" />
+                </a>
+                <a
+                  href="https://www.instagram.com/201harshs/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <FaInstagram className="text-2xl" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* AI Engine Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/4712/4712105.png"
+                alt="AI Engine"
+                className="w-24 h-24 mx-auto mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Trinetra AI</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                The Adaptive Engine
+              </p>
+              <ul className="text-blue-200 text-sm space-y-2 text-left mx-auto max-w-xs">
+                <li>
+                  ⚡ Analyzes your skill level (Beginner / Intermediate /
+                  Advanced)
+                </li>
+                <li>🎯 Adjusts teaching pace and complexity</li>
+                <li>📖 Explains code with tailored clarity</li>
+                <li>🚀 Evolves as you grow</li>
+              </ul>
+            </motion.div>
+
+            {/* Tech Stack Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"
+                alt="Tech Stack"
+                className="w-24 h-24 mx-auto mb-6"
+              />
+              <h3 className="text-xl font-bold text-white mb-2">Tech Stack</h3>
+              <p className="text-pink-400 font-medium mb-3">
+                Tools & Frameworks
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  "React",
+                  "Node.js",
+                  "Python",
+                  "MongoDB",
+                  "Tailwind CSS",
+                  "React Native",
+                ].map((tech, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-800/40 text-blue-200 px-3 py-1 rounded-full text-xs"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
