@@ -1,5 +1,6 @@
 const userModel = require("../models/user.model");
 const TempUserModel = require("../models/tempuser.model");
+const ChatModel = require("../models/chat.model");
 
 module.exports.createTempUser = async ({ name, email, password, otp }) => {
   if (!name || !email || !password || !otp) {
@@ -112,6 +113,8 @@ module.exports.UpdateUserProfile = async ({
     LearningStyle,
     gender,
   });
+
+  await ChatModel.deleteOne({ UserId: id });
 
   return updateduser;
 };
