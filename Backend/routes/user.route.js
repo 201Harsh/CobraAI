@@ -64,4 +64,10 @@ router.post(
   userController.updateUserInfo
 );
 
+router.post(
+  "/updateProfile",
+  UserMiddleware.authUser,
+  userController.UpdateUserProfile
+);
+
 module.exports = router;

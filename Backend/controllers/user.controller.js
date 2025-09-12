@@ -220,3 +220,33 @@ module.exports.updateUserInfo = async (req, res) => {
     });
   }
 };
+
+module.exports.UpdateUserProfile = async (req, res)=>{
+
+  try {
+    
+    const {name, Level, Language, LearningStyle, gender} = req.body;
+
+    const UserId = req.user._id;
+
+    const UpdateUser = await UserServices.UpdateUserProfile({
+      id: UserId,
+      name,
+      Level,
+      Language,
+      LearningStyle,
+      gender,
+    });
+
+    res.status(200).json({
+      message: "Info updated successfully",
+      UpdateUser,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+
+}

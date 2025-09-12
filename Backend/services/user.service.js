@@ -92,3 +92,26 @@ module.exports.UpdatingUserInfo = async ({
 
   return updateduser;
 };
+
+module.exports.UpdateUserProfile = async ({
+  id,
+  name,
+  Level,
+  Language,
+  LearningStyle,
+  gender,
+}) => {
+  if (!name || !Level || !Language || !LearningStyle || !gender) {
+    throw new Error("All fields are required");
+  }
+
+  const updateduser = await userModel.findByIdAndUpdate(id, {
+    name,
+    Level,
+    Language,
+    LearningStyle,
+    gender,
+  });
+
+  return updateduser;
+};
