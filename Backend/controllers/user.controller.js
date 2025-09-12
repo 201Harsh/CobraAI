@@ -49,7 +49,7 @@ module.exports.registerTempuser = async (req, res) => {
     });
 
     const info = await transporter.sendMail({
-      from: "CodeAstra<endgamingai2@gmail.com>",
+      from: "CodeAstra <endgamingai2@gmail.com>",
       to: email,
       subject: "🔐 Your CodeAstra Verification Code",
       html: `
