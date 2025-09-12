@@ -9,6 +9,7 @@ import {
   FaSave,
   FaTimes,
   FaGraduationCap,
+  FaArrowLeft,
 } from "react-icons/fa";
 import AxiosInstance from "../Config/Axios";
 import { Bounce, toast } from "react-toastify";
@@ -184,12 +185,26 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
+        {/* Back to Dashboard Button */}
+        <motion.button
+          onClick={() => Navigate("/dashboard")}
+          className="mb-6 fixed flex z-50 items-center gap-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <FaArrowLeft className="text-sm" />
+          Back to Dashboard
+        </motion.button>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8"
+          className="text-center mb-8 pt-18 md:pt-0"
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             User{" "}
