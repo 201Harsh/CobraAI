@@ -160,7 +160,7 @@ const Profile = () => {
   const genders = [
     { value: "male", label: "👨 Male" },
     { value: "female", label: "👩 Female" },
-    { value: "non_binary", label: "🌈 LGBTQ+" },
+    { value: "lgbtq+", label: "🌈 LGBTQ+" },
   ];
 
   const LearningStyles = [
