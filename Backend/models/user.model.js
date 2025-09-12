@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   },
   ProfilePicUrl: {
     type: String,
-    default: "https://videos.openai.com/vg-assets/assets%2Ftask_01k4c621dmft3tj7hjgqsxqn37%2F1757050668_img_1.webp?st=2025-09-05T03%3A48%3A37Z&se=2025-09-11T04%3A48%3A37Z&sks=b&skt=2025-09-05T03%3A48%3A37Z&ske=2025-09-11T04%3A48%3A37Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=6b41042f-a9cd-49d3-882a-22a7d9e97b16&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=um7OooLoAM5licSGYiJHlKP6rzNV%2BcS8NAk28bQizpY%3D&az=oaivgprodscus",
+    default: "https://videos.openai.com/vg-assets/assets%2Ftask_01k4hn2gk1fmkt0t9ka1qw5ydc%2F1757234277_img_1.webp?st=2025-09-12T06%3A15%3A54Z&se=2025-09-18T07%3A15%3A54Z&sks=b&skt=2025-09-12T06%3A15%3A54Z&ske=2025-09-18T07%3A15%3A54Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Z%2Bm9U2z4n5zr4UdpwPKqMDXCT6lh2gHKZhKNZpm6teA%3D&az=oaivgprodscus",
   },
   Level: {
     type: String,
