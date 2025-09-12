@@ -20,7 +20,9 @@ const Profile = () => {
     name: "",
     email: "",
     Level: "",
-    ProfilePicUrl: "" || "https://videos.openai.com/vg-assets/assets%2Ftask_01k4hn2gk1fmkt0t9ka1qw5ydc%2F1757234277_img_1.webp?st=2025-09-12T06%3A15%3A54Z&se=2025-09-18T07%3A15%3A54Z&sks=b&skt=2025-09-12T06%3A15%3A54Z&ske=2025-09-18T07%3A15%3A54Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Z%2Bm9U2z4n5zr4UdpwPKqMDXCT6lh2gHKZhKNZpm6teA%3D&az=oaivgprodscus",
+    ProfilePicUrl:
+      "" ||
+      "https://videos.openai.com/vg-assets/assets%2Ftask_01k4hn2gk1fmkt0t9ka1qw5ydc%2F1757234277_img_1.webp?st=2025-09-12T06%3A15%3A54Z&se=2025-09-18T07%3A15%3A54Z&sks=b&skt=2025-09-12T06%3A15%3A54Z&ske=2025-09-18T07%3A15%3A54Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Z%2Bm9U2z4n5zr4UdpwPKqMDXCT6lh2gHKZhKNZpm6teA%3D&az=oaivgprodscus",
     Language: "",
     gender: "",
     LearningStyle: "",
@@ -67,57 +69,59 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
-    setIsSaving(true);
+  setIsSaving(true);
 
-    try {
-      // Log the changes for API call
-      const changes = {
-        name: editData.name !== userData.name ? editData.name : undefined,
-        gender: editData.gender !== userData.gender ? editData.gender : undefined,
-        Language: editData.Language !== userData.Language ? editData.Language : undefined,
-        Level: editData.Level !== userData.Level ? editData.Level : undefined,
-        LearningStyle: editData.LearningStyle !== userData.LearningStyle ? editData.LearningStyle : undefined,
-      };
+  try {
+    const changes = {
+      name: editData.name || userData.name,
+      gender: editData.gender || userData.gender,
+      Language: editData.Language || userData.Language,
+      Level: editData.Level || userData.Level,
+      LearningStyle: editData.LearningStyle || userData.LearningStyle,
+    };
 
-      console.log("Changes to be sent to API:", changes);
+    console.log("Changes to be sent to API:", changes);
 
-      // Here you would call your API
-      // const response = await AxiosInstance.put("/users/update", changes);
+    // Simulate API call with timeout (replace with real API call)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Example: const response = await AxiosInstance.put("/users/update", changes);
 
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Update local userData state
+    setUserData((prev) => ({
+      ...prev,
+      ...changes,
+    }));
 
-      // Update user data with the new values
-      setUserData({ ...editData });
-      setIsEditing(false);
+    setIsEditing(false);
 
-      toast.success("Profile updated successfully!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    } catch (error) {
-      toast.error("Failed to update profile. Please try again.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
+    toast.success("Profile updated successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  } catch (error) {
+    toast.error("Failed to update profile. Please try again.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  } finally {
+    setIsSaving(false);
+  }
+};
+
 
   const handleCancel = () => {
     setEditData({ ...userData });
@@ -129,7 +133,7 @@ const Profile = () => {
   };
 
   const getLabelFromValue = (options, value) => {
-    const option = options.find(opt => opt.value === value);
+    const option = options.find((opt) => opt.value === value);
     return option ? option.label : "Not specified";
   };
 
@@ -322,7 +326,7 @@ const Profile = () => {
                   className="bg-gray-800/30 backdrop-blur-md rounded-xl p-4 border border-gray-700 text-center"
                 >
                   <div className="text-2xl mb-2">{stat.icon}</div>
-                  <motion.div 
+                  <motion.div
                     className="text-2xl font-bold text-white"
                     key={stat.value}
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -493,7 +497,10 @@ const Profile = () => {
                     <div className="bg-gray-700/50 rounded-lg px-3 py-2 flex items-center">
                       <FaGraduationCap className="mr-2 text-red-400" />
                       <span className="text-white">
-                        {getLabelFromValue(LearningStyles, userData.LearningStyle)}
+                        {getLabelFromValue(
+                          LearningStyles,
+                          userData.LearningStyle
+                        )}
                       </span>
                     </div>
                   )}
