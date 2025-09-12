@@ -38,7 +38,6 @@ const Profile = () => {
         const res = await AxiosInstance.get("/users/me");
 
         if (res.status === 200) {
-          console.log(res.data)
           setUserData(res.data.User);
           setEditData(res.data.User);
         }
