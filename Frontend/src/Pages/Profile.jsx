@@ -69,59 +69,66 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
-  setIsSaving(true);
+    setIsSaving(true);
 
-  try {
-    const changes = {
-      name: editData.name || userData.name,
-      gender: editData.gender || userData.gender,
-      Language: editData.Language || userData.Language,
-      Level: editData.Level || userData.Level,
-      LearningStyle: editData.LearningStyle || userData.LearningStyle,
-    };
+    try {
+      const changes = {
+        name: editData.name || userData.name,
+        gender: editData.gender || userData.gender,
+        Language: editData.Language || userData.Language,
+        Level: editData.Level || userData.Level,
+        LearningStyle: editData.LearningStyle || userData.LearningStyle,
+      };
 
-    console.log("Changes to be sent to API:", changes);
+      try {
+        const res = await AxiosInstance.post(
+          "/users/updateProfile",
+          changes
+        );
 
-    // Simulate API call with timeout (replace with real API call)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    // Example: const response = await AxiosInstance.put("/users/update", changes);
+        if (res.status === 200) {
+          console.log(res)
+          toast.success(res.data.message || "Profile updated successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          });
+        }
+      } catch (error) {
+        toast.error(
+          error.response?.data?.error || "Failed to update user data",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+          }
+        );
+      }
 
-    // Update local userData state
-    setUserData((prev) => ({
-      ...prev,
-      ...changes,
-    }));
+      // Update local userData state
+      setUserData((prev) => ({
+        ...prev,
+        ...changes,
+      }));
 
-    setIsEditing(false);
-
-    toast.success("Profile updated successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Bounce,
-    });
-  } catch (error) {
-    toast.error("Failed to update profile. Please try again.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-      transition: Bounce,
-    });
-  } finally {
-    setIsSaving(false);
-  }
-};
-
+      setIsEditing(false);
+    } catch (error) {
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleCancel = () => {
     setEditData({ ...userData });
