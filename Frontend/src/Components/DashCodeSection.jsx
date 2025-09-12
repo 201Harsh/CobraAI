@@ -123,10 +123,19 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
         try {
           const { WebContainer } = await import("@webcontainer/api");
           window.webcontainerInstance = await WebContainer.boot();
-          console.log("WebContainer booted successfully");
           setIsWebContainerReady(true); // Mark as ready
         } catch (error) {
-          console.error("Failed to boot WebContainer:", error);
+          toast.error(`Failed to initialize: ${error.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+          });
           setWebContainerError(`Failed to initialize: ${error.message}`);
         } finally {
           setIsWebContainerLoading(false);
@@ -285,10 +294,10 @@ p {
 
   // Execute Express.js code using WebContainer
   const executeExpressCode = async () => {
-  if (!window.webcontainerInstance || !isWebContainerReady) {
-    setOutput("Error: WebContainer not initialized yet. Please wait...");
-    return;
-  }
+    if (!window.webcontainerInstance || !isWebContainerReady) {
+      setOutput("Error: WebContainer not initialized yet. Please wait...");
+      return;
+    }
 
     setIsLoading(true);
     setOutput("Starting Express server...");
@@ -1283,19 +1292,25 @@ p {
           {/* Run Button */}
           {language !== "html-css-js" && (
             <motion.button
-  onClick={handleRunCode}
-  disabled={isLoading || (isExpressLanguage && !isWebContainerReady)}
-  className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
-    isLoading || (isExpressLanguage && !isWebContainerReady)
-      ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-      : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
-  }`}
->
-  <FaPlay className="text-xs" />
-  <span className="hidden sm:inline">
-    {isLoading ? "Running..." : (isExpressLanguage && !isWebContainerReady ? "Initializing..." : "Run")}
-  </span>
-</motion.button>
+              onClick={handleRunCode}
+              disabled={
+                isLoading || (isExpressLanguage && !isWebContainerReady)
+              }
+              className={`px-3 py-1 rounded-lg flex items-center space-x-1 transition-all duration-300 text-sm ${
+                isLoading || (isExpressLanguage && !isWebContainerReady)
+                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700"
+              }`}
+            >
+              <FaPlay className="text-xs" />
+              <span className="hidden sm:inline">
+                {isLoading
+                  ? "Running..."
+                  : isExpressLanguage && !isWebContainerReady
+                  ? "Initializing..."
+                  : "Run"}
+              </span>
+            </motion.button>
           )}
         </div>
       </div>

@@ -87,7 +87,6 @@ const Profile = () => {
         );
 
         if (res.status === 200) {
-          console.log(res)
           toast.success(res.data.message || "Profile updated successfully!", {
             position: "top-right",
             autoClose: 3000,
