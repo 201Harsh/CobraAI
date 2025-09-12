@@ -213,7 +213,6 @@ module.exports.updateUserInfo = async (req, res) => {
       message: "Info updated successfully",
       UpdateUser,
     });
-
   } catch (error) {
     res.status(500).json({
       error: error.message,
@@ -221,11 +220,9 @@ module.exports.updateUserInfo = async (req, res) => {
   }
 };
 
-module.exports.UpdateUserProfile = async (req, res)=>{
-
+module.exports.UpdateUserProfile = async (req, res) => {
   try {
-    
-    const {name, Level, Language, LearningStyle, gender} = req.body;
+    const { name, Level, Language, LearningStyle, gender } = req.body;
 
     const UserId = req.user._id;
 
@@ -242,11 +239,9 @@ module.exports.UpdateUserProfile = async (req, res)=>{
       message: "Info updated successfully",
       UpdateUser,
     });
-
   } catch (error) {
     res.status(500).json({
       error: error.message,
     });
   }
-
-}
+};
