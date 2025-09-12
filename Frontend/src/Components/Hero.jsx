@@ -333,7 +333,11 @@ const Hero = () => {
               </span>
             </h2>
             <p className="text-blue-200 max-w-2xl mx-auto text-lg">
-              Meet the mind and the machine behind Trinetra’s CodeAstra project.
+              Meet the mind and the machine behind{" "}
+              <span className="font-bold bg-clip-text bg-radial from-sky-300 to-green-400 text-transparent">
+                Trinetra’s CodeAstra
+              </span>{" "}
+              project.
             </p>
           </motion.div>
 
