@@ -7,9 +7,9 @@ module.exports.GlobalLimit = rateLimit({
 });
 
 module.exports.authLimit = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: "Too many requests, please try again after 15 minutes",
+  windowMs: 5 * 60 * 1000,
+  max: 10,
+  message: "Too many requests, please try again after 5 minutes",
 });
 
 module.exports.aiLimit = rateLimit({
