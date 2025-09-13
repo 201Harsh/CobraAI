@@ -1,4 +1,5 @@
 # 🌟 CodeAstra - Intelligent Code Compiler & AI Tutor
+
 [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
 
 ![CodeAstra Banner](https://img.shields.io/badge/🚀_CodeAstra-Code_Compiler_+_AI_Tutor-EA1E63?style=for-the-badge&logo=code&logoColor=white)
@@ -36,7 +37,7 @@
 | ------------------------------ | --------------------------------------------------------------------------------------------------- |
 | 💻 **HTML/CSS/JS Compiler**    | Execute and preview frontend code in real-time within the platform                                  |
 | 🐍 **Python Code Execution**   | Execute Python code with standard input support                                                     |
-| ⚡ **Express.js Runtime**       | Run full Express.js applications inside the browser using WebContainer                              |
+| ⚡ **Express.js Runtime**      | Run full Express.js applications inside the browser using WebContainer                              |
 | 🧠 **AI Tutor Assistant**      | Personalized adaptive AI tutor giving intelligent suggestions, code fixes, and guidance             |
 | 🤖 **AI Code Review**          | Automated code reviews with style, correctness, security, performance and test suggestions          |
 | 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                             |
@@ -202,17 +203,17 @@ CodeAstra's **AI Code Review** is a dedicated feature and worker pipeline that i
    - Maintainability and style guidance (naming, modularization, documentation)
    - Test suggestions and example test cases
 5. **Patch Generation**: For many suggestions the worker can produce a git-style patch or specific code snippets that can be applied automatically or manually.
-6. **Explainability**: Each suggestion includes: the *issue*, *severity*, *suggested fix*, *explanation* (why it matters), and *confidence score* so users can prioritize changes.
+6. **Explainability**: Each suggestion includes: the _issue_, _severity_, _suggested fix_, _explanation_ (why it matters), and _confidence score_ so users can prioritize changes.
 7. **Human-in-the-loop**: Users can accept/modify/reject fixes; maintainers can require manual approval before applying patches to protected branches.
 8. **Privacy & Safety**: By default, private repo content is processed in your own backend (never sent to 3rd-party storage) and only the minimal context required is sent to the LLM service. Sensitive tokens and secrets are redacted before review. An audit log records review actions.
 
 ### AI Code Review Outputs
 
-- **Inline comments** shown in the editor with line numbers and code excerpts.  
-- **Structured report** (JSON) that can be used to populate dashboards or integrate with CI.  
-- **Auto-fix patches** that apply Prettier/ESLint or suggested small edits.  
-- **Test suggestions & generated tests** to increase coverage.  
-- **Security advisories** with links to CVE references and recommended dependency upgrades.  
+- **Inline comments** shown in the editor with line numbers and code excerpts.
+- **Structured report** (JSON) that can be used to populate dashboards or integrate with CI.
+- **Auto-fix patches** that apply Prettier/ESLint or suggested small edits.
+- **Test suggestions & generated tests** to increase coverage.
+- **Security advisories** with links to CVE references and recommended dependency upgrades.
 
 ### Example Review Flow (User experience)
 
@@ -244,7 +245,6 @@ ALLOW_AUTO_FIX=false
 
 ---
 
-
 ---
 
 ## 🧩 Personalized Learning Styles
@@ -253,26 +253,25 @@ CodeAstra adapts to your preferred **learning style** so that every learner gets
 
 ### Available Learning Styles
 
-| Style | Icon | Description | AI Response |
-|-------|------|-------------|-------------|
-| 🎮 **Fun Play Learner** | 🎮 | Learn through games, challenges, and interactive coding exercises | AI will create coding games, challenges, and reward systems to make learning enjoyable |
-| 🤝 **Hands-on Learner** | ✋ | Learn by doing, with practical examples and immediate practice | AI will provide interactive coding environments, sandboxes, and immediate practice opportunities |
-| 📖 **Story Mode Learner** | 📖 | Learn through narratives, real-world scenarios, and contextual examples | AI will frame concepts within stories, use case studies, and real-world application scenarios |
-| 🧭 **Explorer Learner** | 🧭 | Learn through discovery, experimentation, and self-guided exploration | AI will suggest learning paths, provide resources for exploration, and encourage experimentation |
-| 🎧 **Sound Wave Learner** | 🎧 | Learn through auditory explanations, podcasts, and verbal instructions | AI will provide audio explanations, voice-based interactions, and mnemonic devices |
-| 🎨 **Visual Mind Learner** | 🎨 | Learn through diagrams, charts, visualizations, and color-coded examples | AI will create diagrams, flowcharts, visual code explanations, and color-highlighted examples |
-| 🏆 **Challenge Mode Learner** | 🏆 | Learn through problem-solving, coding challenges, and achievement systems | AI will provide progressively difficult challenges, coding problems, and achievement tracking |
-| 🧘 **Zen Mode Learner** | 🧘 | Learn through calm, focused, step-by-step explanations without pressure | AI will provide calm, structured, step-by-step guidance with mindfulness breaks |
+| Style                         | Icon | Description                                                               | AI Response                                                                                      |
+| ----------------------------- | ---- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 🎮 **Fun Play Learner**       | 🎮   | Learn through games, challenges, and interactive coding exercises         | AI will create coding games, challenges, and reward systems to make learning enjoyable           |
+| 🤝 **Hands-on Learner**       | ✋   | Learn by doing, with practical examples and immediate practice            | AI will provide interactive coding environments, sandboxes, and immediate practice opportunities |
+| 📖 **Story Mode Learner**     | 📖   | Learn through narratives, real-world scenarios, and contextual examples   | AI will frame concepts within stories, use case studies, and real-world application scenarios    |
+| 🧭 **Explorer Learner**       | 🧭   | Learn through discovery, experimentation, and self-guided exploration     | AI will suggest learning paths, provide resources for exploration, and encourage experimentation |
+| 🎧 **Sound Wave Learner**     | 🎧   | Learn through auditory explanations, podcasts, and verbal instructions    | AI will provide audio explanations, voice-based interactions, and mnemonic devices               |
+| 🎨 **Visual Mind Learner**    | 🎨   | Learn through diagrams, charts, visualizations, and color-coded examples  | AI will create diagrams, flowcharts, visual code explanations, and color-highlighted examples    |
+| 🏆 **Challenge Mode Learner** | 🏆   | Learn through problem-solving, coding challenges, and achievement systems | AI will provide progressively difficult challenges, coding problems, and achievement tracking    |
+| 🧘 **Zen Mode Learner**       | 🧘   | Learn through calm, focused, step-by-step explanations without pressure   | AI will provide calm, structured, step-by-step guidance with mindfulness breaks                  |
 
 ### How It Works
 
-1. **Select Style**: During onboarding or anytime in settings, pick your preferred learning style.  
-2. **Adaptive Content**: The AI tutor tailors examples, feedback, and challenges according to your style.  
-3. **Dynamic Switching**: You can switch learning styles on the fly to try different approaches.  
-4. **Progress Tracking**: CodeAstra logs your learning style usage and shows which modes improve your retention and coding speed the most.  
+1. **Select Style**: During onboarding or anytime in settings, pick your preferred learning style.
+2. **Adaptive Content**: The AI tutor tailors examples, feedback, and challenges according to your style.
+3. **Dynamic Switching**: You can switch learning styles on the fly to try different approaches.
+4. **Progress Tracking**: CodeAstra logs your learning style usage and shows which modes improve your retention and coding speed the most.
 
 This ensures **every learner** — whether visual, auditory, hands-on, or gamified — has a smooth, personalized journey.
-
 
 ## 🎯 Roadmap
 
@@ -317,6 +316,13 @@ MIT License
 Copyright (c) 2025 Harsh
 Permission is hereby granted, free of charge, to any person obtaining a copy...
 ```
+
+---
+
+## Live Preview
+
+- see the site live at
+  **
 
 ---
 
