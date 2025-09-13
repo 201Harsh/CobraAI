@@ -22,6 +22,7 @@
 - [👨‍💻 Usage Guide](#-usage-guide)
 - [📸 Screenshots](#-screenshots)
 - [⚡ AI Tutor Example](#-ai-tutor-example)
+- [🤖 AI Code Review](#-ai-code-review)
 - [🎯 Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
@@ -37,6 +38,7 @@
 | 🐍 **Python Code Execution**   | Execute Python code with standard input support                                                     |
 | ⚡ **Express.js Runtime**       | Run full Express.js applications inside the browser using WebContainer                              |
 | 🧠 **AI Tutor Assistant**      | Personalized adaptive AI tutor giving intelligent suggestions, code fixes, and guidance             |
+| 🤖 **AI Code Review**          | Automated code reviews with style, correctness, security, performance and test suggestions          |
 | 💬 **Persistent Chat History** | Stores last user-AI interactions in database for context-aware learning                             |
 | 🔐 **Authentication**          | Secure login and signup with JWT authentication                                                     |
 | 🌱 **Auto Level Up System**    | Tracks user progress and automatically upgrades skill level from Beginner → Intermediate → Advanced |
@@ -61,7 +63,7 @@
 - Express.js
 - MongoDB (Mongoose)
 - JWT (Authentication)
-- Google Gemini AI API for AI Tutor
+- Google Gemini / LLM API for AI Tutor & Code Review
 - Piston API for Python Code Execution
 - **WebContainer API for Express.js Runtime inside Browser**
 
@@ -98,6 +100,12 @@ sequenceDiagram
     Backend->>Google Gemini API: Generate AI Response
     Gemini API-->>Backend: AI Reply
     Backend-->>Frontend: Show AI Response
+
+    User->>Frontend: Request Code Review
+    Frontend->>Backend: Submit Code + Meta (language, tests, repo link)
+    Backend->>CodeReviewWorker: Static Analysis, Lint, Tests, LLM Review
+    CodeReviewWorker-->>Backend: Structured Review + Suggested Fixes + Patch
+    Backend-->>Frontend: Show Review, Inline Comments, and Auto-Fix Option
 ```
 
 ---
@@ -108,7 +116,7 @@ sequenceDiagram
 
 - Node.js v18+
 - MongoDB Atlas or Local MongoDB
-- (Optional) Google Gemini API Key
+- (Optional) Google Gemini / OpenAI API Key
 
 ### 📁 Backend Setup
 
@@ -116,7 +124,8 @@ sequenceDiagram
 git clone https://github.com/201Harsh/CodeAstra.git
 cd CodeAstra/Backend
 npm install
-cp .env
+cp .env.example .env
+# add required API keys and DB connection strings to .env
 npm run dev
 ```
 
@@ -125,7 +134,8 @@ npm run dev
 ```bash
 cd ../Frontend
 npm install
-cp .env
+cp .env.example .env
+# add required API keys and runtime flags
 npm run dev
 ```
 
@@ -138,9 +148,11 @@ npm run dev
 3. Press "Run" to compile code and view output in real-time
 4. Express.js apps run fully inside the browser via WebContainer
 5. Ask questions in the AI Tutor section
-6. View code suggestions, fixes, and educational insights
-7. Chat history stores automatically with context
-8. Your skill level (Beginner/Intermediate/Advanced) upgrades based on usage and performance
+6. Request an **AI Code Review** for a file, snippet, or whole repo
+7. View code suggestions, fixes, and educational insights
+8. Apply suggested fixes automatically or copy patches into your editor
+9. Chat history stores automatically with context
+10. Your skill level (Beginner/Intermediate/Advanced) upgrades based on usage and performance
 
 ---
 
@@ -174,13 +186,61 @@ npm run dev
 
 ---
 
-## 🤖 AI Tutor Integration
+## 🤖 AI Code Review
 
-Uses Google Gemini API to provide adaptive coding suggestions and explanations based on user profile.
+CodeAstra's **AI Code Review** is a dedicated feature and worker pipeline that inspects submitted code and returns structured, actionable feedback. It combines conventional static analysis tools with the power of large language models to produce human-friendly and machine-actionable reviews.
 
-## 🔧 Auto-Level Up System
+### How AI Code Review Works (Overview)
 
-Automatically upgrades user's skill level (Beginner → Intermediate → Advance) based on usage patterns and learning progress.
+1. **Submission**: User submits a file, snippet, branch, or repository link for review. Meta-data (language, runtime, test command) is included.
+2. **Pre-Processing**: The Code Review Worker runs language-specific linters, formatters, and static analyzers (e.g., ESLint, Prettier, Flake8, Bandit, SonarQube rules) to catch straightforward issues.
+3. **Automated Tests**: If tests exist or are requested, the worker runs the test suite in an isolated environment (WebContainer or CI runner) and captures failures and traces.
+4. **LLM-powered Analysis**: The worker creates a structured prompt including lint results, test failures, code excerpts, and repository metadata and sends it to the LLM (Google Gemini / OpenAI). The LLM performs:
+   - Semantic bug detection (logical mistakes, edge cases)
+   - Security & dependency issues (insecure patterns, outdated libs)
+   - Performance suggestions (complexity hotspots, caching opportunities)
+   - Maintainability and style guidance (naming, modularization, documentation)
+   - Test suggestions and example test cases
+5. **Patch Generation**: For many suggestions the worker can produce a git-style patch or specific code snippets that can be applied automatically or manually.
+6. **Explainability**: Each suggestion includes: the *issue*, *severity*, *suggested fix*, *explanation* (why it matters), and *confidence score* so users can prioritize changes.
+7. **Human-in-the-loop**: Users can accept/modify/reject fixes; maintainers can require manual approval before applying patches to protected branches.
+8. **Privacy & Safety**: By default, private repo content is processed in your own backend (never sent to 3rd-party storage) and only the minimal context required is sent to the LLM service. Sensitive tokens and secrets are redacted before review. An audit log records review actions.
+
+### AI Code Review Outputs
+
+- **Inline comments** shown in the editor with line numbers and code excerpts.  
+- **Structured report** (JSON) that can be used to populate dashboards or integrate with CI.  
+- **Auto-fix patches** that apply Prettier/ESLint or suggested small edits.  
+- **Test suggestions & generated tests** to increase coverage.  
+- **Security advisories** with links to CVE references and recommended dependency upgrades.  
+
+### Example Review Flow (User experience)
+
+1. User clicks **Request Code Review** and selects files/branch.
+2. Worker runs linters & tests, then sends a consolidated prompt to the LLM.
+3. User receives a review summary and can expand inline comments to see full context and auto-fix patch.
+4. User applies fixes automatically or copies suggested snippets to their editor.
+5. Review history is stored in the DB for future reference and learning statistics.
+
+### How to Configure (Example environment variables)
+
+```
+CODE_REVIEW_ENABLED=true
+LLM_PROVIDER=google_gemini
+LLM_API_KEY=your_api_key_here
+REDACT_SECRETS=true
+ALLOW_AUTO_FIX=false
+```
+
+---
+
+## ⚙️ Implementation Notes (Suggestions & Best Practices)
+
+- Keep the code review worker sandboxed (WebContainer, Docker, or ephemeral CI) to avoid executing untrusted code on production hosts.
+- Maintain a whitelist/blacklist of rules and configure severity levels per project.
+- Use structured JSON outputs from the worker to integrate with dashboards and GitHub/GitLab check runs.
+- Add rate-limits and size caps for repo submissions to prevent abuse and overuse of LLM credits.
+- Provide an "explain in plain English" toggle for junior developers to receive simpler explanations.
 
 ---
 
@@ -204,6 +264,7 @@ Automatically upgrades user's skill level (Beginner → Intermediate → Advance
 - 🔔 In-App Notifications
 - 🌐 Internationalization (i18n)
 - 🧪 Unit & Integration Testing
+- 🔒 Advanced Security Scanning & Dependency Auto-Upgrade Suggestions
 
 ---
 
