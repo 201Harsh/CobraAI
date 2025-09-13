@@ -1,5 +1,5 @@
 const UserModel = require("../models/user.model");
-const TempUserSchema = require("../models/tempuser.model");
+const TempUserSchema = require("../models/tempUser.model");
 const UserServices = require("../services/user.service");
 const { validationResult } = require("express-validator");
 const transporter = require("../services/emailSending.service");

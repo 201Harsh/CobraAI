@@ -1,5 +1,5 @@
 const userModel = require("../models/user.model");
-const TempUserModel = require("../models/tempuser.model");
+const TempUserModel = require("../models/tempUser.model");
 const ChatModel = require("../models/chat.model");
 
 module.exports.createTempUser = async ({ name, email, password, otp }) => {
