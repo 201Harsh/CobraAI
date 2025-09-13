@@ -1,4 +1,4 @@
-# 🌟 CodeAstra - Intelligent Code Compiler & AI Tutor
+# 🌟 CodeAstra — Next-Gen AI-Powered Coding Ecosystem
 
 [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
 
