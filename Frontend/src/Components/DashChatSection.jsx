@@ -95,7 +95,10 @@ const DashChatSection = () => {
           }
         } else if (part.startsWith("***") && part.endsWith("***")) {
           parts.push(
-            <span key={key} className="font-extrabold text-lg capitalize italic text-sky-600">
+            <span
+              key={key}
+              className="font-extrabold text-lg capitalize italic text-sky-600"
+            >
               {part.slice(3, -3)}
             </span>
           );
@@ -119,7 +122,10 @@ const DashChatSection = () => {
           );
         } else if (part.startsWith("**") && part.endsWith("**")) {
           parts.push(
-            <span key={key} className="font-bold text-pink-600 text-sm sm:text-base">
+            <span
+              key={key}
+              className="font-bold text-pink-600 text-sm sm:text-base"
+            >
               {part.slice(2, -2)}
             </span>
           );
@@ -358,6 +364,18 @@ const DashChatSection = () => {
         SaveChatHistory(inputMessage, botResponse);
       }
     } catch (error) {
+      toast.error(error.response?.data, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+
       toast.error(error?.response?.data?.message || error.message, {
         position: "top-right",
         autoClose: 5000,
@@ -398,9 +416,9 @@ const DashChatSection = () => {
       >
         <FaArrowDown className="text-pink-300 text-xs" />
       </div>
-      
+
       {/* Chat Messages Section */}
-      <div 
+      <div
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 bg-gray-850 chat-Section"
       >
