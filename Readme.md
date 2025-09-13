@@ -321,7 +321,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ## 🌍 Live Demo
 
-🔗 **[View Live App]()**
+🔗 **[View Live App](https://codeastra-ai.onrender.com/)**
 
 ---
 
