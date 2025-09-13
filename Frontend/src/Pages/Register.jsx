@@ -114,6 +114,18 @@ const Register = () => {
     } catch (error) {
       const errors = error.response?.data?.errors;
 
+      toast.error(error.response?.data, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+
       toast.error(
         error.response?.data?.error ||
           errors.forEach((elem) => {
