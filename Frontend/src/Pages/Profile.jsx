@@ -82,10 +82,7 @@ const Profile = () => {
       };
 
       try {
-        const res = await AxiosInstance.post(
-          "/users/updateProfile",
-          changes
-        );
+        const res = await AxiosInstance.post("/users/updateProfile", changes);
 
         if (res.status === 200) {
           toast.success(res.data.message || "Profile updated successfully!", {
@@ -101,6 +98,18 @@ const Profile = () => {
           });
         }
       } catch (error) {
+        toast.error(error.response?.data, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+
         toast.error(
           error.response?.data?.error || "Failed to update user data",
           {
