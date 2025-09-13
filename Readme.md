@@ -319,10 +319,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ---
 
-## Live Preview
+## 🌍 Live Demo
 
-- see the site live at
-  **
+🔗 **[View Live App]()**
 
 ---
 
