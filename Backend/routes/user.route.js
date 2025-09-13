@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const userController = require("../controllers/user.controller");
 const UserMiddleware = require("../middlewares/user.middleware");
+const RateLimitERMiddleware = require("../middlewares/RateLimter.middleware");
 const { body } = require("express-validator");
 
 router.post(
@@ -24,10 +25,15 @@ router.post(
       })
       .withMessage("Password must be at least 6 characters long"),
   ],
+  RateLimitERMiddleware.authLimit,
   userController.registerTempuser
 );
 
-router.post("/verify", userController.VerifyUser);
+router.post(
+  "/verify",
+  RateLimitERMiddleware.authLimit,
+  userController.VerifyUser
+);
 
 router.post(
   "/login",
@@ -45,12 +51,23 @@ router.post(
       })
       .withMessage("Password must be at least 6 characters long"),
   ],
+  RateLimitERMiddleware.authLimit,
   userController.loginUser
 );
 
-router.get("/me", UserMiddleware.authUser, userController.getMe);
+router.get(
+  "/me",
+  UserMiddleware.authUser,
+  RateLimitERMiddleware.GlobalLimit,
+  userController.getMe
+);
 
-router.post("/logout", UserMiddleware.authUser, userController.logoutUser);
+router.post(
+  "/logout",
+  UserMiddleware.authUser,
+  RateLimitERMiddleware.GlobalLimit,
+  userController.logoutUser
+);
 
 router.post(
   "/UpdateUserinfo",
@@ -61,12 +78,14 @@ router.post(
     body("gender").notEmpty().withMessage("gender is required"),
   ],
   UserMiddleware.authUser,
+  RateLimitERMiddleware.authLimit,
   userController.updateUserInfo
 );
 
 router.post(
   "/updateProfile",
   UserMiddleware.authUser,
+  RateLimitERMiddleware.authLimit,
   userController.UpdateUserProfile
 );
 
