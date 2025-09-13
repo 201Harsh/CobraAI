@@ -244,6 +244,36 @@ ALLOW_AUTO_FIX=false
 
 ---
 
+
+---
+
+## 🧩 Personalized Learning Styles
+
+CodeAstra adapts to your preferred **learning style** so that every learner gets the best personalized experience. You can select your mode of learning, and the AI tutor adjusts explanations, examples, and challenges accordingly.
+
+### Available Learning Styles
+
+| Style | Icon | Description | AI Response |
+|-------|------|-------------|-------------|
+| 🎮 **Fun Play Learner** | 🎮 | Learn through games, challenges, and interactive coding exercises | AI will create coding games, challenges, and reward systems to make learning enjoyable |
+| 🤝 **Hands-on Learner** | ✋ | Learn by doing, with practical examples and immediate practice | AI will provide interactive coding environments, sandboxes, and immediate practice opportunities |
+| 📖 **Story Mode Learner** | 📖 | Learn through narratives, real-world scenarios, and contextual examples | AI will frame concepts within stories, use case studies, and real-world application scenarios |
+| 🧭 **Explorer Learner** | 🧭 | Learn through discovery, experimentation, and self-guided exploration | AI will suggest learning paths, provide resources for exploration, and encourage experimentation |
+| 🎧 **Sound Wave Learner** | 🎧 | Learn through auditory explanations, podcasts, and verbal instructions | AI will provide audio explanations, voice-based interactions, and mnemonic devices |
+| 🎨 **Visual Mind Learner** | 🎨 | Learn through diagrams, charts, visualizations, and color-coded examples | AI will create diagrams, flowcharts, visual code explanations, and color-highlighted examples |
+| 🏆 **Challenge Mode Learner** | 🏆 | Learn through problem-solving, coding challenges, and achievement systems | AI will provide progressively difficult challenges, coding problems, and achievement tracking |
+| 🧘 **Zen Mode Learner** | 🧘 | Learn through calm, focused, step-by-step explanations without pressure | AI will provide calm, structured, step-by-step guidance with mindfulness breaks |
+
+### How It Works
+
+1. **Select Style**: During onboarding or anytime in settings, pick your preferred learning style.  
+2. **Adaptive Content**: The AI tutor tailors examples, feedback, and challenges according to your style.  
+3. **Dynamic Switching**: You can switch learning styles on the fly to try different approaches.  
+4. **Progress Tracking**: CodeAstra logs your learning style usage and shows which modes improve your retention and coding speed the most.  
+
+This ensures **every learner** — whether visual, auditory, hands-on, or gamified — has a smooth, personalized journey.
+
+
 ## 🎯 Roadmap
 
 ### ✅ Completed
