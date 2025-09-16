@@ -67,18 +67,12 @@ const Header = () => {
             whileTap={{ scale: 0.95 }}
           >
             <motion.div
-              className="relative h-10 w-10 md:h-12 md:w-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center mr-3 overflow-hidden"
+              className="relative h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center mr-1 overflow-hidden"
               initial={{ rotate: -180, scale: 0 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-600 opacity-70"></div>
-              <div className="w-4 h-4 bg-white rounded-full relative z-10">
-                <div className="absolute inset-0.5 bg-pink-200 rounded-full animate-pulse"></div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-white rounded-full opacity-20"></div>
-              </div>
+               <img src="/img/Logo.png" className="h-10 w-10 md:h-12 md:w-12 rounded-full" alt="" />
             </motion.div>
             <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
               CobraAI

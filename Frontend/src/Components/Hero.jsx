@@ -165,7 +165,7 @@ const Hero = () => {
           >
             CobraAI Next-Gen{" "}
             <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              AI-Powered
+              Smarter AI-Powered
             </span>{" "}
             Programming Tutor
           </motion.h1>
