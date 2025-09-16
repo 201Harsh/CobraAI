@@ -47,7 +47,7 @@ const Examples = () => {
     }
   };
 
-  // Example data with Harsh and CodeAstra references
+  // Example data with Harsh and CobraAI references
   const examples = [
     {
       id: 1,
@@ -55,8 +55,8 @@ const Examples = () => {
       description: "Generate a complete React component with props and state management",
       category: "frontend",
       language: "javascript",
-      code: `// CodeAstra React Component Example
-// Created by Harsh for CodeAstra
+      code: `// CobraAI React Component Example
+// Created by Harsh for CobraAI
 
 function WelcomeBanner({ userName }) {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -73,7 +73,7 @@ function WelcomeBanner({ userName }) {
     <div className="welcome-banner">
       <h1>Hello, {userName}!</h1>
       <p>Current time: {currentTime.toLocaleTimeString()}</p>
-      <p>Powered by CodeAstra</p>
+      <p>Powered by CobraAI</p>
     </div>
   );
 }`,
@@ -82,11 +82,11 @@ function WelcomeBanner({ userName }) {
     },
     {
       id: 2,
-      title: "Python Data Analysis with CodeAstra",
+      title: "Python Data Analysis with CobraAI",
       description: "Python script to load, clean, and analyze a dataset using Pandas",
       category: "data-science",
       language: "python",
-      code: `# CodeAstra Python Data Analysis Example
+      code: `# CobraAI Python Data Analysis Example
 # Developed by Harsh
 
 import pandas as pd
@@ -109,7 +109,7 @@ print(df.describe())
 # Visualization
 plt.figure(figsize=(10, 6))
 plt.hist(df['value'], bins=20, edgecolor='black')
-plt.title('Distribution of Values - CodeAstra Analysis')
+plt.title('Distribution of Values - CobraAI Analysis')
 plt.xlabel('Value')
 plt.ylabel('Frequency')
 plt.show()`,
@@ -118,11 +118,11 @@ plt.show()`,
     },
     {
       id: 3,
-      title: "Node.js API Endpoint by CodeAstra",
+      title: "Node.js API Endpoint by CobraAI",
       description: "RESTful API endpoint with Express.js and MongoDB integration",
       category: "backend",
       language: "javascript",
-      code: `// CodeAstra Node.js API Example
+      code: `// CobraAI Node.js API Example
 // Created by Harsh
 
 const express = require('express');
@@ -181,7 +181,7 @@ module.exports = router;`,
       description: "Responsive photo gallery using CSS Grid with hover effects",
       category: "frontend",
       language: "css",
-      code: `/* CodeAstra CSS Grid Example */
+      code: `/* CobraAI CSS Grid Example */
 /* Created by Harsh */
 
 .photo-gallery {
@@ -243,11 +243,11 @@ module.exports = router;`,
     },
     {
       id: 5,
-      title: "SQL Query Optimization by CodeAstra",
+      title: "SQL Query Optimization by CobraAI",
       description: "Optimized SQL query with indexing and performance considerations",
       category: "database",
       language: "sql",
-      code: `-- CodeAstra SQL Optimization Example
+      code: `-- CobraAI SQL Optimization Example
 -- Created by Harsh
 
 -- Create indexes for better performance
@@ -282,7 +282,7 @@ LIMIT 10;`,
       description: "Practical examples of modern JavaScript array manipulation methods",
       category: "javascript",
       language: "javascript",
-      code: `// CodeAstra JavaScript Array Methods Example
+      code: `// CobraAI JavaScript Array Methods Example
 // Created by Harsh
 
 // Sample data
@@ -371,10 +371,10 @@ console.log('Products by category:', productsByCategory);`,
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            CodeAstra <span className="bg-gradient-to-tr from-red-500 to-pink-300 bg-clip-text text-transparent">Examples</span>
+            CobraAI <span className="bg-gradient-to-tr from-red-500 to-pink-300 bg-clip-text text-transparent">Examples</span>
           </h1>
           <p className="text-xl text-red-200 max-w-3xl mx-auto">
-            Explore these AI-generated code examples by Harsh to see how CodeAstra can help you learn and implement programming concepts across different languages and domains.
+            Explore these AI-generated code examples by Harsh to see how CobraAI can help you learn and implement programming concepts across different languages and domains.
           </p>
         </motion.div>
 
@@ -426,7 +426,7 @@ console.log('Products by category:', productsByCategory);`,
 
                 <div className="bg-gray-900 rounded-lg mb-4 relative overflow-hidden">
                   <div className="flex justify-between items-center bg-gray-800 px-4 py-2">
-                    <span className="text-xs text-gray-400">CodeAstra Example</span>
+                    <span className="text-xs text-gray-400">CobraAI Example</span>
                     <button
                       onClick={() => copyToClipboard(example.code, example.id)}
                       className="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
@@ -504,10 +504,10 @@ console.log('Products by category:', productsByCategory);`,
         >
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Generate Your Own Code?</h2>
           <p className="text-lg text-red-200 mb-6">
-            CodeAstra can help you create custom code solutions for your specific needs.
+            CobraAI can help you create custom code solutions for your specific needs.
           </p>
           <Link to="/register" className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 inline-flex items-center">
-            <FaPlay className="mr-2" /> Try CodeAstra Now
+            <FaPlay className="mr-2" /> Try CobraAI Now
           </Link>
         </motion.div>
       </div>

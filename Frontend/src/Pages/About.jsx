@@ -58,7 +58,7 @@ const About = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             About{" "}
             <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              Trinetra
+              MambaAI
             </span>
           </h1>
           <p className="text-xl text-gray-300 mb-8">
@@ -85,7 +85,7 @@ const About = () => {
               </span>
             </h2>
             <p className="text-gray-300 mb-4">
-              CodeAstra (Trinetra) isn’t just a coding assistant — it’s a{" "}
+              CobraAI (MambaAI) isn’t just a coding assistant — it’s a{" "}
               <span className="text-pink-400">personalized AI tutor</span>. It
               learns about you, analyzes your level — beginner, intermediate, or
               advanced — and then adapts its teaching style to match your
@@ -98,12 +98,12 @@ const About = () => {
                 explain code like a mentor, generate clean solutions, and make
                 learning interactive
               </span>
-              . What began as a small experiment soon turned into CodeAstra — a
+              . What began as a small experiment soon turned into CobraAI — a
               platform to help anyone grow as a developer with AI by their side.
             </p>
             <Link to="/register">
               <button className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 flex items-center">
-                Start Learning with Trinetra <FaArrowRight className="ml-2" />
+                Start Learning with MambaAI <FaArrowRight className="ml-2" />
               </button>
             </Link>
           </motion.div>
@@ -182,7 +182,7 @@ const About = () => {
               icon: <FaCode className="text-4xl mb-4 text-red-500" />,
               title: "Adaptive Learning",
               description:
-                "Every user’s journey is unique — Trinetra analyzes skill level and tailors guidance accordingly.",
+                "Every user’s journey is unique — MambaAI analyzes skill level and tailors guidance accordingly.",
             },
             {
               icon: <FaLightbulb className="text-4xl mb-4 text-yellow-500" />,
@@ -226,7 +226,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Who's Behind CodeAstra Section */}
+      {/* Who's Behind CobraAI Section */}
       <section
         id="developer"
         className="py-16"
@@ -242,11 +242,11 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Who’s Behind{" "}
               <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-                CodeAstra
+                CobraAI
               </span>
             </h2>
             <p className="text-blue-200 max-w-2xl mx-auto text-lg">
-              Meet the mind and the machine behind Trinetra’s CodeAstra project.
+              Meet the mind and the machine behind MambaAI’s CobraAI project.
             </p>
           </motion.div>
 
@@ -270,7 +270,7 @@ const About = () => {
                 Full Stack Developer & Visionary
               </p>
               <p className="text-blue-200 text-sm mb-6">
-                Creator of Trinetra and CodeAstra. Passionate about building AI
+                Creator of MambaAI and CobraAI. Passionate about building AI
                 tools that adapt to users’ skill levels and empower programmers.
               </p>
               <div className="flex justify-center space-x-5">
@@ -314,7 +314,7 @@ const About = () => {
                 alt="AI Engine"
                 className="w-24 h-24 mx-auto mb-6"
               />
-              <h3 className="text-xl font-bold text-white mb-2">Trinetra AI</h3>
+              <h3 className="text-xl font-bold text-white mb-2">MambaAI AI</h3>
               <p className="text-pink-400 font-medium mb-3">
                 The Adaptive Engine
               </p>
@@ -381,7 +381,7 @@ const About = () => {
             Ready to Start Your Coding Journey?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join developers learning with Trinetra — your AI-powered coding
+            Join developers learning with MambaAI — your AI-powered coding
             tutor that grows with you.
           </p>
           <Link to="/register">

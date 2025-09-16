@@ -81,7 +81,7 @@ const Header = () => {
               </div>
             </motion.div>
             <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              CodeAstra
+              CobraAI
             </h1>
           </motion.div>
 

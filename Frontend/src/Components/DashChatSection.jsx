@@ -182,7 +182,7 @@ const DashChatSection = () => {
       setMessages([
         {
           id: 1,
-          text: `Hello! I'm CodeAstra, your AI programming tutor. Lets Start Lerning ${lang} Today.`,
+          text: `Hello! I'm CobraAI, your AI programming tutor. Lets Start Lerning ${lang} Today.`,
           sender: "bot",
           timestamp: new Date(Date.now() - 1000 * 60 * 2),
           type: "text",
@@ -613,7 +613,7 @@ const DashChatSection = () => {
               placeholder={
                 isWaitingForResponse
                   ? "Waiting for response..."
-                  : "Message CodeAstra to Start Learning..."
+                  : "Message CobraAI to Start Learning..."
               }
               className="w-full resize-none overflow-y-auto flex text-area flex-col gap-2 px-3 py-2 sm:px-4 sm:py-3 
              bg-gray-700/50 border border-gray-600 rounded-lg placeholder-gray-400 

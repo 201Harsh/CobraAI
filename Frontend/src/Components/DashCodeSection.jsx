@@ -182,7 +182,7 @@ const DashCodeSection = ({ onToggleView, isMobileView }) => {
           id: 0,
           language: "python",
           name: "main.py",
-          code: "# Write your Python code here\n print('Welcome to CodeAstra!')",
+          code: "# Write your Python code here\n print('Welcome to CobraAI!')",
           isDefault: true,
         },
       ]);
@@ -240,10 +240,10 @@ app.listen(port, () => {
         return `<!DOCTYPE html>
 <html>
 <head>
-    <title>Trinetra CodeAstra</title>
+    <title>CobraAI</title>
 </head>
 <body>
-    <h1>Welcome to CodeAstra!</h1>
+    <h1>Welcome to CobraAI!</h1>
     <h4>Code Mentored by <span>Harsh</span></h4>
     <p>Edit the code in the editor to see changes in the preview.</p>
 </body>
@@ -277,9 +277,9 @@ p {
     color: red;
 }`;
       case "javascript":
-        return `// console.log('CodeAstra! By Harsh!');`;
+        return `// console.log('CobraAI! By Harsh!');`;
       case "python":
-        return "# Write your Python code here\nprint('Welcome to CodeAstra!')";
+        return "# Write your Python code here\nprint('Welcome to CobraAI!')";
       case "json":
         return `{
   "key": "value",
@@ -730,7 +730,7 @@ p {
     editorRef.current = editor;
 
     // Configure Monaco editor theme
-    monaco.editor.defineTheme("codeastra-dark", {
+    monaco.editor.defineTheme("CobraAI-dark", {
       base: "vs-dark",
       inherit: true,
       rules: [
@@ -752,7 +752,7 @@ p {
       },
     });
 
-    monaco.editor.setTheme("codeastra-dark");
+    monaco.editor.setTheme("CobraAI-dark");
 
     // Adjust editor layout for mobile
     if (isMobileView) {
@@ -1452,7 +1452,7 @@ p {
               onChange={updateTabCode}
               onMount={handleEditorDidMount}
               options={editorOptions}
-              theme="codeastra-dark"
+              theme="CobraAI-dark"
             />
           )}
         </div>

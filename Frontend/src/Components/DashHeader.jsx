@@ -102,7 +102,7 @@ const DashHeader = () => {
 
           <div className="flex items-center">
             <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              CodeAstra
+              CobraAI
             </span>
           </div>
         </div>
@@ -141,7 +141,7 @@ const DashHeader = () => {
                         <p className="text-white font-medium text-sm">
                           {username}
                         </p>
-                        <p className="text-red-400 text-xs">Trinetra Member</p>
+                        <p className="text-red-400 text-xs">CobraAI Member</p>
                       </div>
                     </div>
                   </div>

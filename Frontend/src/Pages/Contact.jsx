@@ -67,7 +67,7 @@ const Contact = () => {
             Get in <span className="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">Touch</span>
           </h1>
           <p className="text-xl text-blue-200 max-w-2xl mx-auto">
-            Have questions or want to learn more about Trinetra? We'd love to hear from you.
+            Have questions or want to learn more about MambaAI? We'd love to hear from you.
           </p>
         </motion.div>
 

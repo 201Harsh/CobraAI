@@ -127,7 +127,7 @@ const Preloader = () => {
           className="text-4xl md:text-5xl font-bold mb-6"
         >
           <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-            CodeAstra
+            CobraAI
           </span>
         </motion.h1>
 
@@ -195,7 +195,7 @@ const Preloader = () => {
               transition={{ duration: 0.3 }}
               className="text-green-400 font-medium"
             >
-              {showFinalAnimation ? "Welcome to CodeAstra!" : "Successfully loaded!"}
+              {showFinalAnimation ? "Welcome to CobraAI!" : "Successfully loaded!"}
             </motion.span>
           ) : (
             <>

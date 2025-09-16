@@ -179,7 +179,7 @@ const UpdateUserInfo = () => {
             </span>
           </h1>
           <p className="text-gray-400">
-            Help us personalize your learning experience on CodeAstra
+            Help us personalize your learning experience on CobraAI
           </p>
         </div>
 

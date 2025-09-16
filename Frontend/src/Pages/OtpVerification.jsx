@@ -151,7 +151,7 @@ const OtpVerification = () => {
   };
 
   useEffect(() => {
-    const email = localStorage.getItem("email") || "CodeAstra Email";
+    const email = localStorage.getItem("email") || "CobraAI Email";
     if (email) {
       setUserEmail(email);
     }

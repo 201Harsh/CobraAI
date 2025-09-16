@@ -114,7 +114,7 @@ const Login = () => {
           >
             Welcome Back to{" "}
             <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              Trinetra
+              CobraAI
             </span>
           </motion.h1>
           <motion.p

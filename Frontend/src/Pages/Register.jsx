@@ -199,7 +199,7 @@ const Register = () => {
           >
             Join{" "}
             <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-              Trinetra
+              CobraAI
             </span>{" "}
             Today
           </motion.h1>

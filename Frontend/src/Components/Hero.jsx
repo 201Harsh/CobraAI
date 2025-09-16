@@ -163,7 +163,7 @@ const Hero = () => {
             className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
             variants={itemVariants}
           >
-            CodeAstra Next-Gen{" "}
+            CobraAI Next-Gen{" "}
             <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
               AI-Powered
             </span>{" "}
@@ -173,8 +173,8 @@ const Hero = () => {
             className="text-xl text-blue-200 mb-8"
             variants={itemVariants}
           >
-            From code to clarity — AI that explains, guides, and empowers your
-            skills with Trinetra.
+            From code to clarity — CobraAI powered by MambaAI explains, guides,
+            and empowers your skills.
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
@@ -207,7 +207,7 @@ const Hero = () => {
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                 <div className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-pink-600">
-                  CodeAstra Editor
+                  CobraAI Editor
                 </div>
               </div>
               <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm">
@@ -316,7 +316,7 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Who's Behind CodeAstra Section */}
+      {/* Who's Behind CobraAI Section */}
       <section id="developer" className="py-16">
         <div className="container mx-auto px-6 lg:px-12">
           {/* Section Heading */}
@@ -329,13 +329,13 @@ const Hero = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Who’s Behind{" "}
               <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-                CodeAstra
+                CobraAI
               </span>
             </h2>
             <p className="text-blue-200 max-w-2xl mx-auto text-lg">
               Meet the mind and the machine behind{" "}
               <span className="font-bold bg-clip-text bg-radial from-red-500 to-green-300 text-transparent">
-                Trinetra’s CodeAstra
+                MambaAI’s CobraAI
               </span>{" "}
               project.
             </p>
@@ -361,7 +361,7 @@ const Hero = () => {
                 Full Stack Developer & Visionary
               </p>
               <p className="text-blue-200 text-sm mb-6">
-                Creator of Trinetra and CodeAstra. Passionate about building AI
+                Creator of MambaAI and CobraAI. Passionate about building AI
                 tools that adapt to users’ skill levels and empower programmers.
               </p>
               <div className="flex justify-center space-x-5">
@@ -405,7 +405,7 @@ const Hero = () => {
                 alt="AI Engine"
                 className="w-24 h-24 mx-auto mb-6"
               />
-              <h3 className="text-xl font-bold text-white mb-2">Trinetra AI</h3>
+              <h3 className="text-xl font-bold text-white mb-2">MambaAI AI</h3>
               <p className="text-pink-400 font-medium mb-3">
                 The Adaptive Engine
               </p>
@@ -473,7 +473,7 @@ const Hero = () => {
         >
           How{" "}
           <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
-            CodeAstra
+            CobraAI
           </span>{" "}
           Works
         </motion.h2>
@@ -490,7 +490,7 @@ const Hero = () => {
               step: "2",
               title: "Skill Analysis",
               description:
-                "CodeAstra analyzes whether you are Beginner, Intermediate, or Advanced.",
+                "CobraAI analyzes whether you are Beginner, Intermediate, or Advanced.",
             },
             {
               step: "3",
@@ -502,7 +502,7 @@ const Hero = () => {
               step: "4",
               title: "Learn & Progress",
               description:
-                "As you grow, CodeAstra updates your profile and evolves with you.",
+                "As you grow, CobraAI updates your profile and evolves with you.",
             },
           ].map((item, index) => (
             <motion.div
@@ -544,7 +544,7 @@ const Hero = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          CodeAstra adapts to your unique learning style and skill level for the
+          CobraAI adapts to your unique learning style and skill level for the
           most effective learning experience
         </motion.p>
 
@@ -596,7 +596,7 @@ const Hero = () => {
               <h3 className="text-2xl font-bold">Skill Levels</h3>
             </div>
             <p className="text-blue-200 mb-4">
-              CodeAstra adjusts complexity based on your programming experience:
+              CobraAI adjusts complexity based on your programming experience:
             </p>
             <div className="space-y-4">
               {levels.map((level, index) => (
@@ -728,7 +728,7 @@ const Hero = () => {
             Ready to Transform Your Coding Journey?
           </h2>
           <p className="text-xl text-blue-200 mb-8 max-w-2xl mx-auto">
-            Join thousands of developers using Trinetra to learn, code, and
+            Join thousands of developers using MambaAI to learn, code, and
             interact with AI.
           </p>
           <Link to="/register">
