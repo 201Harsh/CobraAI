@@ -1,7 +1,7 @@
 const UserModel = require("../models/user.model");
 const ChatModel = require("../models/chat.model");
-const CodeAstraAI = require("../services/CodeAstraAI");
-const CodeAstraReviewAI = require("../services/CodeAstraReviewAI");
+const CobraAIAI = require("../services/CobraAI");
+const CobraAIReviewAI = require("../services/CobraAIReview");
 
 module.exports.chatWithAI = async (req, res) => {
   try {
@@ -37,7 +37,7 @@ module.exports.chatWithAI = async (req, res) => {
 
     const fullPrompt = `${historyText}\nUser: ${prompt}\nAI:`;
 
-    const AIResponse = await CodeAstraAI({
+    const AIResponse = await CobraAIAI({
       prompt,
       User,
       fullPrompt,
@@ -84,7 +84,7 @@ module.exports.reviewCode = async (req, res) => {
       });
     }
 
-    const AIResponse = await CodeAstraReviewAI({ codeSnippet, language, User });
+    const AIResponse = await CobraAIReviewAI({ codeSnippet, language, User });
 
     res.status(200).json({
       response: AIResponse,

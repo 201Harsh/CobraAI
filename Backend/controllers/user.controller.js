@@ -49,16 +49,16 @@ module.exports.registerTempuser = async (req, res) => {
     });
 
     const info = await transporter.sendMail({
-      from: "CodeAstra <endgamingai2@gmail.com>",
+      from: "CobraAI <endgamingai2@gmail.com>",
       to: email,
-      subject: "🔐 Your CodeAstra Verification Code",
+      subject: "🔐 Your CobraAI Verification Code",
       html: `
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CodeAstra Verification Code</title>
+        <title>CobraAI Verification Code</title>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
             
@@ -307,12 +307,12 @@ module.exports.registerTempuser = async (req, res) => {
         <div class="email-container">
             <div class="email-header">
                 <h1 class="logo">Code<span>Astra</span></h1>
-                <p class="tagline">POWERED BY Trinetra AI</p>
+                <p class="tagline">POWERED BY MambaAI AI</p>
             </div>
             
             <div class="email-body">
                 <h2 class="greeting">Verify Your Email Address</h2>
-                <p class="message">Thank you for choosing CodeAstra. To complete your verification and access all our features, please enter the following One-Time Password (OTP) in the verification page:</p>
+                <p class="message">Thank you for choosing CobraAI. To complete your verification and access all our features, please enter the following One-Time Password (OTP) in the verification page:</p>
                 
                 <div class="otp-container">
                     <p class="otp-label">Your verification code for ${email}:</p>
@@ -323,20 +323,20 @@ module.exports.registerTempuser = async (req, res) => {
                     </p>
                 </div>
                 
-                <p class="warning">⚠️ For your security, please do not share this code with anyone. CodeAstra team will never ask you for your verification code.</p>
+                <p class="warning">⚠️ For your security, please do not share this code with anyone. CobraAI team will never ask you for your verification code.</p>
                 
                 <div class="support-section">
                     <p class="support-title">Need assistance?</p>
-                    <a href="mailto:support@codeastra.ai" class="support-email">
-                        <span>✉️</span> support@codeastra.ai
+                    <a href="mailto:support@CobraAI.ai" class="support-email">
+                        <span>✉️</span> support@CobraAI.ai
                     </a>
-                    <p class="website-link">Or visit our website: <a href="https://codeastra.ai">codeastra.ai</a></p>
+                    <p class="website-link">Or visit our website: <a href="https://CobraAI.ai">CobraAI.ai</a></p>
                 </div>
             </div>
             
             <div class="email-footer">
-                <p class="copyright">© ${new Date().getFullYear()} CodeAstra. All rights reserved.</p>
-                <p class="powered-by">Powered by Trinetra AI Technology</p>
+                <p class="copyright">© ${new Date().getFullYear()} CobraAI. All rights reserved.</p>
+                <p class="powered-by">Powered by MambaAI AI Technology</p>
                 <div class="social-links">
                     <a href="https://www.instagram.com/201harshs/" class="social-link">Instagram</a>" class="social-link">Privacy Policy</a>
                     <a href="https://github.com/201Harsh" class="social-link">GitHub</a>
