@@ -1,9 +1,9 @@
 
-# 🚀 CodeAstra - Intelligent Coding Companion [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
+# 🚀 CobraAI - Intelligent Coding Companion [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
 
-![CodeAstra Banner](https://img.shields.io/badge/CodeAstra-AI_Powered_Coding_Tool-darkblue?style=for-the-badge&logo=code&logoColor=white&color=1E3A8A&labelColor=000000)
+![CobraAI Banner](https://img.shields.io/badge/CobraAI-AI_Powered_Coding_Tool-darkblue?style=for-the-badge&logo=code&logoColor=white&color=1E3A8A&labelColor=000000)
 
-**CodeAstra isn’t just a project — it’s your ultimate coding companion. Powering your learning journey with intelligent suggestions, adaptive guidance, and real-time execution.**  
+**CobraAI isn’t just a project — it’s your ultimate coding companion. Powering your learning journey with intelligent suggestions, adaptive guidance, and real-time execution.**  
 Built with passion by **Harsh Pandey**.
 
 ## 📌 Table of Contents
@@ -77,8 +77,8 @@ sequenceDiagram
 ### 📁 Backend Setup
 
 ```bash
-git clone https://github.com/201Harsh/CodeAstra.git
-cd CodeAstra/Backend
+git clone https://github.com/201Harsh/CobraAI.git
+cd CobraAI/Backend
 npm install
 cp .env
 npm run dev

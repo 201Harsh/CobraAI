@@ -1,10 +1,10 @@
-# 🌟 CodeAstra — Next-Gen AI-Powered Coding Ecosystem
+# 🌟 CobraAI — Next-Gen AI-Powered Coding Ecosystem
 
 [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://choosealicense.com/licenses/mit/)
 
-![CodeAstra Banner](https://img.shields.io/badge/🚀_CodeAstra-Code_Compiler_+_AI_Tutor-EA1E63?style=for-the-badge&logo=code&logoColor=white)
+![CobraAI Banner](https://img.shields.io/badge/🚀_CobraAI-Code_Compiler_+_AI_Tutor-EA1E63?style=for-the-badge&logo=code&logoColor=white)
 
-**CodeAstra** is a next-generation web platform combining an intelligent code compiler and an AI-powered tutor to help developers learn and execute code efficiently. Featuring code execution for frontend technologies (HTML, CSS, JS), Python, **Express.js runtime via WebContainer**, smart AI suggestions, personalized adaptive learning, and persistent chat history — all wrapped in a modern, sleek interface.
+**CobraAI** is a next-generation web platform combining an intelligent code compiler and an AI-powered tutor to help developers learn and execute code efficiently. Featuring code execution for frontend technologies (HTML, CSS, JS), Python, **Express.js runtime via WebContainer**, smart AI suggestions, personalized adaptive learning, and persistent chat history — all wrapped in a modern, sleek interface.
 
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.0.13-green)](https://www.mongodb.com)
 [![Express](https://img.shields.io/badge/Express-5.1.0-yellow)](https://expressjs.com)
@@ -122,8 +122,8 @@ sequenceDiagram
 ### 📁 Backend Setup
 
 ```bash
-git clone https://github.com/201Harsh/CodeAstra.git
-cd CodeAstra/Backend
+git clone https://github.com/201Harsh/CobraAI.git
+cd CobraAI/Backend
 npm install
 cp .env.example .env
 # add required API keys and DB connection strings to .env
@@ -189,7 +189,7 @@ npm run dev
 
 ## 🤖 AI Code Review
 
-CodeAstra's **AI Code Review** is a dedicated feature and worker pipeline that inspects submitted code and returns structured, actionable feedback. It combines conventional static analysis tools with the power of large language models to produce human-friendly and machine-actionable reviews.
+CobraAI's **AI Code Review** is a dedicated feature and worker pipeline that inspects submitted code and returns structured, actionable feedback. It combines conventional static analysis tools with the power of large language models to produce human-friendly and machine-actionable reviews.
 
 ### How AI Code Review Works (Overview)
 
@@ -249,7 +249,7 @@ ALLOW_AUTO_FIX=false
 
 ## 🧩 Personalized Learning Styles
 
-CodeAstra adapts to your preferred **learning style** so that every learner gets the best personalized experience. You can select your mode of learning, and the AI tutor adjusts explanations, examples, and challenges accordingly.
+CobraAI adapts to your preferred **learning style** so that every learner gets the best personalized experience. You can select your mode of learning, and the AI tutor adjusts explanations, examples, and challenges accordingly.
 
 ### Available Learning Styles
 
@@ -269,7 +269,7 @@ CodeAstra adapts to your preferred **learning style** so that every learner gets
 1. **Select Style**: During onboarding or anytime in settings, pick your preferred learning style.
 2. **Adaptive Content**: The AI tutor tailors examples, feedback, and challenges according to your style.
 3. **Dynamic Switching**: You can switch learning styles on the fly to try different approaches.
-4. **Progress Tracking**: CodeAstra logs your learning style usage and shows which modes improve your retention and coding speed the most.
+4. **Progress Tracking**: CobraAI logs your learning style usage and shows which modes improve your retention and coding speed the most.
 
 This ensures **every learner** — whether visual, auditory, hands-on, or gamified — has a smooth, personalized journey.
 
@@ -321,7 +321,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ## 🌍 Live Demo
 
-🔗 **[View Live App](https://codeastra-ai.onrender.com/)**
+🔗 **[View Live App](https://CobraAI-ai.onrender.com/)**
 
 ---
 
@@ -335,6 +335,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ## 🚀 Final Thought
 
-**CodeAstra isn’t just a project — it’s your ultimate coding companion. Powering your learning journey with intelligent suggestions, adaptive guidance, and real-time execution.**
+**CobraAI isn’t just a project — it’s your ultimate coding companion. Powering your learning journey with intelligent suggestions, adaptive guidance, and real-time execution.**
 
 # Made with ❤️ by Harsh
