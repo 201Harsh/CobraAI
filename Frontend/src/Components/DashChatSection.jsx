@@ -447,7 +447,7 @@ const DashChatSection = () => {
                       className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                         message.sender === "user"
                           ? "bg-gradient-to-r from-red-500 to-pink-600 ml-2 sm:ml-3"
-                          : "bg-gradient-to-r from-blue-500 to-purple-600 mr-2 sm:mr-3"
+                          : "bg-gradient-to-r from-gray-300 to-gray-700 mr-2 sm:mr-3"
                       }`}
                     >
                       {message.sender === "user" ? (
@@ -456,7 +456,7 @@ const DashChatSection = () => {
                         </div>
                       ) : (
                         <img
-                          src="/img/ai_model_img.png"
+                          src="/img/CobraAi.png"
                           alt="AI Tutor"
                           className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover"
                         />
