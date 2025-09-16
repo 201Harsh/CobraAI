@@ -286,9 +286,10 @@ This ensures **every learner** — whether visual, auditory, hands-on, or gamifi
 - ✅ Adaptive Leveling System
 - ✅ User-Friendly Modern UI
 
-### 🚧 Planned
+### 🚧 Future Plans
 
 - 📊 Detailed Performance Dashboard
+- 🗨️ Group Chats with AI Integration
 - 🧱 File Upload & Media Sharing
 - 🔔 In-App Notifications
 - 🌐 Internationalization (i18n)
