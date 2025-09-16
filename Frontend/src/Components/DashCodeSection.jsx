@@ -263,7 +263,7 @@ h1 {
 }
 
 h4 {
-    color: white;
+    color: #000;
     font-size: 20px;
     font-weight: 300;
 }
