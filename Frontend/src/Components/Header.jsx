@@ -72,7 +72,7 @@ const Header = () => {
               animate={{ rotate: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
-               <img src="/img/Logo.png" className="h-10 w-10 md:h-12 md:w-12 rounded-full" alt="" />
+               <img src="/img/logo.png" className="h-10 w-10 md:h-12 md:w-12 rounded-full" alt="" />
             </motion.div>
             <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
               CobraAI
