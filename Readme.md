@@ -322,7 +322,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ## 🌍 Live Demo
 
-🔗 **[View Live App](https://CobraAI-ai.onrender.com/)**
+🔗 **[View Live App](https://cobraaing.onrender.com)**
 
 ---
 
