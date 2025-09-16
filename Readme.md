@@ -167,11 +167,11 @@ npm run dev
 
 ### Real-Time Code Execution Output
 
-<img src="./Examples/img/2.png"/>
+<img src="./Examples/img/3.png"/>
 
 ### AI Tutor Chat Section
 
-<img src="./Examples/img/3.png"/>
+<img src="./Examples/img/2.png"/>
 
 ---
 
