@@ -144,7 +144,7 @@ const Dashboard = () => {
             Support the Developer
           </h3>
           <p className="text-gray-400 text-sm sm:text-base">
-            Help keep <span className="font-semibold text-red-400">Trinetra AI</span> free and growing
+            Help keep <span className="font-semibold text-red-400">MambaAI AI</span> free and growing
           </p>
 
           {/* QR Code for Payments */}
@@ -186,7 +186,7 @@ const Dashboard = () => {
           </div>
 
           <p className="text-xs text-gray-500 mt-2">
-            Your support helps improve Trinetra AI for everyone
+            Your support helps improve MambaAI AI for everyone
           </p>
         </div>
       </motion.div>

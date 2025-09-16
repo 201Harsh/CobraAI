@@ -146,7 +146,7 @@ const Pricing = () => {
           </h1>
           <p className="text-xl text-gray-300 mb-8">
             Choose the plan that works best for you and start your coding
-            journey with Trinetra
+            journey with MambaAI
           </p>
         </motion.div>
       </section>
@@ -380,7 +380,7 @@ const Pricing = () => {
             Ready to Boost Your Coding Skills?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of developers using Trinetra to learn, code, and grow
+            Join thousands of developers using MambaAI to learn, code, and grow
             with AI.
           </p>
           <Link to="/register">
