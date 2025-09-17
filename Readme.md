@@ -24,6 +24,7 @@
 - [📸 Screenshots](#-screenshots)
 - [⚡ AI Tutor Example](#-ai-tutor-example)
 - [🤖 AI Code Review](#-ai-code-review)
+- [🌐 Supported Languages & Compilers](#-supported-languages--compilers)
 - [🎯 Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
@@ -108,6 +109,19 @@ sequenceDiagram
     CodeReviewWorker-->>Backend: Structured Review + Suggested Fixes + Patch
     Backend-->>Frontend: Show Review, Inline Comments, and Auto-Fix Option
 ```
+
+---
+
+## 🌐 Supported Languages & Compilers
+
+| Language   | Compiler / Runtime                                                           |
+| ---------- | ---------------------------------------------------------------------------- |
+| HTML       | In-browser live rendering                                                    |
+| CSS        | In-browser live rendering                                                    |
+| JavaScript | In-browser live execution                                                    |
+| Python     | Piston API for Python code execution                                         |
+| AI-ML      | Python (via Piston API, supports libraries like NumPy, pandas, scikit-learn) |
+| Express.js | WebContainer API for full Express.js app runtime in the browser              |
 
 ---
 
