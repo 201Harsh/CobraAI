@@ -61,14 +61,14 @@ const Hero = () => {
   ];
 
   const programmingLanguages = [
-    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript" },
-    { value: "reactjs", label: "⚛️ React JS" },
-    { value: "react-native", label: "📱 React Native" },
-    { value: "node-express", label: "🚀 Node.js & Express.js" },
-    { value: "mongodb", label: "🍃 MongoDB" },
-    { value: "mysql", label: "🐬 MySQL" },
-    { value: "python", label: "🐍 Python" },
-    { value: "ai-ml-basics", label: "🤖 AI / ML Basics" },
+    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript", available: true },
+    { value: "reactjs", label: "⚛️ React JS", available: false },
+    { value: "react-native", label: "📱 React Native", available: false },
+    { value: "node-express", label: "🚀 Node.js & Express.js", available: true },
+    { value: "mongodb", label: "🍃 MongoDB", available: false },
+    { value: "mysql", label: "🐬 MySQL", available: false },
+    { value: "python", label: "🐍 Python", available: true },
+    { value: "ai-ml-basics", label: "🤖 AI / ML Basics", available: true },
   ];
 
   const learningStyles = [
@@ -327,7 +327,7 @@ const Hero = () => {
             className="text-center mb-14"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Who’s Behind{" "}
+              Who's Behind{" "}
               <span className="bg-gradient-to-r from-red-500 to-pink-600 bg-clip-text text-transparent">
                 CobraAI
               </span>
@@ -335,7 +335,7 @@ const Hero = () => {
             <p className="text-blue-200 max-w-2xl mx-auto text-lg">
               Meet the mind and the machine behind{" "}
               <span className="font-bold bg-clip-text bg-radial from-red-500 to-green-300 text-transparent">
-                MambaAI’s CobraAI
+                MambaAI's CobraAI
               </span>{" "}
               project.
             </p>
@@ -352,7 +352,7 @@ const Hero = () => {
               className="bg-blue-950/50 border border-blue-800 rounded-2xl p-8 shadow-lg text-center"
             >
               <img
-                src="https://avatars.githubusercontent.com/u/160850571?v=4" // replace with your image
+                src="https://avatars.githubusercontent.com/u/160850571?v=4"
                 alt="Developer"
                 className="w-28 h-28 rounded-full mx-auto border-2 border-red-500 mb-6"
               />
@@ -362,7 +362,7 @@ const Hero = () => {
               </p>
               <p className="text-blue-200 text-sm mb-6">
                 Creator of MambaAI and CobraAI. Passionate about building AI
-                tools that adapt to users’ skill levels and empower programmers.
+                tools that adapt to users' skill levels and empower programmers.
               </p>
               <div className="flex justify-center space-x-5">
                 <a
@@ -702,13 +702,26 @@ const Hero = () => {
           <h3 className="text-xl font-bold text-center mb-4 text-pink-400">
             Supported Programming Languages
           </h3>
+          <p className="text-center text-blue-200 mb-6">
+            HTML, CSS, JavaScript, Python, AI/ML Basics, and Express.js compilers are available now. 
+            Other languages are coming soon!
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {programmingLanguages.map((lang, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center p-3 bg-gray-700/50 rounded-lg"
+                className={`flex flex-col items-center justify-center p-3 rounded-lg ${
+                  lang.available 
+                    ? "bg-green-900/30 border border-green-700" 
+                    : "bg-gray-700/50 border border-gray-600"
+                }`}
               >
-                <span className="text-sm">{lang.label}</span>
+                <span className="text-sm text-center">{lang.label}</span>
+                <span className={`text-xs mt-2 ${
+                  lang.available ? "text-green-400" : "text-yellow-400"
+                }`}>
+                  {lang.available ? "Available" : "Coming Soon"}
+                </span>
               </div>
             ))}
           </div>
