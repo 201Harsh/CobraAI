@@ -227,10 +227,7 @@ const About = () => {
       </section>
 
       {/* Who's Behind CobraAI Section */}
-      <section
-        id="developer"
-        className="py-16"
-      >
+      <section id="developer" className="py-16">
         <div className="container mx-auto px-6 lg:px-12">
           {/* Section Heading */}
           <motion.div
@@ -381,8 +378,8 @@ const About = () => {
             Ready to Start Your Coding Journey?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join developers learning with MambaAI — your AI-powered coding
-            tutor that grows with you.
+            Join developers learning with MambaAI — your AI-powered coding tutor
+            that grows with you.
           </p>
           <Link to="/register">
             <button className="px-8 py-4 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 shadow-lg">
