@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaCode, FaComments, FaCopy, FaPlay, FaChevronDown, FaChevronUp, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-css';
-import 'prismjs/plugins/toolbar/prism-toolbar';
-import 'prismjs/plugins/toolbar/prism-toolbar.css';
-import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaCode,
+  FaComments,
+  FaCopy,
+  FaPlay,
+  FaChevronDown,
+  FaChevronUp,
+  FaTimes,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-sql";
+import "prismjs/components/prism-css";
+import "prismjs/plugins/toolbar/prism-toolbar";
+import "prismjs/plugins/toolbar/prism-toolbar.css";
+import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard";
+import "prismjs/plugins/line-numbers/prism-line-numbers";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
 const Examples = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState("all");
   const [expandedExample, setExpandedExample] = useState(null);
   const [copiedCodeId, setCopiedCodeId] = useState(null);
 
@@ -30,9 +38,9 @@ const Examples = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -42,9 +50,9 @@ const Examples = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 100
-      }
-    }
+        stiffness: 100,
+      },
+    },
   };
 
   // Example data with Harsh and CobraAI references
@@ -52,7 +60,8 @@ const Examples = () => {
     {
       id: 1,
       title: "React Component Generator by Harsh",
-      description: "Generate a complete React component with props and state management",
+      description:
+        "Generate a complete React component with props and state management",
       category: "frontend",
       language: "javascript",
       code: `// CobraAI React Component Example
@@ -77,13 +86,16 @@ function WelcomeBanner({ userName }) {
     </div>
   );
 }`,
-      explanation: "This React component by Harsh demonstrates props usage, state management with useState, side effects with useEffect, and conditional rendering. It's a practical example of a welcome banner that updates the time every second.",
-      prompt: "Create a React component that displays a welcome message with the current time updating every second"
+      explanation:
+        "This React component by Harsh demonstrates props usage, state management with useState, side effects with useEffect, and conditional rendering. It's a practical example of a welcome banner that updates the time every second.",
+      prompt:
+        "Create a React component that displays a welcome message with the current time updating every second",
     },
     {
       id: 2,
       title: "Python Data Analysis with CobraAI",
-      description: "Python script to load, clean, and analyze a dataset using Pandas",
+      description:
+        "Python script to load, clean, and analyze a dataset using Pandas",
       category: "data-science",
       language: "python",
       code: `# CobraAI Python Data Analysis Example
@@ -113,13 +125,16 @@ plt.title('Distribution of Values - CobraAI Analysis')
 plt.xlabel('Value')
 plt.ylabel('Frequency')
 plt.show()`,
-      explanation: "This Python script by Harsh demonstrates a typical data analysis workflow using Pandas. It includes loading data, cleaning by removing missing values and outliers, generating summary statistics, and creating a visualization. This is a foundation for more advanced data analysis tasks.",
-      prompt: "Create a Python script to load a CSV file, clean the data, and generate basic analysis with visualization"
+      explanation:
+        "This Python script by Harsh demonstrates a typical data analysis workflow using Pandas. It includes loading data, cleaning by removing missing values and outliers, generating summary statistics, and creating a visualization. This is a foundation for more advanced data analysis tasks.",
+      prompt:
+        "Create a Python script to load a CSV file, clean the data, and generate basic analysis with visualization",
     },
     {
       id: 3,
       title: "Node.js API Endpoint by CobraAI",
-      description: "RESTful API endpoint with Express.js and MongoDB integration",
+      description:
+        "RESTful API endpoint with Express.js and MongoDB integration",
       category: "backend",
       language: "javascript",
       code: `// CobraAI Node.js API Example
@@ -172,8 +187,10 @@ router.post('/users', async (req, res) => {
 });
 
 module.exports = router;`,
-      explanation: "This Node.js code by Harsh demonstrates creating RESTful API endpoints with Express.js and MongoDB. It includes both GET and POST routes, input validation, error handling, and database operations. The code follows best practices for API development.",
-      prompt: "Create Express.js API endpoints to get all users and create a new user with validation"
+      explanation:
+        "This Node.js code by Harsh demonstrates creating RESTful API endpoints with Express.js and MongoDB. It includes both GET and POST routes, input validation, error handling, and database operations. The code follows best practices for API development.",
+      prompt:
+        "Create Express.js API endpoints to get all users and create a new user with validation",
     },
     {
       id: 4,
@@ -238,13 +255,16 @@ module.exports = router;`,
     gap: 0.5rem;
   }
 }`,
-      explanation: "This CSS code by Harsh creates a responsive photo gallery using CSS Grid. It includes hover effects with smooth transitions, a caption that slides up on hover, and responsive adjustments for mobile devices. The layout automatically adjusts based on screen size.",
-      prompt: "Create a responsive CSS Grid photo gallery with hover effects and mobile responsiveness"
+      explanation:
+        "This CSS code by Harsh creates a responsive photo gallery using CSS Grid. It includes hover effects with smooth transitions, a caption that slides up on hover, and responsive adjustments for mobile devices. The layout automatically adjusts based on screen size.",
+      prompt:
+        "Create a responsive CSS Grid photo gallery with hover effects and mobile responsiveness",
     },
     {
       id: 5,
       title: "SQL Query Optimization by CobraAI",
-      description: "Optimized SQL query with indexing and performance considerations",
+      description:
+        "Optimized SQL query with indexing and performance considerations",
       category: "database",
       language: "sql",
       code: `-- CobraAI SQL Optimization Example
@@ -273,13 +293,16 @@ GROUP BY u.id, u.name, u.email
 HAVING COUNT(o.id) >= 3
 ORDER BY total_spent DESC
 LIMIT 10;`,
-      explanation: "This SQL example by Harsh demonstrates query optimization techniques including proper indexing, efficient joins, filtering conditions, and aggregation. The EXPLAIN ANALYZE command helps understand the query execution plan. This is essential for working with large datasets.",
-      prompt: "Write an optimized SQL query to find top customers with completed orders since January 2023"
+      explanation:
+        "This SQL example by Harsh demonstrates query optimization techniques including proper indexing, efficient joins, filtering conditions, and aggregation. The EXPLAIN ANALYZE command helps understand the query execution plan. This is essential for working with large datasets.",
+      prompt:
+        "Write an optimized SQL query to find top customers with completed orders since January 2023",
     },
     {
       id: 6,
       title: "JavaScript Array Methods by Harsh",
-      description: "Practical examples of modern JavaScript array manipulation methods",
+      description:
+        "Practical examples of modern JavaScript array manipulation methods",
       category: "javascript",
       language: "javascript",
       code: `// CobraAI JavaScript Array Methods Example
@@ -329,23 +352,26 @@ console.log('Product list:', productList);
 console.log('Total inventory value:', totalValue);
 console.log('Most expensive product:', mostExpensive);
 console.log('Products by category:', productsByCategory);`,
-      explanation: "This JavaScript example by Harsh demonstrates practical use of array methods including filter, map, reduce, and find. These methods are essential for modern JavaScript development and provide a functional approach to data manipulation. The code shows how to process and transform arrays of objects efficiently.",
-      prompt: "Show examples of using JavaScript array methods (filter, map, reduce) on a products array"
-    }
+      explanation:
+        "This JavaScript example by Harsh demonstrates practical use of array methods including filter, map, reduce, and find. These methods are essential for modern JavaScript development and provide a functional approach to data manipulation. The code shows how to process and transform arrays of objects efficiently.",
+      prompt:
+        "Show examples of using JavaScript array methods (filter, map, reduce) on a products array",
+    },
   ];
 
   const categories = [
-    { id: 'all', name: 'All Examples' },
-    { id: 'frontend', name: 'Frontend' },
-    { id: 'backend', name: 'Backend' },
-    { id: 'data-science', name: 'Data Science' },
-    { id: 'database', name: 'Database' },
-    { id: 'javascript', name: 'JavaScript' }
+    { id: "all", name: "All Examples" },
+    { id: "frontend", name: "Frontend" },
+    { id: "backend", name: "Backend" },
+    { id: "data-science", name: "Data Science" },
+    { id: "database", name: "Database" },
+    { id: "javascript", name: "JavaScript" },
   ];
 
-  const filteredExamples = activeCategory === 'all' 
-    ? examples 
-    : examples.filter(example => example.category === activeCategory);
+  const filteredExamples =
+    activeCategory === "all"
+      ? examples
+      : examples.filter((example) => example.category === activeCategory);
 
   const copyToClipboard = (text, id) => {
     navigator.clipboard.writeText(text);
@@ -364,35 +390,40 @@ console.log('Products by category:', productsByCategory);`,
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4">
       <div className="container mx-auto">
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            CobraAI <span className="bg-gradient-to-tr from-red-500 to-pink-300 bg-clip-text text-transparent">Examples</span>
+            CobraAI{" "}
+            <span className="bg-gradient-to-tr from-red-500 to-pink-300 bg-clip-text text-transparent">
+              Examples
+            </span>
           </h1>
           <p className="text-xl text-red-200 max-w-3xl mx-auto">
-            Explore these AI-generated code examples by Harsh to see how CobraAI can help you learn and implement programming concepts across different languages and domains.
+            Explore these AI-generated code examples by Harsh to see how CobraAI
+            can help you learn and implement programming concepts across
+            different languages and domains.
           </p>
         </motion.div>
 
         {/* Category Filters */}
-        <motion.div 
+        <motion.div
           className="flex flex-wrap justify-center gap-3 mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {categories.map(category => (
+          {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`px-4 py-2 rounded-full transition-all duration-300 ${
                 activeCategory === category.id
-                  ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
               }`}
             >
               {category.name}
@@ -407,7 +438,7 @@ console.log('Products by category:', productsByCategory);`,
           initial="hidden"
           animate="visible"
         >
-          {filteredExamples.map(example => (
+          {filteredExamples.map((example) => (
             <motion.div
               key={example.id}
               variants={itemVariants}
@@ -416,8 +447,12 @@ console.log('Products by category:', productsByCategory);`,
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">{example.title}</h3>
-                    <p className="text-red-200 text-sm">{example.description}</p>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {example.title}
+                    </h3>
+                    <p className="text-red-200 text-sm">
+                      {example.description}
+                    </p>
                   </div>
                   <span className="px-2 py-1 bg-red-900/50 text-pink-300 rounded text-xs uppercase">
                     {example.language}
@@ -426,7 +461,9 @@ console.log('Products by category:', productsByCategory);`,
 
                 <div className="bg-gray-900 rounded-lg mb-4 relative overflow-hidden">
                   <div className="flex justify-between items-center bg-gray-800 px-4 py-2">
-                    <span className="text-xs text-gray-400">CobraAI Example</span>
+                    <span className="text-xs text-gray-400">
+                      CobraAI Example
+                    </span>
                     <button
                       onClick={() => copyToClipboard(example.code, example.id)}
                       className="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
@@ -468,7 +505,7 @@ console.log('Products by category:', productsByCategory);`,
                   {expandedExample === example.id && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
                       className="mt-4"
@@ -477,14 +514,18 @@ console.log('Products by category:', productsByCategory);`,
                         <h4 className="font-semibold mb-2 text-red-400 flex items-center">
                           <FaCode className="mr-2" /> AI Prompt:
                         </h4>
-                        <p className="text-sm bg-gray-900 p-3 rounded">"{example.prompt}"</p>
+                        <p className="text-sm bg-gray-900 p-3 rounded">
+                          "{example.prompt}"
+                        </p>
                       </div>
-                      
+
                       <div>
                         <h4 className="font-semibold mb-2 text-red-400 flex items-center">
                           <FaComments className="mr-2" /> Explanation:
                         </h4>
-                        <p className="text-sm text-red-200">{example.explanation}</p>
+                        <p className="text-sm text-red-200">
+                          {example.explanation}
+                        </p>
                       </div>
                     </motion.div>
                   )}
@@ -495,18 +536,24 @@ console.log('Products by category:', productsByCategory);`,
         </motion.div>
 
         {/* Call to Action */}
-        <motion.div 
+        <motion.div
           className="text-center mt-16 bg-gradient-to-r from-red-900/30 to-pink-900/30 rounded-2xl p-8 border border-gray-700"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Generate Your Own Code?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            Ready to Generate Your Own Code?
+          </h2>
           <p className="text-lg text-red-200 mb-6">
-            CobraAI can help you create custom code solutions for your specific needs.
+            CobraAI can help you create custom code solutions for your specific
+            needs.
           </p>
-          <Link to="/register" className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 inline-flex items-center">
+          <Link
+            to="/register"
+            className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 inline-flex items-center"
+          >
             <FaPlay className="mr-2" /> Try CobraAI Now
           </Link>
         </motion.div>

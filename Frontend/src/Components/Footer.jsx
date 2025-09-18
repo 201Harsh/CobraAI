@@ -12,8 +12,11 @@ const Footer = () => {
         </div>
 
         <div className="text-gray-400 text-sm">
-          &copy; {new Date().getFullYear()} <span className="font-bold bg-gradient-to-r from-red-600 bg-clip-text to-pink-700 text-transparent">CobraAI CobraAI</span>. All
-          rights reserved.
+          &copy; {new Date().getFullYear()}{" "}
+          <span className="font-bold bg-gradient-to-r from-red-600 bg-clip-text to-pink-700 text-transparent">
+            CobraAI CobraAI
+          </span>
+          . All rights reserved.
         </div>
       </div>
     </footer>

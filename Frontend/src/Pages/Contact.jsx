@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaPaperPlane, FaMapMarkerAlt, FaPhone, FaEnvelope, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
+import {
+  FaPaperPlane,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaLinkedin,
+  FaGithub,
+  FaInstagram,
+} from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -26,7 +34,7 @@ const Contact = () => {
       name: "",
       email: "",
       subject: "",
-      message: ""
+      message: "",
     });
   };
 
@@ -36,9 +44,9 @@ const Contact = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -48,26 +56,30 @@ const Contact = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 120
-      }
-    }
+        stiffness: 120,
+      },
+    },
   };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Get in <span className="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">Touch</span>
+            Get in{" "}
+            <span className="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
+              Touch
+            </span>
           </h1>
           <p className="text-xl text-blue-200 max-w-2xl mx-auto">
-            Have questions or want to learn more about MambaAI? We'd love to hear from you.
+            Have questions or want to learn more about MambaAI? We'd love to
+            hear from you.
           </p>
         </motion.div>
 
@@ -80,8 +92,8 @@ const Contact = () => {
             transition={{ duration: 0.7 }}
           >
             <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
-            
-            <motion.form 
+
+            <motion.form
               onSubmit={handleSubmit}
               className="space-y-6"
               variants={containerVariants}
@@ -89,7 +101,10 @@ const Contact = () => {
               animate="visible"
             >
               <motion.div variants={itemVariants}>
-                <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Full Name
                 </label>
                 <input
@@ -105,7 +120,10 @@ const Contact = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -121,7 +139,10 @@ const Contact = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <label htmlFor="subject" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Subject
                 </label>
                 <input
@@ -137,7 +158,10 @@ const Contact = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -175,9 +199,9 @@ const Contact = () => {
             {/* Info Card */}
             <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700">
               <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-              
+
               <div className="space-y-4">
-                <motion.div 
+                <motion.div
                   className="flex items-start"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -188,12 +212,16 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Address</h3>
-                    <p className="text-blue-200">Alpine Appartment, Near Laxmi Kutter Tallital,</p>
-                    <p className="text-blue-200">Nainital , Uttarakhand, 263001</p>
+                    <p className="text-blue-200">
+                      Alpine Appartment, Near Laxmi Kutter Tallital,
+                    </p>
+                    <p className="text-blue-200">
+                      Nainital , Uttarakhand, 263001
+                    </p>
                   </div>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="flex items-start"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -208,7 +236,7 @@ const Contact = () => {
                   </div>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="flex items-start"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -228,8 +256,8 @@ const Contact = () => {
             {/* Social Media */}
             <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700">
               <h2 className="text-2xl font-bold mb-6">Follow Us</h2>
-              
-              <motion.div 
+
+              <motion.div
                 className="flex space-x-4 justify-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -274,28 +302,40 @@ const Contact = () => {
             </div>
 
             {/* FAQ Section */}
-            <motion.div 
+            <motion.div
               className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.2 }}
             >
               <h2 className="text-2xl font-bold mb-4">Common Questions</h2>
-              
+
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-blue-300">How quickly do you respond to inquiries?</h3>
-                  <p className="text-blue-200 text-sm">We typically respond within 24 hours on business days.</p>
+                  <h3 className="font-semibold text-blue-300">
+                    How quickly do you respond to inquiries?
+                  </h3>
+                  <p className="text-blue-200 text-sm">
+                    We typically respond within 24 hours on business days.
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h3 className="font-semibold text-blue-300">Do you offer technical support?</h3>
-                  <p className="text-blue-200 text-sm">Yes, we provide technical support for all our users.</p>
+                  <h3 className="font-semibold text-blue-300">
+                    Do you offer technical support?
+                  </h3>
+                  <p className="text-blue-200 text-sm">
+                    Yes, we provide technical support for all our users.
+                  </p>
                 </div>
-                
+
                 <div>
-                  <h3 className="font-semibold text-blue-300">Can I schedule a demo?</h3>
-                  <p className="text-blue-200 text-sm">Absolutely! Contact us to schedule a personalized demo.</p>
+                  <h3 className="font-semibold text-blue-300">
+                    Can I schedule a demo?
+                  </h3>
+                  <p className="text-blue-200 text-sm">
+                    Absolutely! Contact us to schedule a personalized demo.
+                  </p>
                 </div>
               </div>
             </motion.div>

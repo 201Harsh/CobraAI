@@ -61,10 +61,18 @@ const Hero = () => {
   ];
 
   const programmingLanguages = [
-    { value: "html-css-js", label: "🌐 HTML, CSS and JavaScript", available: true },
+    {
+      value: "html-css-js",
+      label: "🌐 HTML, CSS and JavaScript",
+      available: true,
+    },
     { value: "reactjs", label: "⚛️ React JS", available: false },
     { value: "react-native", label: "📱 React Native", available: false },
-    { value: "node-express", label: "🚀 Node.js & Express.js", available: true },
+    {
+      value: "node-express",
+      label: "🚀 Node.js & Express.js",
+      available: true,
+    },
     { value: "mongodb", label: "🍃 MongoDB", available: false },
     { value: "mysql", label: "🐬 MySQL", available: false },
     { value: "python", label: "🐍 Python", available: true },
@@ -703,23 +711,25 @@ const Hero = () => {
             Supported Programming Languages
           </h3>
           <p className="text-center text-blue-200 mb-6">
-            HTML, CSS, JavaScript, Python, AI/ML Basics, and Express.js compilers are available now. 
-            Other languages are coming soon!
+            HTML, CSS, JavaScript, Python, AI/ML Basics, and Express.js
+            compilers are available now. Other languages are coming soon!
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {programmingLanguages.map((lang, index) => (
               <div
                 key={index}
                 className={`flex flex-col items-center justify-center p-3 rounded-lg ${
-                  lang.available 
-                    ? "bg-green-900/30 border border-green-700" 
+                  lang.available
+                    ? "bg-green-900/30 border border-green-700"
                     : "bg-gray-700/50 border border-gray-600"
                 }`}
               >
                 <span className="text-sm text-center">{lang.label}</span>
-                <span className={`text-xs mt-2 ${
-                  lang.available ? "text-green-400" : "text-yellow-400"
-                }`}>
+                <span
+                  className={`text-xs mt-2 ${
+                    lang.available ? "text-green-400" : "text-yellow-400"
+                  }`}
+                >
                   {lang.available ? "Available" : "Coming Soon"}
                 </span>
               </div>
